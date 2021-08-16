@@ -1,4 +1,5 @@
 <%@ include file="/WEB-INF/views/include/content.taglib.jsp" %>
+<script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=lb07yh2rsh&submodules=geocoder"></script>
 <%-----------------------------------------------------------
 	
 	공중화장실 목록 화면
@@ -9,17 +10,21 @@
 </style>
 <script type="text/javascript">
 $(document).ready(function(){
-	console.log('list.jsp');
 	getLocation();
+	
 	$('#showHideBtn').click(function(e) {
-		$('#mycard-collapse').removeClass('hide').addClass('show');
-		var fas = $(this).find('fas').
-		e.preventDefault();
+		if($("#mycard-collapse").hasClass("hide") === true) {
+			$('#mycard-collapse').removeClass('hide').addClass('show');
+			$(this).find('.fas').removeClass('fa-plus').addClass('fa-minus');
+			isMapShow = true;
+			getLocation();
+		} else if($("#mycard-collapse").hasClass("show") === true) {
+			$('#mycard-collapse').removeClass('show').addClass('hide');
+			$(this).find('.fas').removeClass('fa-minus').addClass('fa-plus');
+		}
 	});
-	/* $('a').click(function(e) {
-		  e.preventDefault();
-		}); */
 });
+var map, marker, isMapShow;
 <%-- 현재위치 위도,경도 불러오기 --%>
 function getLocation() {
 	if('geolocation' in navigator) {
@@ -30,18 +35,36 @@ function getLocation() {
 }
 <%-- getLocation success callback --%>
 function success(pos) {
-	var latitude = pos.coords.latitude;
-    var longitude = pos.coords.longitude;
+	var latitude = pos.coords.latitude || 37.5782709;
+    var longitude = pos.coords.longitude || 126.9770043;
     var accuracy = pos.coords.accuracy;
     var altitude = pos.coords.altitude;
     var altitudeAccuracy = pos.coords.altitudeAccuracy;
     var timestamp = pos.coords.timestamp;
     var speed = pos.coords.speed;
     
-   var location = new naver.maps.LatLng(latitude, longitude);
-    map.setCenter(location);
-    marker.setPosition(location);
-    marker.setMap(map);
+    var location = new naver.maps.LatLng(latitude, longitude);
+    
+    if (isMapShow) {
+    	if (!map) {
+    		map = new naver.maps.Map('map', {
+    		    center: location,
+    		    zoom: 14
+    		});
+        } else {
+        	 map.setCenter(location);
+        }
+        
+        if (!marker) {
+        	marker = new naver.maps.Marker({
+    		    position: new naver.maps.LatLng(latitude, longitude),
+    		    map: map
+    		});
+        } else {
+        	 marker.setPosition(location);
+        	 marker.setMap(map);
+        }
+    }
     
     searchCoordinateToAddress(location);
 }
@@ -104,34 +127,18 @@ function searchCoordinateToAddress(latlng) {
 		<h2 class="section-title">Table</h2>
 		<p class="section-lead">Example of some Bootstrap table components.</p>
 	    
-		<jsp:include page="/WEB-INF/views/geo/map.jsp"/>
 	    
-		<%-- DB Info --%>
+		<%-- Map --%>
 		<div class="card">
 			<div class="card-header">
 				<h4>Map</h4>
 				<div class="card-header-action">
-					<a id="showHideBtn" class="btn btn-icon btn-info" href=""><i class="fas fa-plus"></i></a>
+					<a id="showHideBtn" data-collapse="#mycard-collapse" class="btn btn-icon btn-info" href="javascript:void(0);"><i class="fas fa-plus"></i></a>
 				</div>
 			</div>
 			<div class="collapse hide" id="mycard-collapse" style="">
 				<div class="card-body">
-					<div class="section-title mt-0"><fmt:message key="util.002"/></div>
-					<div class="form-group">
-						<label>URL</label>
-							<input type="text" class="form-control form-control-sm">
-					</div>
-					<div class="form-group">
-						<label>NAME</label>
-						<input type="text" class="form-control form-control-sm">
-					</div>
-					<div class="form-group">
-						<label>PASSWD</label>
-						<input type="text" class="form-control form-control-sm">
-					</div>
-					<div class="card-footer text-right">
-						<button class="btn btn-primary mr-1" type="submit">Connect</button>
-					</div>
+					<div id="map" style="width:100%;height:400px;"></div>
 				</div>
 			</div>
 		</div>
@@ -144,9 +151,6 @@ function searchCoordinateToAddress(latlng) {
 			
         <%-- Search --%>
         <div class="card">
-			<div class="card-header">
-				<h4>Search</h4>
-			</div>
 			<div class="card-body">
 				<div class="form-group">
 					<label class="d-block">Checkbox</label>
