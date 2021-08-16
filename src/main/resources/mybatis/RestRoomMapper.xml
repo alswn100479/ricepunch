@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="RestRoomMapper">
+	<select id="list" parameterType="map" resultType="com.mim.domain.RestRoom">
+		select * from public_toilet limit 10
+	</select>
+	
+	<select id="listToGeoUpdate" resultType="com.mim.domain.RestRoom">
+		SELECT ID, RDNM_ADR as rdnmAdr, LNM_ADR as lnmAdr FROM PUBLIC_TOILET where NAVER_LATITUDE IS
+		NULL OR NAVER_LONGITUDE IS NULL
+	</select>
+	
+	<update id="mergeGeo" parameterType="java.util.List">
+		insert into public_toilet
+		(ID, NAVER_LATITUDE, NAVER_LONGITUDE)
+		values
+		<foreach collection="list" item="element" separator=",">
+			( #{element.id}, #{element.naverLatitude}, #{element.naverLongitude})
+		</foreach>
+		on duplicate key update
+		    NAVER_LATITUDE = values(NAVER_LATITUDE)
+		    ,NAVER_LONGITUDE = values(NAVER_LONGITUDE)
+	</update>
+	
+	<insert id="insert" parameterType="java.util.List" useGeneratedKeys="true">
+		insert into PUBLIC_TOILET
+		(
+		TYPE
+		, NAME
+		, RDNM_ADR
+		, LNM_ADR
+		, UNISEX_YN
+		, LADIES_BOWL_NUM
+		, LADIES_HANDICAP_BOWL_NUM
+		, LADIES_CHILD_BOWL_NUM
+		, MEN_BOWL_NUM
+		, MEN_URINAL_NUM
+		, MEN_HANDICAP_BOWL_NUM
+		, MEN_HANDICAP_URINAL_NUM
+		, MEN_CHILDREN_BOWL_NUM
+		, MEN_CHILDREN_URINAL_NUM
+		, INSTITUTION_NAME
+		, PHON_NUM
+		, OPEN_TIME
+		, INSTALLATION_YEAR
+		, LATITUDE
+		, LONGITUDE
+		, NAVER_LATITUDE
+		, NAVER_LONGITUDE
+		, POSS_TYPE
+		, POSI_TYPE
+		, EMG_BELL_YN
+		, CCTV_YN
+		, DIPERS_EXCHG_POSI
+		, MOD_YEAR
+		, REFERENCE_DATE
+		, INSTT_CODE
+		, INSTT_NAME
+		)
+		values
+		<foreach collection="list" item="item" separator=",">
+		( 
+			#{item.type}
+			, #{item.name}
+			, #{item.rdnmAdr}
+			, #{item.lnmAdr}
+			, #{item.unisexYn}
+			, #{item.ladiesBowlNum}
+			, #{item.ladiesHandicapBowlNum}
+			, #{item.ladiesChildToiletBowlNum}
+			, #{item.menBowlNum}
+			, #{item.menUrinalNum}
+			, #{item.menHandicapBowlNum}
+			, #{item.menHandicapUrinalNum}
+			, #{item.menChildrenBowlNum}
+			, #{item.menChildrenUrinalNum}
+			, #{item.institutionName}
+			, #{item.phonNum}
+			, #{item.openTime}
+			, #{item.installationYear}
+			, #{item.latitude}
+			, #{item.longitude}
+			, #{item.naverLatitude}
+			, #{item.naverLongitude}
+			, #{item.possType}
+			, #{item.posiType}
+			, #{item.emgBellYn}
+			, #{item.cctvYn}
+			, #{item.dipersExchgPosi}
+			, #{item.modYear}
+			, #{item.instDate}
+			, #{item.insttCode}
+			, #{item.insttName}
+		)
+		</foreach>
+	</insert>
+</mapper>
