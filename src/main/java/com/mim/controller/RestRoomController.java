@@ -30,14 +30,11 @@ public class RestRoomController
 	@RequestMapping(value = "/list.do", method = RequestMethod.GET)
 	public ModelAndView list(String option, String search, String fields, String title)
 	{
-		ModelAndView mav = new ModelAndView("common/table");
+		ModelAndView mav = new ModelAndView("rstr/list.tiles");
 		try
 		{
 			List<RestRoom> list = service.list(option, search);
 			mav.addObject("list", list);
-			mav.addObject("title", title);
-			mav.addObject("fields", fields);
-			System.out.println(title);
 		}
 		catch (Exception e)
 		{

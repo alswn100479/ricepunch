@@ -31,7 +31,7 @@ public class RestRoomScheduleController
 	@Autowired
 	private GeocoderUtil geocoder;
 
-	@RequestMapping(value = "/job", method = RequestMethod.GET)
+	@RequestMapping(value = "/job.do", method = RequestMethod.GET)
 	public String register(Model model, String option, String search) throws IOException
 	{
 		String urlStr = "http://api.data.go.kr/openapi/tn_pubr_public_toilet_api?serviceKey=GBEvp69IWg7y2Yao9dtDKME3VgxqJaOuETuMOaWHcVbCh0sMqXgOeL%2BkFEKMLFK3amNCU43p24qRUpMjaKJpng%3D%3D&type=json";
@@ -109,7 +109,7 @@ public class RestRoomScheduleController
 		return "sss";
 	}
 
-	@RequestMapping(value = "/updateGeo", method = RequestMethod.GET)
+	@RequestMapping(value = "/updateGeo.do", method = RequestMethod.GET)
 	public void updateGeo() throws Exception
 	{
 		List<RestRoom> list = service.listToGeoUpdate();

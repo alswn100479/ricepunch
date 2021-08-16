@@ -6,7 +6,7 @@
 
 ------------------------------------------------------------%>
 <style>
-	.locationDiv {padding:0 0 10px 0;}
+	.locationDiv {padding:0 0 20px 0;}
 </style>
 <script type="text/javascript">
 $(document).ready(function(){
@@ -127,7 +127,6 @@ function searchCoordinateToAddress(latlng) {
 		<h2 class="section-title">Table</h2>
 		<p class="section-lead">Example of some Bootstrap table components.</p>
 	    
-	    
 		<%-- Map --%>
 		<div class="card">
 			<div class="card-header">
@@ -149,29 +148,60 @@ function searchCoordinateToAddress(latlng) {
 			<span id="location"/>
 		</div>
 			
-        <%-- Search --%>
-        <div class="card">
-			<div class="card-body">
-				<div class="form-group">
-					<label class="d-block">Checkbox</label>
-					<div class="form-check">
+		<%-- Search --%>
+		<span class="form-check">
 						<input class="form-check-input" type="checkbox" id="defaultCheck1">
 							<label class="form-check-label" for="defaultCheck1">Checkbox 1</label>
-					</div>
-					<div class="form-check">
+					</span>
+					<span class="form-check">
 						<input class="form-check-input" type="checkbox" id="defaultCheck3">
 							<label class="form-check-label" for="defaultCheck3">Checkbox 2</label>
+					</span>
+                
+         <%-- Result --%>
+         <%-- <jsp:include page="/rstr/list.do">
+			<jsp:param name="fields" value="name,unisexYn,ladiesBowlNum,ladiesHandicapBowlNum" />
+		</jsp:include> --%>
+		<div class="row">
+			<div class="col-12">
+				<div class="card">
+					<div class="card-header">
+						<h4>Result</h4>
+						<div class="card-header-form">
+							<form>
+								<div class="input-group">
+									<input type="text" class="form-control" placeholder="Search"/>
+									<div class="input-group-btn">
+										<button class="btn btn-primary"><i class="fas fa-search"></i></button>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+					<div class="card-body p-0">
+						<div class="table-responsive">
+							<table class="table table-striped">
+							<tr>
+								<th><fmt:message key="rstr.003"/></th>
+								<th><fmt:message key="rstr.002"/></th>
+								<th><fmt:message key="rstr.004"/></th>
+								<th><fmt:message key="rstr.005"/></th>
+							</tr>
+							<c:forEach var="item" items="${list}">
+								<tr>
+									<td>${item.name}
+									<img src="<%=request.getContextPath()%>/resources/img/emergency_bell01.png" width="20" height="20"/>
+									</td>
+									<td>${item.unisexYn}</td>
+									<td>${item.ladiesBowlNum}</td>
+									<td>${item.ladiesHandicapBowlNum}</td>
+								</tr>
+							</c:forEach>
+							</table>
+						</div>
 					</div>
 				</div>
 			</div>
-			<div class="card-footer text-right">
-				<button class="btn btn-primary">Submit</button>
-			</div>
 		</div>
-                
-         <%-- Result --%>
-         <jsp:include page="/rstr/list.do">
-			<jsp:param name="fields" value="name,unisexYn,ladiesBowlNum,ladiesHandicapBowlNum" />
-		</jsp:include>
 	  </div>
 	</section>

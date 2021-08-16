@@ -26,7 +26,7 @@ public class EmgBell
 	private String phoneNum;
 	private Date instDate;
 	private int insttCode;
-	private int insttName;
+	private String insttName;
 
 	public int getId()
 	{
@@ -206,11 +206,11 @@ public class EmgBell
 	{
 		this.insttCode = insttCode;
 	}
-	public int getInsttName()
+	public String getInsttName()
 	{
 		return insttName;
 	}
-	public void setInsttName(int insttName)
+	public void setInsttName(String insttName)
 	{
 		this.insttName = insttName;
 	}
