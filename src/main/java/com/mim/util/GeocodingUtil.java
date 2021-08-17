@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author minju
  */
 @RestController
-public class GeocoderUtil
+public class GeocodingUtil
 {
 	public String[] geocoding(String addr)
 	{
@@ -32,11 +32,14 @@ public class GeocoderUtil
 		try
 		{
 			String addrEnc = URLEncoder.encode(addr, "UTF-8");
-			String urlStr = "https://naveropenapi.apigw.ntruss.com/map-geocode/v2/geocode?query=" + addrEnc;
+			String key = "AIzaSyAybOn2KGSusrLBPOFI0uVPSPSE9Mhpgpk";
+			String urlStr = "https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyAybOn2KGSusrLBPOFI0uVPSPSE9Mhpgpk&address="
+				+ addrEnc
+				+ "&components=country:KR";
 
 			conn = connect(urlStr);
 
-			br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
+			br = new BufferedReader(new InputStreamReader(new URL(urlStr).openStream(), "UTF-8"));
 
 			sb = new StringBuffer();
 			String line = "";
@@ -55,33 +58,23 @@ public class GeocoderUtil
 		}
 
 		JSONParser parser = new JSONParser();
+		JSONObject json;
 		JSONObject jsonObject;
 		JSONObject jsonObject2;
-		JSONArray jsonArray;
-		String x = "";
-		String y = "";
 
 		try
 		{
 			if (StringUtils.isNotBlank(sb.toString()))
 			{
-				jsonObject = (JSONObject) parser.parse(sb.toString());
-				jsonArray = (JSONArray) jsonObject.get("addresses");
+				json = (JSONObject) parser.parse(sb.toString());
+				JSONArray results = (JSONArray) json.get("results");
+				JSONObject resultsArray = (JSONObject) results.get(0);
 
-				for (int i = 0; i < jsonArray.size(); i++)
-				{
-					jsonObject2 = (JSONObject) jsonArray.get(i);
-					if (null != jsonObject2.get("x"))
-					{
-						x = (String) jsonObject2.get("x").toString(); //longitude
-						value[0] = x;
-					}
-					if (null != jsonObject2.get("y"))
-					{
-						y = (String) jsonObject2.get("y").toString(); // latitude
-						value[1] = y;
-					}
-				}
+				jsonObject = (JSONObject) resultsArray.get("geometry");
+				jsonObject2 = (JSONObject) jsonObject.get("location");
+
+				value[0] = jsonObject2.get("lng").toString();
+				value[1] = jsonObject2.get("lat").toString();
 			}
 			else
 			{
@@ -119,8 +112,6 @@ public class GeocoderUtil
 			URL url = new URL(urlStr);
 			conn = (HttpURLConnection) url.openConnection();
 			conn.setRequestProperty("Content-Type", "application/json");
-			conn.setRequestProperty("X-NCP-APIGW-API-KEY-ID", "lb07yh2rsh");
-			conn.setRequestProperty("X-NCP-APIGW-API-KEY", "aMXUSuCvbjJquFO5z6Wqb4zo7HeoyantiJb8dUy1");
 			conn.setRequestMethod("GET");
 			conn.connect();
 		}

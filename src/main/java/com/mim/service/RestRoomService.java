@@ -33,4 +33,14 @@ public class RestRoomService
 	{
 		rstrDao.mergeGeo(list);
 	}
+	
+	public List<RestRoom> listToGoogleGeoUpdate() throws Exception
+	{
+		return rstrDao.listToGoogleGeoUpdate();
+	}
+	
+	public void mergeGoogleGeo(List<RestRoom> list)
+	{
+		rstrDao.mergeGoogleGeo(list);
+	}
 }

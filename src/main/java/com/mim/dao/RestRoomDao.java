@@ -11,6 +11,10 @@ public interface RestRoomDao
 	public void register(List<RestRoom> list);
 
 	public List<RestRoom> listToGeoUpdate();
-	
+
 	public void mergeGeo(List<RestRoom> list);
+
+	public List<RestRoom> listToGoogleGeoUpdate();
+
+	public void mergeGoogleGeo(List<RestRoom> list);
 }

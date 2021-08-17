@@ -43,6 +43,9 @@ function success(pos) {
     var timestamp = pos.coords.timestamp;
     var speed = pos.coords.speed;
     
+    console.log(latitude);
+    console.log(longitude);
+    
     var location = new naver.maps.LatLng(latitude, longitude);
     
     if (isMapShow) {
@@ -203,5 +206,34 @@ function searchCoordinateToAddress(latlng) {
 				</div>
 			</div>
 		</div>
+                <div class="card">
+                  <div class="card-header">
+                    <h4>FIt</h4>
+                  </div>
+                  <div class="card-body p-0">
+                    <table class="table">
+                      <thead>
+                        <tr>
+								<th><fmt:message key="rstr.003"/></th>
+								<th><fmt:message key="rstr.002"/></th>
+								<th><fmt:message key="rstr.004"/></th>
+								<th><fmt:message key="rstr.005"/></th>
+							</tr>
+                      </thead>
+                      <tbody>
+                         <c:forEach var="item" items="${list}">
+								<tr>
+									<td>${item.name}
+									<img src="<%=request.getContextPath()%>/resources/img/emergency_bell01.png" width="20" height="20"/>
+									</td>
+									<td>${item.unisexYn}</td>
+									<td>${item.ladiesBowlNum}</td>
+									<td>${item.ladiesHandicapBowlNum}</td>
+								</tr>
+							</c:forEach>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
 	  </div>
 	</section>

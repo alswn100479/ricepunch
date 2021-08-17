@@ -27,8 +27,8 @@ public class RestRoom
 	int installationYear;
 	String latitude;
 	String longitude;
-	String naverLatitude;
-	String naverLongitude;
+	String cstmLatitude;
+	String cstmLongitude;
 	String possType;
 	String posiType;
 	String dipersExchgPosi;
@@ -267,24 +267,24 @@ public class RestRoom
 		this.longitude = longitude;
 	}
 
-	public String getNaverLatitude()
+	public String getCstmLatitude()
 	{
-		return naverLatitude;
+		return cstmLatitude;
 	}
 
-	public void setNaverLatitude(String naverLatitude)
+	public void setCstmLatitude(String cstmLatitude)
 	{
-		this.naverLatitude = naverLatitude;
+		this.cstmLatitude = cstmLatitude;
 	}
 
-	public String getNaverLongitude()
+	public String getCstmLongitude()
 	{
-		return naverLongitude;
+		return cstmLongitude;
 	}
 
-	public void setNaverLongitude(String naverLongitude)
+	public void setCstmLongitude(String cstmLongitude)
 	{
-		this.naverLongitude = naverLongitude;
+		this.cstmLongitude = cstmLongitude;
 	}
 
 	public String getPossType()

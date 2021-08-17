@@ -109,32 +109,67 @@ public class RestRoomScheduleController
 		return "sss";
 	}
 
-	@RequestMapping(value = "/updateGeo.do", method = RequestMethod.GET)
-	public void updateGeo() throws Exception
+	@RequestMapping(value = "/updateNaverGeo.do", method = RequestMethod.GET)
+	public void updateNaverGeo() throws Exception
 	{
+		long beforeTime = System.currentTimeMillis();
+
 		List<RestRoom> list = service.listToGeoUpdate();
 		int totalCount = list.size();
-		System.out.println("totalCount = " + totalCount);
+
+		System.out.println("rstr updateNaverGeo Start / totalCount = " + totalCount);
 		List<RestRoom> nList = new ArrayList<RestRoom>();
 		for (int i = 0; i < list.size(); i++)
 		{
 			RestRoom rstr = list.get(i);
 			String name = StringUtils.isNotBlank(rstr.getRdnmAdr()) ? rstr.getRdnmAdr() : rstr.getLnmAdr();
 			String[] naver = geocoder.geocoding(name);
-			rstr.setNaverLongitude(naver[0]);
-			rstr.setNaverLatitude(naver[1]);
-			if (StringUtils.isBlank(naver[0]))
-			{
-				System.out.println(name);
-			}
+			rstr.setCstmLongitude(naver[0]);
+			rstr.setCstmLatitude(naver[1]);
 			nList.add(rstr);
 			if ((i + 1) % 1000 == 0)
 			{
 				service.mergeGeo(nList);
 				nList = new ArrayList<RestRoom>();
+				System.out.println("---- " + i);
 			}
 		}
 		service.mergeGeo(nList);
-		System.out.println("MergeGeo End");
+
+		long afterTime = System.currentTimeMillis(); // 코드 실행 후에 시간 받아오기
+		long secDiffTime = (afterTime - beforeTime) / 1000; //두 시간에 차 계산
+		System.out.println("rstr updateNaverGeo Start / time = " + secDiffTime);
+	}
+
+	@RequestMapping(value = "/updateGoogleGeo.do", method = RequestMethod.GET)
+	public void updateGoogleGeo() throws Exception
+	{
+		long beforeTime = System.currentTimeMillis();
+
+		List<RestRoom> list = service.listToGoogleGeoUpdate();
+		int totalCount = list.size();
+
+		System.out.println("rstr updateGoogleGeo Start / totalCount = " + totalCount);
+		List<RestRoom> nList = new ArrayList<RestRoom>();
+		for (int i = 0; i < list.size(); i++)
+		{
+			RestRoom rstr = list.get(i);
+			String name = StringUtils.isNotBlank(rstr.getRdnmAdr()) ? rstr.getRdnmAdr() : rstr.getLnmAdr();
+			String[] naver = geocoder.geocoding(name);
+			rstr.setCstmLongitude(naver[0]);
+			rstr.setCstmLatitude(naver[1]);
+			nList.add(rstr);
+			if ((i + 1) % 1000 == 0)
+			{
+				service.mergeGoogleGeo(nList);
+				nList = new ArrayList<RestRoom>();
+				System.out.println("---- " + i);
+			}
+		}
+		service.mergeGoogleGeo(nList);
+
+		long afterTime = System.currentTimeMillis(); // 코드 실행 후에 시간 받아오기
+		long secDiffTime = (afterTime - beforeTime) / 1000; //두 시간에 차 계산
+		System.out.println("rstr updateGoogleGeo Start / time = " + secDiffTime);
 	}
 }

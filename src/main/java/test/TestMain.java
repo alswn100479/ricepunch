@@ -2,12 +2,7 @@ package test;
 
 import java.io.IOException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 
 import com.google.code.geocoder.Geocoder;
@@ -17,41 +12,43 @@ import com.google.code.geocoder.model.GeocoderRequest;
 import com.google.code.geocoder.model.GeocoderResult;
 import com.google.code.geocoder.model.GeocoderStatus;
 import com.google.code.geocoder.model.LatLng;
+import com.mim.util.GeocoderUtil;
+import com.mim.util.GeocodingUtil;
 
 public class TestMain
 {
 
 	public static void main(String[] args) throws InvalidFormatException, IOException, ParseException
 	{
-		List<String> list = new ArrayList<String>();
-		list.add("1");
-		list.add("2");
-		list.add("3");
-		list.add("4");
-		list.add("5");
-		list.add("6");
-		list.add("7");
-		list.add("8");
-		list.add("9");
-		list.add("10");
+//		String addr = "경기도 고양시 일산서구 일산동 600-47";
+		String addr = "서울특별시 금천구 남부순환로 1314";
 		
-		List<String> nList=  new ArrayList<String>();
-		for (int i = 0; i < list.size(); i++) {
-			nList.add(list.get(i));
-			if ((i+1) %3 == 0) {
-				System.out.println(i + " " + nList.toString());
-				nList = new ArrayList<String>();
-			}
-		}
-		System.out.println("end "+ nList.toString());
+		GeocoderUtil nUtil = new GeocoderUtil();
+		String[] nVal = nUtil.geocoding(addr);
+		
+		System.out.println(nVal[0]);
+		System.out.println(nVal[1]);
+
+		GeocodingUtil util = new GeocodingUtil();
+		
+		
+		String[] val = util.geocoding(addr);
+		
+		System.out.println(val[0]);
+		System.out.println(val[1]);
+		
+		/*Float[] a = geoCoding(addr);
+		System.out.println(a[0]);
+		System.out.println(a[1]);*/
 	}
+	
+	public static Float[] geoCoding(String location) {
 
-	public static Float[] geoCoding(String location)
-	{
+		if (location == null)  
 
-		if (location == null)
+		return null;
 
-			return null;
+				       
 
 		Geocoder geocoder = new Geocoder();
 
@@ -59,42 +56,47 @@ public class TestMain
 
 		// setLanguate : 인코딩 설정
 
-		GeocoderRequest geocoderRequest = new GeocoderRequestBuilder()
-			.setAddress(location).setLanguage("ko").getGeocoderRequest();
+		GeocoderRequest geocoderRequest = new GeocoderRequestBuilder().setAddress(location).setLanguage("ko").getGeocoderRequest();
 
 		GeocodeResponse geocoderResponse;
 
-		try
-		{
 
-			geocoderResponse = geocoder.geocode(geocoderRequest);
 
-			if (geocoderResponse.getStatus() == GeocoderStatus.OK & !geocoderResponse.getResults().isEmpty())
-			{
-				GeocoderResult geocoderResult = geocoderResponse.getResults().iterator().next();
+		try {
 
-				LatLng latitudeLongitude = geocoderResult.getGeometry().getLocation();
+		geocoderResponse = geocoder.geocode(geocoderRequest);
 
-				Float[] coords = new Float[2];
+		if (geocoderResponse.getStatus() == GeocoderStatus.OK & !geocoderResponse.getResults().isEmpty()) {
 
-				coords[0] = latitudeLongitude.getLat().floatValue();
 
-				coords[1] = latitudeLongitude.getLng().floatValue();
+		 
 
-				return coords;
 
-			}
+		GeocoderResult geocoderResult=geocoderResponse.getResults().iterator().next();
+
+
+		 
+		LatLng latitudeLongitude = geocoderResult.getGeometry().getLocation();
+
+						  
+
+		Float[] coords = new Float[2];
+
+		coords[0] = latitudeLongitude.getLat().floatValue();
+
+		coords[1] = latitudeLongitude.getLng().floatValue();
+
+		return coords;
 
 		}
-		catch (IOException ex)
-		{
 
-			ex.printStackTrace();
+		} catch (IOException ex) {
+
+		ex.printStackTrace();
 
 		}
 
 		return null;
 
-	}
-
+		}
 }

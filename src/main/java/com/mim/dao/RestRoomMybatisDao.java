@@ -58,4 +58,20 @@ public class RestRoomMybatisDao implements RestRoomDao
 		SqlSession sqlSession = session.openSession();
 		sqlSession.update("RestRoomMapper.mergeGeo", list);
 	}
+
+	/**
+	 * 구글 위경도를 업데이트한다.
+	 */
+	public void mergeGoogleGeo(List<RestRoom> list)
+	{
+		SqlSession sqlSession = session.openSession();
+		sqlSession.update("RestRoomMapper.mergeGoogleGeo", list);
+	}
+
+	public List<RestRoom> listToGoogleGeoUpdate()
+	{
+		SqlSession sqlSession = session.openSession();
+		List<RestRoom> list = sqlSession.selectList("RestRoomMapper.listToGoogleGeoUpdate");
+		return list;
+	}
 }

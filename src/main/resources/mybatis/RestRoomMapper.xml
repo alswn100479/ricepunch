@@ -15,6 +15,7 @@
 		]]>
 	</select>
 	
+	<!-- NAVER 위,경도 업데이트 -->
 	<select id="listToGeoUpdate" resultType="com.mim.domain.RestRoom">
 		SELECT ID, RDNM_ADR as rdnmAdr, LNM_ADR as lnmAdr FROM PUBLIC_TOILET where NAVER_LATITUDE IS
 		NULL OR NAVER_LONGITUDE IS NULL
@@ -25,11 +26,27 @@
 		(ID, NAVER_LATITUDE, NAVER_LONGITUDE)
 		values
 		<foreach collection="list" item="element" separator=",">
-			( #{element.id}, #{element.naverLatitude}, #{element.naverLongitude})
+			( #{element.id}, #{element.cstmLatitude}, #{element.cstmLongitude})
 		</foreach>
 		on duplicate key update
 		    NAVER_LATITUDE = values(NAVER_LATITUDE)
 		    ,NAVER_LONGITUDE = values(NAVER_LONGITUDE)
+	</update>
+	<!-- GOOGLE 위,경도 업데이트 -->
+	<select id="listToGoogleGeoUpdate" resultType="com.mim.domain.RestRoom">
+		SELECT ID, RDNM_ADR as rdnmAdr, LNM_ADR as lnmAdr FROM PUBLIC_TOILET where GOOGLE_LATITUDE IS
+		NULL OR GOOGLE_LONGITUDE IS NULL
+	</select>
+	<update id="mergeGoogleGeo" parameterType="java.util.List">
+		insert into public_toilet
+		(ID, GOOGLE_LATITUDE, GOOGLE_LONGITUDE)
+		values
+		<foreach collection="list" item="element" separator=",">
+			( #{element.id}, #{element.cstmLatitude}, #{element.cstmLongitude})
+		</foreach>
+		on duplicate key update
+		    GOOGLE_LATITUDE = values(GOOGLE_LATITUDE)
+		    ,GOOGLE_LONGITUDE = values(GOOGLE_LONGITUDE)
 	</update>
 	
 	<insert id="insert" parameterType="java.util.List" useGeneratedKeys="true">
@@ -90,8 +107,8 @@
 			, #{item.installationYear}
 			, #{item.latitude}
 			, #{item.longitude}
-			, #{item.naverLatitude}
-			, #{item.naverLongitude}
+			, #{item.cstmLatitude}
+			, #{item.cstmLongitude}
 			, #{item.possType}
 			, #{item.posiType}
 			, #{item.emgBellYn}
