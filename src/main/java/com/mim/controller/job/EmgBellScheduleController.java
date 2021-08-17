@@ -67,26 +67,26 @@ public class EmgBellScheduleController
 				JSONObject item = (JSONObject) items.get(j);
 
 				EmgBell bell = new EmgBell();
-				bell.setId(ObjectUtil.setInt(item.get("safeBellManageNo")));
-				bell.setInstPrpsCode(ObjectUtil.setInt(item.get("installationPurps")));
-				bell.setItlpcTypeCode(ObjectUtil.setInt(item.get("itlpcType")));
-				bell.setName(ObjectUtil.setString(item.get("itlpc")));
-				bell.setRdnmadr(ObjectUtil.setString(item.get("rdnmadr")));
-				bell.setLnmadr(ObjectUtil.setString(item.get("lnmadr")));
-				bell.setLatitude(ObjectUtil.setString(item.get("latitude")));
-				bell.setLongitude(ObjectUtil.setString(item.get("longitude")));
-				bell.setCntcMthdCode(ObjectUtil.setInt(item.get("cntcMthd")));
-				bell.setPolcCntcYn(ObjectUtil.setInt(item.get("polcCntcYn")));
-				bell.setOfficeCntcYn(ObjectUtil.setInt(item.get("officeCntcYn")));
-				bell.setAdiFnct(ObjectUtil.setString(item.get("adiFnct")));
-				bell.setInstYear(ObjectUtil.setInt(item.get("installationYear")));
-				bell.setSafechkDate(ObjectUtil.setDate(item.get("safechkDate")));
-				bell.setSafechkTypeYn(ObjectUtil.setInt(item.get("safechkType")));
-				bell.setInstitutionNm(ObjectUtil.setString(item.get("institutionNm")));
-				bell.setPhoneNum(ObjectUtil.setString(item.get("phoneNumber")));
-				bell.setInstDate(ObjectUtil.setDate(item.get("referenceDate")));
-				bell.setInsttCode(ObjectUtil.setInt(item.get("instt_code")));
-				bell.setInsttName(ObjectUtil.setString(item.get("instt_name")));
+				bell.setId(ObjectUtil.getInt(item.get("safeBellManageNo")));
+				bell.setInstPrpsCode(ObjectUtil.getInt(item.get("installationPurps")));
+				bell.setItlpcTypeCode(ObjectUtil.getInt(item.get("itlpcType")));
+				bell.setName(ObjectUtil.getString(item.get("itlpc")));
+				bell.setRdnmadr(ObjectUtil.getString(item.get("rdnmadr")));
+				bell.setLnmadr(ObjectUtil.getString(item.get("lnmadr")));
+				bell.setLatitude(ObjectUtil.getString(item.get("latitude")));
+				bell.setLongitude(ObjectUtil.getString(item.get("longitude")));
+				bell.setCntcMthdCode(ObjectUtil.getInt(item.get("cntcMthd")));
+				bell.setPolcCntcYn(ObjectUtil.getInt(item.get("polcCntcYn")));
+				bell.setOfficeCntcYn(ObjectUtil.getInt(item.get("officeCntcYn")));
+				bell.setAdiFnct(ObjectUtil.getString(item.get("adiFnct")));
+				bell.setInstYear(ObjectUtil.getInt(item.get("installationYear")));
+				bell.setSafechkDate(ObjectUtil.getDate(item.get("safechkDate")));
+				bell.setSafechkTypeYn(ObjectUtil.getInt(item.get("safechkType")));
+				bell.setInstitutionNm(ObjectUtil.getString(item.get("institutionNm")));
+				bell.setPhoneNum(ObjectUtil.getString(item.get("phoneNumber")));
+				bell.setInstDate(ObjectUtil.getDate(item.get("referenceDate")));
+				bell.setInsttCode(ObjectUtil.getInt(item.get("instt_code")));
+				bell.setInsttName(ObjectUtil.getString(item.get("instt_name")));
 
 				list.add(bell);
 			}
@@ -110,7 +110,7 @@ public class EmgBellScheduleController
 		for (int i = 0; i < list.size(); i++)
 		{
 			EmgBell emgbell = list.get(i);
-			String name = StringUtils.isNotBlank(emgbell.getRdnmadr()) ? emgbell.getRdnmadr() : emgbell.getRdnmadr();
+			String name = StringUtils.isNotBlank(emgbell.getRdnmadr()) ? emgbell.getRdnmadr() : emgbell.getLnmadr();
 			String[] naver = geocoder.geocoding(name);
 			emgbell.setNaverLongitude(naver[0]);
 			emgbell.setNaverLatitude(naver[1]);
@@ -119,6 +119,7 @@ public class EmgBellScheduleController
 			{
 				service.mergeGeo(nList);
 				nList = new ArrayList<EmgBell>();
+				System.out.println(i + " ROW END");
 			}
 		}
 		service.mergeGeo(nList);

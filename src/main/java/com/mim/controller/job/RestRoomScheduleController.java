@@ -67,35 +67,35 @@ public class RestRoomScheduleController
 				JSONObject item = (JSONObject) items.get(j);
 
 				RestRoom rstr = new RestRoom();
-				rstr.setType(ObjectUtil.setString(item.get("toiletType")));
-				rstr.setName(ObjectUtil.setString(item.get("toiletNm")));
-				rstr.setRdnmAdr(ObjectUtil.setString(item.get("rdnmadr")));
-				rstr.setLnmAdr(ObjectUtil.setString(item.get("lnmadr")));
-				rstr.setLadiesBowlNum(ObjectUtil.setInt(item.get("ladiesToiletBowlNumber")));
-				rstr.setLadiesHandicapBowlNum(ObjectUtil.setInt(item.get("ladiesHandicapToiletBowlNumber")));
-				rstr.setLadiesChildToiletBowlNum(ObjectUtil.setInt(item.get("ladiesChildrenToiletBowlNumber")));
-				rstr.setMenBowlNum(ObjectUtil.setInt(item.get("menToiletBowlNumber")));
-				rstr.setMenUrinalNum(ObjectUtil.setInt(item.get("menUrineNumber")));
-				rstr.setMenHandicapBowlNum(ObjectUtil.setInt(item.get("menHandicapToiletBowlNumber")));
-				rstr.setMenHandicapUrinalNum(ObjectUtil.setInt(item.get("menHandicapUrinalNumber")));
-				rstr.setMenChildrenBowlNum(ObjectUtil.setInt(item.get("menChildrenToiletBowlNumber")));
-				rstr.setMenChildrenUrinalNum(ObjectUtil.setInt(item.get("menChildrenUrinalNumber")));
-				rstr.setInstallationYear(ObjectUtil.setInt(item.get("installationYear")));
-				rstr.setInsttCode(ObjectUtil.setInt(item.get("insttCode")));
-				rstr.setEmgBellYn(ObjectUtil.setBoolean(item.get("emgBellYn")));
-				rstr.setModYear(ObjectUtil.setBoolean(item.get("modYear")));
-				rstr.setCctvYn(ObjectUtil.setBoolean(item.get("enterentCctvYn")));
-				rstr.setUnisexYn(ObjectUtil.setBoolean(item.get("unisexToiletYn")));
-				rstr.setInstitutionName(ObjectUtil.setString(item.get("institutionNm")));
-				rstr.setPhonNum(ObjectUtil.setString(item.get("phoneNumber")));
-				rstr.setOpenTime(ObjectUtil.setString(item.get("openTime")));
-				rstr.setLatitude(ObjectUtil.setString(item.get("latitude")));
-				rstr.setLongitude(ObjectUtil.setString(item.get("longitude")));
-				rstr.setPossType(ObjectUtil.setString(item.get("toiletPossType")));
-				rstr.setPosiType(ObjectUtil.setString(item.get("toiletPosiType")));
-				rstr.setDipersExchgPosi(ObjectUtil.setString(item.get("dipersExchgPosi")));
-				rstr.setInsttName(ObjectUtil.setString(item.get("institutionNm")));
-				rstr.setInstDate(ObjectUtil.setDate(item.get("referenceDate")));
+				rstr.setType(ObjectUtil.getString(item.get("toiletType")));
+				rstr.setName(ObjectUtil.getString(item.get("toiletNm")));
+				rstr.setRdnmAdr(ObjectUtil.getString(item.get("rdnmadr")));
+				rstr.setLnmAdr(ObjectUtil.getString(item.get("lnmadr")));
+				rstr.setLadiesBowlNum(ObjectUtil.getInt(item.get("ladiesToiletBowlNumber")));
+				rstr.setLadiesHandicapBowlNum(ObjectUtil.getInt(item.get("ladiesHandicapToiletBowlNumber")));
+				rstr.setLadiesChildToiletBowlNum(ObjectUtil.getInt(item.get("ladiesChildrenToiletBowlNumber")));
+				rstr.setMenBowlNum(ObjectUtil.getInt(item.get("menToiletBowlNumber")));
+				rstr.setMenUrinalNum(ObjectUtil.getInt(item.get("menUrineNumber")));
+				rstr.setMenHandicapBowlNum(ObjectUtil.getInt(item.get("menHandicapToiletBowlNumber")));
+				rstr.setMenHandicapUrinalNum(ObjectUtil.getInt(item.get("menHandicapUrinalNumber")));
+				rstr.setMenChildrenBowlNum(ObjectUtil.getInt(item.get("menChildrenToiletBowlNumber")));
+				rstr.setMenChildrenUrinalNum(ObjectUtil.getInt(item.get("menChildrenUrinalNumber")));
+				rstr.setInstallationYear(ObjectUtil.getInt(item.get("installationYear")));
+				rstr.setInsttCode(ObjectUtil.getInt(item.get("insttCode")));
+				rstr.setEmgBellYn(ObjectUtil.getBoolean(item.get("emgBellYn")));
+				rstr.setModYear(ObjectUtil.getBoolean(item.get("modYear")));
+				rstr.setCctvYn(ObjectUtil.getBoolean(item.get("enterentCctvYn")));
+				rstr.setUnisexYn(ObjectUtil.getBoolean(item.get("unisexToiletYn")));
+				rstr.setInstitutionName(ObjectUtil.getString(item.get("institutionNm")));
+				rstr.setPhonNum(ObjectUtil.getString(item.get("phoneNumber")));
+				rstr.setOpenTime(ObjectUtil.getString(item.get("openTime")));
+				rstr.setLatitude(ObjectUtil.getString(item.get("latitude")));
+				rstr.setLongitude(ObjectUtil.getString(item.get("longitude")));
+				rstr.setPossType(ObjectUtil.getString(item.get("toiletPossType")));
+				rstr.setPosiType(ObjectUtil.getString(item.get("toiletPosiType")));
+				rstr.setDipersExchgPosi(ObjectUtil.getString(item.get("dipersExchgPosi")));
+				rstr.setInsttName(ObjectUtil.getString(item.get("institutionNm")));
+				rstr.setInstDate(ObjectUtil.getDate(item.get("referenceDate")));
 
 				list.add(rstr);
 			}
@@ -123,6 +123,10 @@ public class RestRoomScheduleController
 			String[] naver = geocoder.geocoding(name);
 			rstr.setNaverLongitude(naver[0]);
 			rstr.setNaverLatitude(naver[1]);
+			if (StringUtils.isBlank(naver[0]))
+			{
+				System.out.println(name);
+			}
 			nList.add(rstr);
 			if ((i + 1) % 1000 == 0)
 			{

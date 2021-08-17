@@ -13,12 +13,15 @@ public class ObjectUtil
 	 * @param obj
 	 * @return
 	 */
-	public static String setString(Object obj)
+	public static String getString(Object obj)
 	{
 		String value = null;
 		if (ObjectUtils.isNotEmpty(obj))
 		{
-			value = obj.toString();
+			if (!StringUtils.equals(obj.toString(), "null"))
+			{
+				value = obj.toString();
+			}
 		}
 		return value;
 	}
@@ -28,7 +31,7 @@ public class ObjectUtil
 	 * @param obj
 	 * @return
 	 */
-	public static int setInt(Object obj)
+	public static int getInt(Object obj)
 	{
 		int value = 0;
 		if (ObjectUtils.isNotEmpty(obj))
@@ -53,7 +56,7 @@ public class ObjectUtil
 	 * @param obj
 	 * @return
 	 */
-	public static int setBoolean(Object obj)
+	public static int getBoolean(Object obj)
 	{
 		int value = 0;
 		if (ObjectUtils.isNotEmpty(obj))
@@ -72,7 +75,7 @@ public class ObjectUtil
 	 * @param obj
 	 * @return
 	 */
-	public static Date setDate(Object obj)
+	public static Date getDate(Object obj)
 	{
 		Date value = null;
 		if (ObjectUtils.isNotEmpty(obj))
