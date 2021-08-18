@@ -19,7 +19,7 @@ function moveContentPage(url) {
 </head>
 <body>
 	<div id="app">
-		<div class="main-wrapper">
+		<div class="main-wrapper-1">
 			
 			<tiles:insertAttribute name="header" />
 			

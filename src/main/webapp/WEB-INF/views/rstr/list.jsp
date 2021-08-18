@@ -6,7 +6,8 @@
 
 ------------------------------------------------------------%>
 <style>
-	.locationDiv {padding:0 0 20px 0;}
+	.locationDiv {padding:10px 0 20px 0;}
+	.card .card-header .card-header-action {width:auto !important; margin-top:0px !important;}
 </style>
 <script type="text/javascript">
 $(document).ready(function(){
@@ -43,9 +44,6 @@ function success(pos) {
     var timestamp = pos.coords.timestamp;
     var speed = pos.coords.speed;
     
-    console.log(latitude);
-    console.log(longitude);
-    
     var location = new naver.maps.LatLng(latitude, longitude);
     
     if (isMapShow) {
@@ -70,6 +68,21 @@ function success(pos) {
     }
     
     searchCoordinateToAddress(location);
+    
+    <%-- getLocation success callback --%>
+    $.ajax({
+        url: "<%=request.getContextPath()%>/rstr/list.table.do", // 클라이언트가 요청을 보낼 서버의 URL 주소
+        data: { latitude: latitude, longitude: longitude },                // HTTP 요청과 함께 서버로 보낼 데이터
+        type: "GET",                             // HTTP 요청 방식(GET, POST)
+        contentType : "text/html; charset=utf8",
+        dataType: "html"  ,                       // 서버에서 보내줄 데이터의 타입
+		success : function(res){
+		    $('#table').empty();
+		    $('#table').append(res);
+		 },
+		 error : function(xhr, status, error){
+		 }
+    })
 }
 <%-- getLocation error callback --%>
 function error(e) {
@@ -130,10 +143,16 @@ function searchCoordinateToAddress(latlng) {
 		<h2 class="section-title">Table</h2>
 		<p class="section-lead">Example of some Bootstrap table components.</p>
 	    
+	    <%-- 주소 --%>
+		<div class="locationDiv">
+			<img class="siren" src="<%=request.getContextPath()%>/resources/img/rstr/icons8-refresh-90.png" onclick="getLocation();" width="20" height="20" style="cursor:pointer;"/>
+			<span id="location"/>
+		</div>
+		
 		<%-- Map --%>
 		<div class="card">
 			<div class="card-header">
-				<h4>Map</h4>
+				<h4><fmt:message key="rstr.004"/></h4>
 				<div class="card-header-action">
 					<a id="showHideBtn" data-collapse="#mycard-collapse" class="btn btn-icon btn-info" href="javascript:void(0);"><i class="fas fa-plus"></i></a>
 				</div>
@@ -145,95 +164,17 @@ function searchCoordinateToAddress(latlng) {
 			</div>
 		</div>
 	
-		<%-- 주소 --%>
-		<div class="locationDiv">
-			<img src="<%=request.getContextPath()%>/resources/img/precision.png" onclick="getLocation();" width="30" height="30" style="cursor:pointer;"/>
-			<span id="location"/>
-		</div>
-			
 		<%-- Search --%>
-		<span class="form-check">
+		<!-- <span class="form-check">
 						<input class="form-check-input" type="checkbox" id="defaultCheck1">
 							<label class="form-check-label" for="defaultCheck1">Checkbox 1</label>
 					</span>
 					<span class="form-check">
 						<input class="form-check-input" type="checkbox" id="defaultCheck3">
 							<label class="form-check-label" for="defaultCheck3">Checkbox 2</label>
-					</span>
-                
-         <%-- Result --%>
-         <%-- <jsp:include page="/rstr/list.do">
-			<jsp:param name="fields" value="name,unisexYn,ladiesBowlNum,ladiesHandicapBowlNum" />
-		</jsp:include> --%>
-		<div class="row">
-			<div class="col-12">
-				<div class="card">
-					<div class="card-header">
-						<h4>Result</h4>
-						<div class="card-header-form">
-							<form>
-								<div class="input-group">
-									<input type="text" class="form-control" placeholder="Search"/>
-									<div class="input-group-btn">
-										<button class="btn btn-primary"><i class="fas fa-search"></i></button>
-									</div>
-								</div>
-							</form>
-						</div>
-					</div>
-					<div class="card-body p-0">
-						<div class="table-responsive">
-							<table class="table table-striped">
-							<tr>
-								<th><fmt:message key="rstr.003"/></th>
-								<th><fmt:message key="rstr.002"/></th>
-								<th><fmt:message key="rstr.004"/></th>
-								<th><fmt:message key="rstr.005"/></th>
-							</tr>
-							<c:forEach var="item" items="${list}">
-								<tr>
-									<td>${item.name}
-									<img src="<%=request.getContextPath()%>/resources/img/emergency_bell01.png" width="20" height="20"/>
-									</td>
-									<td>${item.unisexYn}</td>
-									<td>${item.ladiesBowlNum}</td>
-									<td>${item.ladiesHandicapBowlNum}</td>
-								</tr>
-							</c:forEach>
-							</table>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-                <div class="card">
-                  <div class="card-header">
-                    <h4>FIt</h4>
-                  </div>
-                  <div class="card-body p-0">
-                    <table class="table">
-                      <thead>
-                        <tr>
-								<th><fmt:message key="rstr.003"/></th>
-								<th><fmt:message key="rstr.002"/></th>
-								<th><fmt:message key="rstr.004"/></th>
-								<th><fmt:message key="rstr.005"/></th>
-							</tr>
-                      </thead>
-                      <tbody>
-                         <c:forEach var="item" items="${list}">
-								<tr>
-									<td>${item.name}
-									<img src="<%=request.getContextPath()%>/resources/img/emergency_bell01.png" width="20" height="20"/>
-									</td>
-									<td>${item.unisexYn}</td>
-									<td>${item.ladiesBowlNum}</td>
-									<td>${item.ladiesHandicapBowlNum}</td>
-								</tr>
-							</c:forEach>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-	  </div>
-	</section>
+					</span> -->
+        
+        <%-- Table : ajax로 동적으로 append --%>
+        <div id="table"/>        
+	</div>
+</section>

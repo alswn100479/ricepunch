@@ -5,13 +5,13 @@
 <mapper namespace="RestRoomMapper">
 	<select id="list" parameterType="map" resultType="com.mim.domain.RestRoom">
 		<![CDATA[
-			SELECT *,
-			(6371 * ACOS(COS(RADIANS(37.4782739)) * COS(RADIANS(NAVER_LATITUDE)) * COS(RADIANS(NAVER_LONGITUDE)-RADIANS(126.8971631)) 
-				+ SIN(RADIANS(37.4782739)) * SIN(RADIANS(LATITUDE)))) AS DISTANCE
-			FROM PUBLIC_TOILET PT
-			WHERE NAVER_LATITUDE IS NOT NULL AND NAVER_LONGITUDE  IS NOT NULL
-			HAVING DISTANCE < 3
-			ORDER BY DISTANCE DESC LIMIT 10
+			SELECT *, ( 6371 * acos( cos( radians(LATITUDE) ) * cos( radians( #{latitude} ) )
+          * cos( radians( #{longitude} ) - radians(LONGITUDE) )
+          + sin( radians(LATITUDE) ) * sin( radians( #{latitude} ) ) ) ) AS distance
+		  FROM public_toilet pt 
+		  HAVING distance < 5
+		  ORDER BY distance
+		  LIMIT 0 , 20;
 		]]>
 	</select>
 	

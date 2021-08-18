@@ -42,4 +42,22 @@ public class RestRoomController
 		}
 		return mav;
 	}
+	
+	@RequestMapping(value = "/list.table.do", method = RequestMethod.GET)
+	public ModelAndView table(String latitude, String longitude, String fields, String title)
+	{
+		ModelAndView mav = new ModelAndView("rstr/list.table");
+		try
+		{
+			List<RestRoom> list = service.list(latitude, longitude);
+			mav.addObject("list", list);
+			System.out.println(latitude);
+			System.out.println(longitude);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		return mav;
+	}
 }

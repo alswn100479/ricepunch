@@ -14,9 +14,9 @@ public class RestRoomService
 	@Autowired
 	private RestRoomDao rstrDao;
 
-	public List<RestRoom> list(String column, String type) throws Exception
+	public List<RestRoom> list(String latitude, String longitude) throws Exception
 	{
-		return rstrDao.getList(column, type);
+		return rstrDao.getList(latitude, longitude);
 	}
 
 	public List<RestRoom> listToGeoUpdate() throws Exception
