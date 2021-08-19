@@ -1,7 +1,9 @@
 package com.mim.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -49,10 +51,18 @@ public class RestRoomController
 		ModelAndView mav = new ModelAndView("rstr/list.table");
 		try
 		{
+			latitude = StringUtils.isBlank(latitude) ? "37.579887" : latitude;
+			longitude = StringUtils.isBlank(longitude) ? "126.976870" : longitude;
+			
 			List<RestRoom> list = service.list(latitude, longitude);
 			mav.addObject("list", list);
-			System.out.println(latitude);
-			System.out.println(longitude);
+			
+			List<String[]> locations = new ArrayList<String[]>();
+			for (RestRoom r : list) {
+				String[] location = {r.getLatitude(), r.getLongitude()};
+				locations.add(location);
+			}
+			mav.addObject("locations", locations);
 		}
 		catch (Exception e)
 		{

@@ -6,7 +6,7 @@
 
 ------------------------------------------------------------%>
 <style>
-	.locationDiv {padding:10px 0 20px 0;}
+	.locationDiv {padding:10px 0 20px 0; font-weight:inherit; color:#000;}
 	.card .card-header .card-header-action {width:auto !important; margin-top:0px !important;}
 </style>
 <script type="text/javascript">
@@ -71,24 +71,24 @@ function success(pos) {
     
     <%-- getLocation success callback --%>
     $.ajax({
-        url: "<%=request.getContextPath()%>/rstr/list.table.do", // 클라이언트가 요청을 보낼 서버의 URL 주소
-        data: { latitude: latitude, longitude: longitude },                // HTTP 요청과 함께 서버로 보낼 데이터
-        type: "GET",                             // HTTP 요청 방식(GET, POST)
+        url: "<%=request.getContextPath()%>/rstr/list.table.do",
+        data: { latitude: latitude, longitude: longitude },
+        type: "GET",
         contentType : "text/html; charset=utf8",
-        dataType: "html"  ,                       // 서버에서 보내줄 데이터의 타입
+        dataType: "html",
 		success : function(res){
 		    $('#table').empty();
 		    $('#table').append(res);
 		 },
 		 error : function(xhr, status, error){
 		 }
-    })
+    });
 }
 <%-- getLocation error callback --%>
 function error(e) {
 	switch(error.code) {
-        case error.PERMISSION_DENIED:
-        	console.log("사용자가 Geolocation API의 사용 요청을 거부");
+        case error.PERMISSION_DENIED: //사용자가 Geolocation API의 사용 요청을 거부
+        	$('#location').text('<fmt:message key="rstr.005"/>').css({'color':'red', 'font-weight':'bold'})
         break;
         case error.POSITION_UNAVAILABLE:
         	console.log("가져온 위치 정보를 사용할 수 없음");
@@ -100,6 +100,7 @@ function error(e) {
         	console.log("알 수 없는 오류가 발생");
         break;
 	}
+	$('#showHideBtn').addClass('disabled');
 }
 <%-- 위도경도로 주소 표기 --%>
 function searchCoordinateToAddress(latlng) {
@@ -175,6 +176,8 @@ function searchCoordinateToAddress(latlng) {
 					</span> -->
         
         <%-- Table : ajax로 동적으로 append --%>
-        <div id="table"/>        
+        <div id="table">
+        	<jsp:include page="/rstr/list.table.do"/>
+        </div>        
 	</div>
 </section>

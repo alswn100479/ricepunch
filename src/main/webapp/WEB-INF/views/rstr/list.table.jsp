@@ -1,16 +1,28 @@
 <%@ include file="/WEB-INF/views/include/content.taglib.jsp" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%
+	/* java.util.List<String[]> locations = (java.util.List<String[]>) request.getAttribute("locations");
+	for (String[] location : locations) {
+		System.out.println(location[0]);
+	} */
+
+%>
+<script>
+	<%-- console.log('<%request.getAttribute("locations");%>');
+	var locations = '${locations}';
+	console.log(locations); --%>
+</script>
 <div class="card">
 			<div class="card-header">
 				<h4><fmt:message key="ricepunch.001"/></h4>
 			</div>
 			<div class="card-body p-0">
 				<table class="table">
-					<thead>
+					<%-- <thead>
 						<tr>
 							<th><fmt:message key="rstr.003"/></th>
 						</tr>
-					</thead>
+					</thead> --%>
 					<tbody>
 						<c:forEach var="item" items="${list}">
 							<tr>
