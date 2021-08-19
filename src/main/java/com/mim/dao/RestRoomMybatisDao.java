@@ -21,11 +21,12 @@ public class RestRoomMybatisDao implements RestRoomDao
 	/**
 	 * 목록을 돌려준다.
 	 */
-	public List<RestRoom> getList(String latitude, String longitude)
+	public List<RestRoom> getList(String latitude, String longitude, String search)
 	{
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("latitude", latitude);
 		map.put("longitude", longitude);
+		map.put("search", search);
 
 		SqlSession sqlSession = session.openSession();
 		List<RestRoom> list = sqlSession.selectList("RestRoomMapper.list", map);

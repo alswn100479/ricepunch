@@ -26,6 +26,7 @@ $(document).ready(function(){
 	});
 });
 var map, marker, isMapShow;
+var latitude, longitude;
 <%-- 현재위치 위도,경도 불러오기 --%>
 function getLocation() {
 	if('geolocation' in navigator) {
@@ -36,8 +37,8 @@ function getLocation() {
 }
 <%-- getLocation success callback --%>
 function success(pos) {
-	var latitude = pos.coords.latitude || 37.5782709;
-    var longitude = pos.coords.longitude || 126.9770043;
+	latitude = pos.coords.latitude || 37.5782709;
+    longitude = pos.coords.longitude || 126.9770043;
     var accuracy = pos.coords.accuracy;
     var altitude = pos.coords.altitude;
     var altitudeAccuracy = pos.coords.altitudeAccuracy;
@@ -69,20 +70,8 @@ function success(pos) {
     
     searchCoordinateToAddress(location);
     
-    <%-- getLocation success callback --%>
-    $.ajax({
-        url: "<%=request.getContextPath()%>/rstr/list.table.do",
-        data: { latitude: latitude, longitude: longitude },
-        type: "GET",
-        contentType : "text/html; charset=utf8",
-        dataType: "html",
-		success : function(res){
-		    $('#table').empty();
-		    $('#table').append(res);
-		 },
-		 error : function(xhr, status, error){
-		 }
-    });
+    <%-- 목륵 load --%>
+    $("#table").load("<%=request.getContextPath()%>/rstr/list.table.do?latitude="+latitude+"&longitude="+longitude);
 }
 <%-- getLocation error callback --%>
 function error(e) {
@@ -164,20 +153,7 @@ function searchCoordinateToAddress(latlng) {
 				</div>
 			</div>
 		</div>
-	
-		<%-- Search --%>
-		<!-- <span class="form-check">
-						<input class="form-check-input" type="checkbox" id="defaultCheck1">
-							<label class="form-check-label" for="defaultCheck1">Checkbox 1</label>
-					</span>
-					<span class="form-check">
-						<input class="form-check-input" type="checkbox" id="defaultCheck3">
-							<label class="form-check-label" for="defaultCheck3">Checkbox 2</label>
-					</span> -->
-        
         <%-- Table : ajax로 동적으로 append --%>
-        <div id="table">
-        	<jsp:include page="/rstr/list.table.do"/>
-        </div>        
+        <div id="table"/>
 	</div>
 </section>

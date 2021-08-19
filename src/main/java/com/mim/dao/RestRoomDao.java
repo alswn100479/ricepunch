@@ -6,7 +6,7 @@ import com.mim.domain.RestRoom;
 
 public interface RestRoomDao
 {
-	public List<RestRoom> getList(String latitude, String longitude);
+	public List<RestRoom> getList(String latitude, String longitude, String search);
 
 	public void register(List<RestRoom> list);
 
