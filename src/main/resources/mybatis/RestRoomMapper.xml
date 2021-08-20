@@ -5,14 +5,37 @@
 <mapper namespace="RestRoomMapper">
 	<select id="list" parameterType="map" resultType="com.mim.domain.RestRoom">
 		<![CDATA[
-			SELECT *, ( 6371 * acos( cos( radians(LATITUDE) ) * cos( radians( #{latitude} ) )
-          * cos( radians( #{longitude} ) - radians(LONGITUDE) )
-          + sin( radians(LATITUDE) ) * sin( radians( #{latitude} ) ) ) ) AS distance
+			SELECT
+			ID
+			, TYPE
+			, NAME
+			, RDNM_ADR rdnmAdr
+			, LNM_ADR lnmAdr
+			, UNISEX_YN unisexYn
+			, LADIES_BOWL_NUM ladiesBowlNum 
+			, LADIES_HANDICAP_BOWL_NUM ladiesHandicapBowlNum
+			, LADIES_CHILD_BOWL_NUM ladiesChildToiletBowlNum
+			, MEN_BOWL_NUM menBowlNum
+			, MEN_URINAL_NUM menUrinalNum
+			, MEN_HANDICAP_BOWL_NUM menHandicapBowlNum
+			, MEN_HANDICAP_URINAL_NUM menHandicapUrinalNum
+			, MEN_CHILDREN_BOWL_NUM menChildrenBowlNum
+			, MEN_CHILDREN_URINAL_NUM menChildrenUrinalNum
+			, OPEN_TIME openTime
+			, INSTALLATION_YEAR installationYear
+			, LATITUDE
+			, LONGITUDE
+			, EMG_BELL_YN emgBellYn
+			, CCTV_YN cctvYn
+			, DIPERS_EXCHG_POSI dipersExchgPosi
+			, ( 6371 * acos( cos( radians(LATITUDE) ) * cos( radians( #{latitude} ) )
+	          * cos( radians( #{longitude} ) - radians(LONGITUDE) )
+	          + sin( radians(LATITUDE) ) * sin( radians( #{latitude} ) ) ) ) AS distance
 		  FROM public_toilet pt 
 		  WHERE NAME like '%${search}%'
 		  HAVING distance < 5
 		  ORDER BY distance
-		  LIMIT 0 , 20;
+		  LIMIT 0 , 10;
 		]]>
 	</select>
 	

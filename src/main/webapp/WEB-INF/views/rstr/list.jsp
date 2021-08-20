@@ -11,6 +11,9 @@
 </style>
 <script type="text/javascript">
 $(document).ready(function(){
+	/* if (getCookie(MAP_COOKIE) == 'true') {
+		$('#showHideBtn').click();
+	}  */
 	getLocation();
 	
 	$('#showHideBtn').click(function(e) {
@@ -19,14 +22,17 @@ $(document).ready(function(){
 			$(this).find('.fas').removeClass('fa-plus').addClass('fa-minus');
 			isMapShow = true;
 			getLocation();
+			document.cookie = MAP_COOKIE + '=true';
 		} else if($("#mycard-collapse").hasClass("show") === true) {
 			$('#mycard-collapse').removeClass('show').addClass('hide');
 			$(this).find('.fas').removeClass('fa-minus').addClass('fa-plus');
+			document.cookie = MAP_COOKIE + '=false';
 		}
 	});
 });
 var map, marker, isMapShow;
 var latitude, longitude;
+var MAP_COOKIE = 'rstr.map.show';
 <%-- 현재위치 위도,경도 불러오기 --%>
 function getLocation() {
 	if('geolocation' in navigator) {
@@ -55,16 +61,6 @@ function success(pos) {
     		});
         } else {
         	 map.setCenter(location);
-        }
-        
-        if (!marker) {
-        	marker = new naver.maps.Marker({
-    		    position: new naver.maps.LatLng(latitude, longitude),
-    		    map: map
-    		});
-        } else {
-        	 marker.setPosition(location);
-        	 marker.setMap(map);
         }
     }
     
