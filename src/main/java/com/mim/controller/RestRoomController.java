@@ -25,15 +25,9 @@ public class RestRoomController
 	private RestRoomService service;
 
 	@RequestMapping(value = "/index.do", method = RequestMethod.GET)
-	public String index(ModelAndView model)
-	{
-		return "rstr/list.tiles";
-	}
-
-	@RequestMapping(value = "/list.do", method = RequestMethod.GET)
 	public ModelAndView list(String option, String search, String fields, String title)
 	{
-		ModelAndView mav = new ModelAndView("rstr/list.tiles");
+		ModelAndView mav = new ModelAndView("rstr/index.tiles");
 		try
 		{
 			/*List<RestRoom> list = service.list(option, search);

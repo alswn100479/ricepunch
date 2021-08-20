@@ -2,7 +2,8 @@
 <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=lb07yh2rsh&submodules=geocoder"></script>
 <%-----------------------------------------------------------
 	
-	공중화장실 목록 화면
+	공중화장실 메인화면
+	ㅇ 맵 생성
 
 ------------------------------------------------------------%>
 <style>
@@ -11,9 +12,6 @@
 </style>
 <script type="text/javascript">
 $(document).ready(function(){
-	/* if (getCookie(MAP_COOKIE) == 'true') {
-		$('#showHideBtn').click();
-	}  */
 	getLocation();
 	
 	$('#showHideBtn').click(function(e) {
@@ -30,7 +28,8 @@ $(document).ready(function(){
 		}
 	});
 });
-var map, marker, isMapShow;
+var map;
+var isMapShow = true;
 var latitude, longitude;
 var MAP_COOKIE = 'rstr.map.show';
 <%-- 현재위치 위도,경도 불러오기 --%>
@@ -63,7 +62,6 @@ function success(pos) {
         	 map.setCenter(location);
         }
     }
-    
     searchCoordinateToAddress(location);
     
     <%-- 목륵 load --%>
@@ -140,12 +138,12 @@ function searchCoordinateToAddress(latlng) {
 			<div class="card-header">
 				<h4><fmt:message key="rstr.004"/></h4>
 				<div class="card-header-action">
-					<a id="showHideBtn" data-collapse="#mycard-collapse" class="btn btn-icon btn-info" href="javascript:void(0);"><i class="fas fa-plus"></i></a>
+					<a id="showHideBtn" data-collapse="#mycard-collapse" class="btn btn-icon btn-info" href="javascript:void(0);"><i class="fas fa-minus"></i></a>
 				</div>
 			</div>
-			<div class="collapse hide" id="mycard-collapse" style="">
+			<div class="collapse show" id="mycard-collapse" style="">
 				<div class="card-body">
-					<div id="map" style="width:100%;height:400px;"></div>
+					<div id="map" style="width:100%;height:300px;"></div>
 				</div>
 			</div>
 		</div>

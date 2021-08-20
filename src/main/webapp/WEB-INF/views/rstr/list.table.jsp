@@ -1,5 +1,11 @@
 <%@ include file="/WEB-INF/views/include/content.taglib.jsp" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%-----------------------------------------------------------
+	
+	목록 include 페이지
+	ㅇ 목록 그림 / 마커 생성
+
+------------------------------------------------------------%>
 <style>
 	.card .card-header .card-header-form .input-group {max-width:300px; float:right;}
 	.card .card-body .list-group-item {border:none;}
@@ -7,12 +13,90 @@
 </style>
 <script>
 $(document).ready(function(){
+	var markers = [], infoWindows = [];
+	var contextPath = '<%=request.getContextPath()%>';
+	
+	<%-- 마커 생성 --%>
 	<c:forEach var="item" items="${list}">
-		marker = new naver.maps.Marker({
+		var rMarker = new naver.maps.Marker({
 		    position: new naver.maps.LatLng(${item.latitude}, ${item.longitude}),
+		    title : '${item.name}',
+		    id : ${item.id},
+		    icon : {url: contextPath + '/resources/img/rstr/icons8-marker-40.png'},
 		    map: map
 		});
+		
+		var infoWindow = new naver.maps.InfoWindow({
+	        content: '<div style="width:150px;text-align:center;padding:10px;">${item.name}</div>'
+	    });
+		markers.push(rMarker);
+	    infoWindows.push(infoWindow);
 	</c:forEach>
+	
+	naver.maps.Event.addListener(map, 'idle', function() {
+	    updateMarkers(map, markers);
+	});
+
+	function updateMarkers(map, markers) {
+	    var mapBounds = map.getBounds();
+	    var marker, position;
+
+	    for (var i = 0; i < markers.length; i++) {
+	        marker = markers[i]
+	        position = marker.getPosition();
+	        if (mapBounds.hasLatLng(position)) {
+	            showMarker(map, marker);
+	        } else {
+	            hideMarker(map, marker);
+	        }
+	    }
+	}
+	function showMarker(map, marker) {
+	    if (marker.setMap()) return;
+	    marker.setMap(map);
+	}
+	function hideMarker(map, marker) {
+	    if (!marker.setMap()) return;
+	    marker.setMap(null);
+	}
+	function getClickHandler(seq) {
+	    return function(e) {
+	        var marker = markers[seq],
+	            infoWindow = infoWindows[seq];
+
+	        if (infoWindow.getMap()) {
+	            infoWindow.close();
+	        } else {
+	            infoWindow.open(map, marker);
+	        }
+	    }
+	}
+
+	for (var i=0, ii=markers.length; i<ii; i++) {
+	    naver.maps.Event.addListener(markers[i], 'click', getClickHandler(i));
+	}
+	
+	$('#improved .head').click(function(e){
+		var id = $(this).attr('id');
+		for (var i = 0; i < markers.length; i++) {
+			markers[i].setIcon({
+			    url: ''
+			});
+			if (markers[i].id == id) {
+				markers[i].setIcon({
+				    url: contextPath + '/resources/img/rstr/icons8-region-64.png'
+				});
+				infoWindows[i].open(map, markers[i]);
+			} else {
+				markers[i].setIcon({
+				    url: contextPath + '/resources/img/rstr/icons8-marker-40.png'
+				});
+			}
+		}
+		$('.desc').not($(this).closest('li').find('.desc')).hide();
+	  	$(this).closest('li').find('.desc').not(':animated').slideToggle();
+	    e.preventDefault();
+	});
 });
 <%-- search --%>
 function formSubmit() {
@@ -27,11 +111,6 @@ $(function() {
         animate:200,
         active: false
     });
-});
-$('#improved .head').click(function(e){
-	$('.desc').not($(this).closest('li').find('.desc')).hide();
-    e.preventDefault();
-   $(this).closest('li').find('.desc').not(':animated').slideToggle();
 });
 </script>
 <div class="card">
@@ -50,7 +129,7 @@ $('#improved .head').click(function(e){
 		<ul id="improved" class="list-group list-group-flush">
 			<c:forEach var="item" items="${list}">
 			    <li class="list-group-item">
-			    	<a class="head" aria-selected="false">
+			    	<a class="head" aria-selected="false" id=${item.id}>
 			    		<div>
 			    			${item.name}
 			    			<img style="margin:0 3px 3px 3px;" src="<%=request.getContextPath()%>/resources/img/rstr/icons8-siren-96.png" width="13" height="13"/>
