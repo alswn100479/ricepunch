@@ -1,4 +1,4 @@
-<%@ include file="/WEB-INF/views/include/content.taglib.jsp" %>
+<%@ include file="/WEB-INF/views/include/taglib.jsp" %>
 <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=lb07yh2rsh&submodules=geocoder"></script>
 <%-----------------------------------------------------------
 	
@@ -71,7 +71,7 @@ function success(pos) {
 function error(e) {
 	switch(error.code) {
         case error.PERMISSION_DENIED: //사용자가 Geolocation API의 사용 요청을 거부
-        	$('#location').text('<fmt:message key="rstr.005"/>').css({'color':'red', 'font-weight':'bold'})
+        	$('#location').text('<spring:message code="rstr.005"/>').css({'color':'red', 'font-weight':'bold'})
         break;
         case error.POSITION_UNAVAILABLE:
         	console.log("가져온 위치 정보를 사용할 수 없음");
@@ -121,11 +121,11 @@ function searchCoordinateToAddress(latlng) {
 </script>
 <section class="section">
 	<div class="section-header">
-		<h1><fmt:message key="rstr.001"/></h1>
+		<h1><spring:message code="rstr.001"/></h1>
 	</div>
 	<div class="section-body">
-		<h2 class="section-title">Table</h2>
-		<p class="section-lead">Example of some Bootstrap table components.</p>
+		<h2 class="section-title">Info</h2>
+		<p class="section-lead"><spring:message code="rstr.006"/></p>
 	    
 	    <%-- 주소 --%>
 		<div class="locationDiv">
@@ -136,7 +136,7 @@ function searchCoordinateToAddress(latlng) {
 		<%-- Map --%>
 		<div class="card">
 			<div class="card-header">
-				<h4><fmt:message key="rstr.004"/></h4>
+				<h4><spring:message code="rstr.004"/></h4>
 				<div class="card-header-action">
 					<a id="showHideBtn" data-collapse="#mycard-collapse" class="btn btn-icon btn-info" href="javascript:void(0);"><i class="fas fa-minus"></i></a>
 				</div>
@@ -148,6 +148,8 @@ function searchCoordinateToAddress(latlng) {
 			</div>
 		</div>
         <%-- Table : ajax로 동적으로 append --%>
-        <div id="table"/>
+        <div>
+        	<div id="table"/>
+		</div>
 	</div>
 </section>

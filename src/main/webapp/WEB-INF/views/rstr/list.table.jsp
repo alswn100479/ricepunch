@@ -1,4 +1,4 @@
-<%@ include file="/WEB-INF/views/include/content.taglib.jsp" %>
+<%@ include file="/WEB-INF/views/include/taglib.jsp" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%-----------------------------------------------------------
 	
@@ -8,7 +8,8 @@
 ------------------------------------------------------------%>
 <style>
 	.card .card-header .card-header-form .input-group {max-width:300px; float:right;}
-	.card .card-body .list-group-item {border:none;}
+	.card .card-body {padding:10px 15px;}
+	.card .card-body .list-group-item {border:none; cursor:pointer;}
 	.card .card-body .list-group-item .desc {display:none;}
 </style>
 <script>
@@ -115,8 +116,16 @@ $(function() {
 </script>
 <div class="card">
 	<div class="card-header">
-		<h4><fmt:message key="ricepunch.001"/></h4>
+		<h4><spring:message code="ricepunch.001"/></h4>
 		<form id="searchForm" name="searchForm" class="card-header-form" onsubmit="return false">
+			<span class="form-check">
+				<input class="form-check-input" type="checkbox" id="defaultCheck1">
+					<label class="form-check-label" for="defaultCheck1">Checkbox 1</label>
+			</span>
+			<span class="form-check">
+				<input class="form-check-input" type="checkbox" id="defaultCheck3">
+					<label class="form-check-label" for="defaultCheck3">Checkbox 2</label>
+			</span>
 			<div class="input-group">
 				<input type="text" name="search" class="form-control" placeholder="Search">
 				<div class="input-group-btn">
@@ -141,6 +150,7 @@ $(function() {
 			    	</a>
 				   <div class="desc">
 				   		<ul>
+				   			<div style="float:left;">
 				   			<li>${item.type}</li>
 				   			<li>
 				   				<c:choose>
@@ -166,6 +176,10 @@ $(function() {
 				   					<c:otherwise>${item.rdnmAdr}</c:otherwise>
 				   				</c:choose>
 				   			</li>
+				   			</div>
+				   			<div style="float:right;">
+				   				<%-- <a onclick="window.scrollTo(0,0);"><img src="<%=request.getContextPath()%>/resources/img/rstr/icons8-chevron-up-24.png" width="15" height="15"/></a> --%>
+				   			</div>
 				   		</ul>
 				    </div>
 			    </li>

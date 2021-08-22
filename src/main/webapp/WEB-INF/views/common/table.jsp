@@ -1,4 +1,4 @@
-<%@ include file="/WEB-INF/views/include/content.taglib.jsp" %>
+<%@ include file="/WEB-INF/views/include/taglib.jsp" %>
 <div class="row">
 	<div class="col-12">
 		<div class="card">
@@ -20,16 +20,16 @@
 					<table class="table table-striped">
 					<tr>
 						<th>
-							<fmt:message key="rstr.003"/>
+							<spring:message code="rstr.003"/>
 						</th>
 						<th>
-							<fmt:message key="rstr.002"/>
+							<spring:message code="rstr.002"/>
 						</th>
 						<th>
-							<fmt:message key="rstr.004"/>
+							<spring:message code="rstr.004"/>
 						</th>
 						<th>
-							<fmt:message key="rstr.005"/>
+							<spring:message code="rstr.005"/>
 						</th>
 					</tr>
 					<c:forEach var="item" items="${list}">

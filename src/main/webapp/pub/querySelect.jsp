@@ -1,6 +1,6 @@
 	<section class="section">
 		<div class="section-header">
-			<h1><fmt:message key="util.001"/></h1>
+			<h1><spring:message code="util.001"/></h1>
             <div class="section-header-breadcrumb">
 				<div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
 				<div class="breadcrumb-item"><a href="#">Modules</a></div>
@@ -10,7 +10,7 @@
 		<div class="section-body">
 			<h2 class="section-title">Info</h2>
             <p class="section-lead">
-              <fmt:message key="util.003"/></a>
+              <spring:message code="util.003"/></a>
             </p>
             
             <%-- DB Info --%>
@@ -23,7 +23,7 @@
 				</div>
 				<div class="collapse hide" id="mycard-collapse" style="">
 					 <div class="card-body">
-						<div class="section-title mt-0"><fmt:message key="util.002"/></div>
+						<div class="section-title mt-0"><spring:message code="util.002"/></div>
 						<div class="form-group">
 							<label>URL</label>
 								<input type="text" class="form-control form-control-sm">
@@ -49,7 +49,7 @@
 					<input type="text" class="form-control" placeholder="SELECT 1 FROM DUAL" aria-label="">
 						<div class="input-group-append">
 							<button class="btn disabled btn-primary" type="button" data-toggle="tooltip" 
-							data-placement="left" title="" data-original-title="<fmt:message key="util.004"/>">Select</button>
+							data-placement="left" title="" data-original-title="<spring:message code="util.004"/>">Select</button>
                         </div>
                  </div>
 			</div>

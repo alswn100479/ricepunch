@@ -5,7 +5,20 @@
 	
 	<!-- Root Context: defines shared resources visible to all other web components -->
 	<bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
-    <property name="basename" value="Resource" />
-    <property name="cacheSeconds" value="1" />
-</bean>
+		<property name="defaultEncoding" value="UTF-8" />
+		<property name="basenames" >
+			<list>
+				<value>/WEB-INF/classes/Resource</value>
+			</list>
+		</property>
+	    <property name="fallbackToSystemLocale" value="false" />
+		<!--'fallbackToSystemLocale' property가 true인 경우, locale에 해당하는 file이 없을 경우 system locale을 사용-->
+		<property name="cacheSeconds" value="5" />
+		<!-- 5초마다 업데이트 된 properties 파일을 새로 로드함-->
+	</bean>
+
+	<bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver">
+		<property name="defaultLocale" value="ko" />
+	</bean>
+
 </beans>

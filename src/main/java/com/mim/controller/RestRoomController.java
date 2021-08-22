@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.mim.domain.RestRoom;
@@ -39,7 +38,7 @@ public class RestRoomController
 		}
 		return mav;
 	}
-	
+
 	@RequestMapping(value = "/list.table.do", method = RequestMethod.GET)
 	public ModelAndView table(String latitude, String longitude, String search)
 	{
@@ -48,12 +47,13 @@ public class RestRoomController
 		{
 			latitude = StringUtils.isBlank(latitude) ? "37.579887" : latitude;
 			longitude = StringUtils.isBlank(longitude) ? "126.976870" : longitude;
-			
+
 			List<RestRoom> list = service.list(latitude, longitude, search);
 			mav.addObject("list", list);
-			
+
 			List<String[]> locations = new ArrayList<String[]>();
-			for (RestRoom r : list) {
+			for (RestRoom r : list)
+			{
 				String[] location = {r.getLatitude(), r.getLongitude()};
 				locations.add(location);
 			}

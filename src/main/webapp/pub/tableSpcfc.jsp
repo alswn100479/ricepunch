@@ -3,7 +3,7 @@
 <body>
 	<section class="section">
 		<div class="section-header">
-			<h1><fmt:message key="util.005"/></h1>
+			<h1><spring:message code="util.005"/></h1>
             <div class="section-header-breadcrumb">
 				<div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
 				<div class="breadcrumb-item"><a href="#">Modules</a></div>
@@ -13,7 +13,7 @@
 		<div class="section-body">
 			<h2 class="section-title">Info</h2>
             <p class="section-lead">
-              <fmt:message key="util.003"/></a>
+              <spring:message code="util.003"/></a>
             </p>
 		</div>
             

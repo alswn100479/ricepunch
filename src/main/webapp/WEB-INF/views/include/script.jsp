@@ -16,12 +16,14 @@
 <script src="<%=request.getContextPath()%>/resources/stisla/assets/js/page/components-table.js"></script>
 
 <script>
+/* setCookie = function(name, value) {
+	document.cookie = 'name='+value;
+} */
 getCookie = function(name) {
 	var cookies = document.cookie.split(';');
 	for (var i = 0; i < cookies.length; i++) {
 		console.log('i '+cookies[i]);
 		if (cookies[i].indexOf(name+'=') > -1) {
-			console.log('oif');
 			return cookies[i].split('=')[1];
 		}
 	}
