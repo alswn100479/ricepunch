@@ -1,7 +1,13 @@
-<%-- <%
-	String locale = session.getAttribute(org.springframework.web.servlet.i18n.SessionLocaleResolver.LOCALE_SESSION_ATTRIBUTE_NAME).toString();
+<%@page import="org.springframework.web.servlet.i18n.SessionLocaleResolver"%>
+<%
+if (session.getAttribute(SessionLocaleResolver.LOCALE_SESSION_ATTRIBUTE_NAME) != null) {
+	String locale = session.getAttribute(SessionLocaleResolver.LOCALE_SESSION_ATTRIBUTE_NAME).toString();
 	request.setAttribute("locale", locale);
-%> --%>
+} else {
+	java.util.Locale locale = request.getLocale().getDefault();
+	request.setAttribute("locale", locale.getLanguage());
+}
+%>
 <script>
 <%-- 언어를 변경한다. --%>
 function changeLanguage(value) {
