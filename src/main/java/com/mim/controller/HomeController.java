@@ -2,7 +2,9 @@ package com.mim.controller;
 
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -19,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
+import com.mim.service.LoginService;
+
 /**
  * http://localhost:8080/restroom/
  */
@@ -28,8 +32,10 @@ public class HomeController
 
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 
-	@Autowired 
+	@Autowired
 	MessageSource messageSource;
+	@Autowired
+	LoginService loginService;
 
 	/**
 	 * Simply selects the home view to render by returning its name.
@@ -37,13 +43,19 @@ public class HomeController
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public ModelAndView home(Locale locale, HttpServletRequest request)
 	{
-		logger.info("Welcome home! The client locale is {}.", locale);
-
 		ModelAndView mv = new ModelAndView("index.tiles");
 
-		Date date = new Date();
-		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
-		
+		// 젒근이력 남기기
+		if (request.getRemoteAddr() != request.getLocalAddr())
+		{
+			Map<String, String> map = new HashMap<String, String>();
+			map.put("userid", null);
+			map.put("ip", request.getRemoteAddr());
+			map.put("browser", null);
+			map.put("operatingSystem", null);
+			loginService.access(map);
+		}
+
 		return mv;
 	}
 
