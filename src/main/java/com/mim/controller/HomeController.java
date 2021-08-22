@@ -34,7 +34,7 @@ public class HomeController
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 */
-	@RequestMapping(value = "/index.do", method = RequestMethod.GET)
+	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public ModelAndView home(Locale locale, HttpServletRequest request)
 	{
 		logger.info("Welcome home! The client locale is {}.", locale);
@@ -43,9 +43,7 @@ public class HomeController
 
 		Date date = new Date();
 		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
-
-		String formattedDate = dateFormat.format(date);
-
+		
 		return mv;
 	}
 

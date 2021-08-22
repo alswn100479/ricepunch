@@ -1,4 +1,4 @@
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ include file="/WEB-INF/views/include/taglib.jsp" %>
 <section class="section">
           <div class="row">
             <div class="col-lg-4 col-md-4 col-sm-12">

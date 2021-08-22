@@ -1,7 +1,7 @@
 <div class="main-sidebar">
 	<aside id="sidebar-wrapper">
 		<div class="sidebar-brand">
-			<a href="<%=request.getContextPath()%>/index.do">Minju</a>
+			<a href="<%=request.getContextPath()%>/">Minju</a>
 		</div>
 		<div class="sidebar-brand sidebar-brand-sm">
 			<a href="index.html">St</a>

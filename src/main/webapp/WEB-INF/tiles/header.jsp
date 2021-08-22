@@ -1,3 +1,7 @@
+<%-- <%
+	String locale = session.getAttribute(org.springframework.web.servlet.i18n.SessionLocaleResolver.LOCALE_SESSION_ATTRIBUTE_NAME).toString();
+	request.setAttribute("locale", locale);
+%> --%>
 <script>
 <%-- 언어를 변경한다. --%>
 function changeLanguage(value) {
@@ -213,7 +217,7 @@ function changeLanguage(value) {
 		<%-- Language --%>
 		<li class="dropdown">
 			<a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg nav-link-user">
-				<img alt="image" src="<%=request.getContextPath()%>/resources/common/flag_${language}.png">
+				<img alt="image" src="<%=request.getContextPath()%>/resources/common/flag_${locale}.png">
 			</a>
 			<div class="dropdown-menu dropdown-menu-right" style="width:130px; min-width:0px;">
 				<a class="dropdown-item has-icon" style="padding:5px 10px;" onclick="changeLanguage('ko')">
