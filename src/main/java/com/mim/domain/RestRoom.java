@@ -309,7 +309,6 @@ public class RestRoom
 
 	public String getDipersExchgPosi()
 	{
-		System.out.println(dipersExchgPosi);
 		return dipersExchgPosi;
 	}
 

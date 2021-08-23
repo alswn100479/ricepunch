@@ -131,8 +131,6 @@ public class TableSpcfcController
 			returnVal.append(queryStr.toString() + "\n");
 		}
 		
-		System.out.println(returnVal.toString());
-		
 		model.addAttribute("query", returnVal);
 		return "util/tableSpcfc";
 	}

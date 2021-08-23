@@ -14,7 +14,7 @@ import com.mim.domain.RestRoom;
 import com.mim.service.RestRoomService;
 
 /**
- * api를 받아온다. http://localhost:8080/restroom/rstr
+ * 공중화장실 Controller Class
  */
 @Controller
 @RequestMapping(value = "/rstr")
@@ -23,23 +23,25 @@ public class RestRoomController
 	@Autowired
 	private RestRoomService service;
 
-	@RequestMapping(value = "/index.do", method = RequestMethod.GET)
-	public ModelAndView list(String option, String search, String fields, String title)
+	/**
+	 * 공중화장실 진입화면
+	 * @return
+	 */
+	@RequestMapping(value = "/", method = RequestMethod.GET)
+	public ModelAndView index()
 	{
 		ModelAndView mav = new ModelAndView("rstr/index.tiles");
-		try
-		{
-			/*List<RestRoom> list = service.list(option, search);
-			mav.addObject("list", list);*/
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
 		return mav;
 	}
 
-	@RequestMapping(value = "/list.table.do", method = RequestMethod.GET)
+	/**
+	 * 위치 기반의 공중화장실 목록을 가져온다.
+	 * @param latitude
+	 * @param longitude
+	 * @param search
+	 * @return
+	 */
+	@RequestMapping(value = "/list.do", method = RequestMethod.GET)
 	public ModelAndView table(String latitude, String longitude, String search)
 	{
 		ModelAndView mav = new ModelAndView("rstr/list.table");

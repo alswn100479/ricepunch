@@ -65,7 +65,7 @@ function success(pos) {
     searchCoordinateToAddress(location);
     
     <%-- 목륵 load --%>
-    $("#table").load("<%=request.getContextPath()%>/rstr/list.table.do?latitude="+latitude+"&longitude="+longitude);
+    $("#table").load("<%=request.getContextPath()%>/rstr/list.do?latitude="+latitude+"&longitude="+longitude);
 }
 <%-- getLocation error callback --%>
 function error(e) {

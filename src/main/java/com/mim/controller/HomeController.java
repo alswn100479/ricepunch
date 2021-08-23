@@ -1,7 +1,5 @@
 package com.mim.controller;
 
-import java.text.DateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -11,8 +9,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
@@ -23,14 +19,14 @@ import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
 import com.mim.service.LoginService;
 
+import eu.bitwalker.useragentutils.UserAgent;
+
 /**
- * http://localhost:8080/restroom/
+ * HomeController
  */
 @Controller
 public class HomeController
 {
-
-	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 
 	@Autowired
 	MessageSource messageSource;
@@ -38,7 +34,10 @@ public class HomeController
 	LoginService loginService;
 
 	/**
-	 * Simply selects the home view to render by returning its name.
+	 * 메인화면 진입
+	 * @param locale
+	 * @param request
+	 * @return
 	 */
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public ModelAndView home(Locale locale, HttpServletRequest request)
@@ -48,17 +47,25 @@ public class HomeController
 		// 젒근이력 남기기
 		if (request.getRemoteAddr() != request.getLocalAddr())
 		{
+			UserAgent agent = UserAgent.parseUserAgentString((String) request.getAttribute("User-Agent"));
 			Map<String, String> map = new HashMap<String, String>();
 			map.put("userid", null);
 			map.put("ip", request.getRemoteAddr());
-			map.put("browser", null);
-			map.put("operatingSystem", null);
+			map.put("browser", agent.getBrowser().getName());
+			map.put("operatingSystem", agent.getOperatingSystem().getName());
 			loginService.access(map);
 		}
 
 		return mv;
 	}
 
+	/**
+	 * 언어 설정을 변경한다.
+	 * @param response
+	 * @param request
+	 * @param language
+	 * @return
+	 */
 	@RequestMapping(value = "/changeLanguage.do", method = RequestMethod.GET)
 	public ModelAndView changeLanguage(HttpServletResponse response, HttpServletRequest request, String language)
 	{

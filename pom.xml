@@ -254,6 +254,14 @@
 			<artifactId>geocoder-java</artifactId>
 			<version>0.16</version>
 		</dependency>
+		
+		<!-- https://mvnrepository.com/artifact/eu.bitwalker/UserAgentUtils -->
+		<dependency>
+		    <groupId>eu.bitwalker</groupId>
+		    <artifactId>UserAgentUtils</artifactId>
+		    <version>1.21</version>
+		</dependency>
+		
 
 	</dependencies>
 </project>
