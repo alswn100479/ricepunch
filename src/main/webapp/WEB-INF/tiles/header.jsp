@@ -1,3 +1,4 @@
+<%@ include file="/WEB-INF/views/include/taglib.jsp" %>
 <%@page import="org.springframework.web.servlet.i18n.SessionLocaleResolver"%>
 <%
 if (session.getAttribute(SessionLocaleResolver.LOCALE_SESSION_ATTRIBUTE_NAME) != null) {
@@ -220,25 +221,19 @@ function changeLanguage(value) {
 			</div>
 		</li> -->
 		
-		<%-- Language --%>
-		<li class="dropdown">
-			<a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg nav-link-user">
-				<img alt="image" src="<%=request.getContextPath()%>/resources/common/flag_${locale}.png">
-			</a>
-			<div class="dropdown-menu dropdown-menu-right" style="width:130px; min-width:0px;">
-				<a class="dropdown-item has-icon" style="padding:5px 10px;" onclick="changeLanguage('ko')">
-					<img src="<%=request.getContextPath()%>/resources/common/flag_ko.png" width="25px" height="25px" style="margin-right:10px;"/>Korean
-				</a>
-				<a class="dropdown-item has-icon" style="padding:5px 10px;" onclick="changeLanguage('en')">
-					<img src="<%=request.getContextPath()%>/resources/common/flag_en.png" width="25px" height="25px" style="margin-right:10px;"/>English
-				</a>
-			</div>
-		</li>
 		<%-- profile --%>
 		<li class="dropdown"><a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg nav-link-user">
 			<img alt="image" src="<%=request.getContextPath()%>/resources/stisla/assets/img/avatar/avatar-1.png" class="rounded-circle mr-1">
-			<div class="d-sm-none d-lg-inline-block">Hi, Ujang Maman</div></a>
+			<div class="d-sm-none d-lg-inline-block">Hi, Guest</div></a>
 			<div class="dropdown-menu dropdown-menu-right">
+				<div class="dropdown-title">Login Plzzz..</div>
+				<div class="dropdown-divider"></div>
+				<a href="features-profile.html" class="dropdown-item has-icon">
+					<img src="<%=request.getContextPath()%>/resources/common/naver_login.png" width="20px" height="20px" style="margin-right:5px;"/>
+					<spring:message code="login.001"/>
+				</a>
+			</div>
+			<!-- <div class="dropdown-menu dropdown-menu-right">
 				<div class="dropdown-title">Logged in 5 min ago</div>
 				<a href="features-profile.html" class="dropdown-item has-icon">
 					<i class="far fa-user"></i> Profile
@@ -253,7 +248,7 @@ function changeLanguage(value) {
 				<a href="#" class="dropdown-item has-icon text-danger">
 					<i class="fas fa-sign-out-alt"></i> Logout
 				</a>
-			</div>
+			</div> -->
 		</li>
 	</ul>
 </nav>
