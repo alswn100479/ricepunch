@@ -9,4 +9,18 @@
 		values
 		(#{userid}, #{ip}, #{browser}, #{operatingSystem})
 	</insert>
+	
+	<insert id="loginOutHistory" parameterType="map">
+		insert into login_history
+		(USERID, IP, STATUS)
+		values
+		(#{userId}, #{ip}, #{status})
+	</insert>
+	
+	<insert id="insertUser" parameterType="com.mim.user.User">
+        insert into LOGIN(id, AGE_RANGE)
+        values (#{id}, #{ageRange})
+        on duplicate key update
+		    AGE_RANGE = values(AGE_RANGE)
+    </insert>
 </mapper>

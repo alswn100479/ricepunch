@@ -17,7 +17,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
-import com.mim.service.LoginService;
+import com.mim.login.LoginController;
+import com.mim.login.LoginService;
 
 import eu.bitwalker.useragentutils.UserAgent;
 
@@ -27,7 +28,6 @@ import eu.bitwalker.useragentutils.UserAgent;
 @Controller
 public class HomeController
 {
-
 	@Autowired
 	MessageSource messageSource;
 	@Autowired
@@ -55,6 +55,14 @@ public class HomeController
 			map.put("operatingSystem", agent.getOperatingSystem().getName());
 			loginService.access(map);
 		}
+
+		String val = LoginController.KAKAO_HOST
+			+ "/oauth/authorize?client_id="
+			+ LoginController.REST_API_KEY
+			+ "&redirect_uri="
+			+ LoginController.REDIRECT_URI
+			+ "&response_type=code";
+		mv.addObject("kakao_url", val);
 
 		return mv;
 	}

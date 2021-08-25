@@ -71,6 +71,24 @@ public class ObjectUtil
 	}
 
 	/**
+	 * Object에서 Long 값을 돌려준다.
+	 * @param obj
+	 * @return
+	 */
+	public static Long getLong(Object obj)
+	{
+		Long value = null;
+		if (ObjectUtils.isNotEmpty(obj))
+		{
+			if (StringUtils.isNotBlank(obj.toString()))
+			{
+				value = Long.parseLong(obj.toString());
+			}
+		}
+		return value;
+	}
+
+	/**
 	 * Object에서 Date 값을 돌려준다.
 	 * @param obj
 	 * @return

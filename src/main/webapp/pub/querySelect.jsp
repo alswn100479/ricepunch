@@ -1,3 +1,4 @@
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 	<section class="section">
 		<div class="section-header">
 			<h1><spring:message code="util.001"/></h1>

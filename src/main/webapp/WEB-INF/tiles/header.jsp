@@ -1,14 +1,4 @@
 <%@ include file="/WEB-INF/views/include/taglib.jsp" %>
-<%@page import="org.springframework.web.servlet.i18n.SessionLocaleResolver"%>
-<%
-if (session.getAttribute(SessionLocaleResolver.LOCALE_SESSION_ATTRIBUTE_NAME) != null) {
-	String locale = session.getAttribute(SessionLocaleResolver.LOCALE_SESSION_ATTRIBUTE_NAME).toString();
-	request.setAttribute("locale", locale);
-} else {
-	java.util.Locale locale = request.getLocale().getDefault();
-	request.setAttribute("locale", locale.getLanguage());
-}
-%>
 <script>
 <%-- 언어를 변경한다. --%>
 function changeLanguage(value) {
@@ -228,9 +218,13 @@ function changeLanguage(value) {
 			<div class="dropdown-menu dropdown-menu-right">
 				<div class="dropdown-title">Login Plzzz..</div>
 				<div class="dropdown-divider"></div>
-				<a href="features-profile.html" class="dropdown-item has-icon">
-					<img src="<%=request.getContextPath()%>/resources/common/naver_login.png" width="20px" height="20px" style="margin-right:5px;"/>
+				<a href="${kakao_url}" class="dropdown-item has-icon">
+					<img src="<%=request.getContextPath()%>/resources/common/kakao_login.png" width="20px" height="20px" style="margin-right:5px;"/>
 					<spring:message code="login.001"/>
+				</a>
+				<div class="dropdown-divider"></div>
+				<a href="<%=request.getContextPath()%>/logout/kakao.do" class="dropdown-item has-icon text-danger" onclick="kakaoLogout()">
+					<i class="fas fa-sign-out-alt"></i> Logout
 				</a>
 			</div>
 			<!-- <div class="dropdown-menu dropdown-menu-right">
