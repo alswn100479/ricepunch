@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.mim.user.User;
+import com.mim.user.UserSession;
 import com.mim.util.HttpUrlConnectionUtil;
 import com.mim.util.ObjectUtil;
 
@@ -50,6 +51,9 @@ public class LoginController
 		User user = getUserInfo(accessToken);
 		loginService.insertUser(user);
 		loginService.insertLoginLog(user, LOGIN_STATUS);
+		
+		UserSession us = new UserSession();
+		session.setAttribute("userSession", us);
 
 		return mv;
 	}
@@ -131,7 +135,6 @@ public class LoginController
 
 		JSONObject kakaoAccount = (JSONObject) result.get("kakao_account");
 		String ageRange = ObjectUtil.getString(kakaoAccount.get("age_range"));
-		System.out.println(ageRange);
 		if (StringUtils.isNotBlank(ageRange) && ageRange.indexOf("~") > -1)
 		{
 			user.setAgeRange(Integer.parseInt(ageRange.split("~")[0]));

@@ -118,14 +118,14 @@ $(function() {
 	<div class="card-header">
 		<h4><spring:message code="ricepunch.001"/></h4>
 		<form id="searchForm" name="searchForm" class="card-header-form" onsubmit="return false">
-			<span class="form-check">
+			<!-- <span class="form-check">
 				<input class="form-check-input" type="checkbox" id="defaultCheck1">
 					<label class="form-check-label" for="defaultCheck1">Checkbox 1</label>
 			</span>
 			<span class="form-check">
 				<input class="form-check-input" type="checkbox" id="defaultCheck3">
 					<label class="form-check-label" for="defaultCheck3">Checkbox 2</label>
-			</span>
+			</span> -->
 			<div class="input-group">
 				<input type="text" name="search" class="form-control" placeholder="Search">
 				<div class="input-group-btn">
@@ -171,9 +171,11 @@ $(function() {
 				   			<li>
 				   				어린이용 ${menChildrenBowlNum} / ${item.menChildrenUrinalNum} / ${item.ladiesChildToiletBowlNum}
 				   			</li>
-				   			<li>
-				   				기저귀갈이대 ${item.dipersExchgPosi}
-				   			</li>
+				   			<c:if test="${!empty item.dipersExchgPosi}">
+					   			<li>
+					   				기저귀갈이대 ${item.dipersExchgPosi}
+					   			</li>
+				   			</c:if>
 				   			<li>
 				   				<c:choose>
 				   					<c:when test="${empty item.rdnmAdr}">${item.lnmAdr}</c:when>

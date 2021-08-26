@@ -218,14 +218,18 @@ function changeLanguage(value) {
 			<div class="dropdown-menu dropdown-menu-right">
 				<div class="dropdown-title">Login Plzzz..</div>
 				<div class="dropdown-divider"></div>
+				<c:if test="${empty sessionScope.accessToken}">
 				<a href="${kakao_url}" class="dropdown-item has-icon">
 					<img src="<%=request.getContextPath()%>/resources/common/kakao_login.png" width="20px" height="20px" style="margin-right:5px;"/>
 					<spring:message code="login.001"/>
 				</a>
-				<div class="dropdown-divider"></div>
-				<a href="<%=request.getContextPath()%>/logout/kakao.do" class="dropdown-item has-icon text-danger" onclick="kakaoLogout()">
-					<i class="fas fa-sign-out-alt"></i> Logout
-				</a>
+				</c:if>
+				<!-- <div class="dropdown-divider"></div> -->
+				<c:if test="${!empty sessionScope.accessToken}">
+					<a href="<%=request.getContextPath()%>/logout/kakao.do" class="dropdown-item has-icon text-danger" onclick="kakaoLogout()">
+						<i class="fas fa-sign-out-alt"></i> Logout
+					</a>
+				</c:if>
 			</div>
 			<!-- <div class="dropdown-menu dropdown-menu-right">
 				<div class="dropdown-title">Logged in 5 min ago</div>

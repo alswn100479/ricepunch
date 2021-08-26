@@ -64,6 +64,12 @@ function success(pos) {
     }
     searchCoordinateToAddress(location);
     
+    var marker = new naver.maps.Marker({
+	    position: new naver.maps.LatLng(latitude, longitude),
+	    map: map,
+	    icon : {url: '<%=request.getContextPath()%>/resources/img/rstr/icons8-marker-40_red.png'},
+	});
+    
     <%-- 목륵 load --%>
     $("#table").load("<%=request.getContextPath()%>/rstr/list.do?latitude="+latitude+"&longitude="+longitude);
 }

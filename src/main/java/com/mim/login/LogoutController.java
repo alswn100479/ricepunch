@@ -36,6 +36,8 @@ public class LogoutController
 
 		JSONObject result = HttpUrlConnectionUtil.getResult(conn);
 		loginService.insertLogoutLog(ObjectUtil.getLong(result.get("id")), LoginController.LOGOUT_STATUS);
+		
+		session.invalidate();
 		return mv;
 	}
 }
