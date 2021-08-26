@@ -34,9 +34,9 @@
 		  FROM public_toilet pt 
 		  WHERE ISVISB = 1
 		  AND NAME like '%${search}%'
-		  HAVING distance < 10
+		  HAVING distance < 5
 		  ORDER BY distance
-		  LIMIT 0 , 100;
+		  LIMIT 0 , 20;
 		]]>
 	</select>
 	
