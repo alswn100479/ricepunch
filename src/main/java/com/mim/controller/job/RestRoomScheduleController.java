@@ -68,6 +68,15 @@ public class RestRoomScheduleController
 			excelRegister(fileName);
 			System.out.println("**** " + fileName + " END");
 		}
+
+		try
+		{
+			//	updateNaverGeo();
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -89,15 +98,29 @@ public class RestRoomScheduleController
 		System.out.println("totalRowNum = " + totalRowNum);
 
 		List<RestRoom> list = new ArrayList<RestRoom>();
+		List<String> nameList = new ArrayList<String>();
 		for (int i = startRow; i < totalRowNum; i++)
 		{
 			XSSFRow row = sheet.getRow(i);
 			if (null != row)
 			{
 				RestRoom rstr = new RestRoom();
+				String name = getRstrCellValue(row.getCell(2));
+
+				//중복이면 삭제처리
+				if (nameList.contains(name))
+				{
+					rstr.setIsvisb(0);
+				}
+				else
+				{
+					rstr.setIsvisb(1);
+				}
+				nameList.add(name);
 
 				rstr.setType(getRstrCellValue(row.getCell(1)));
-				rstr.setName(getRstrCellValue(row.getCell(2)));
+				rstr.setName(name);
+
 				rstr.setRdnmAdr(getRstrCellValue(row.getCell(3)));
 				rstr.setLnmAdr(getRstrCellValue(row.getCell(4)));
 

@@ -103,7 +103,7 @@ $(document).ready(function(){
 function formSubmit() {
 	var queryString = $("form[name=searchForm]").serialize() ;
 	queryString += '&latitude='+latitude+'&longitude='+longitude;
-	$("#table").load("<%=request.getContextPath()%>/rstr/list.table.do?" + queryString);
+	$("#table").load("<%=request.getContextPath()%>/rstr/list.do?" + queryString);
 }
 <%-- 아코디언 --%>
 $(function() {
@@ -141,11 +141,15 @@ $(function() {
 			    	<a class="head" aria-selected="false" id=${item.id}>
 			    		<div>
 			    			${item.name}
-			    			<img style="margin:0 3px 3px 3px;" src="<%=request.getContextPath()%>/resources/img/rstr/icons8-siren-96.png" width="13" height="13"/>
+			    			<c:if test="${item.emgBellYn eq '1'}">
+			    				<img style="margin:0 3px 3px 3px;" src="<%=request.getContextPath()%>/resources/img/rstr/icons8-siren-96.png" width="13" height="13"/>
+							</c:if>
 							<c:if test="${item.ladiesHandicapBowlNum > 0 || item.menHandicapBowlNum > 0 || menHandicapUrinalNum > 0}">
 								<img style="margin:0 0 3px 0" src="<%=request.getContextPath()%>/resources/img/rstr/icons8-assistive-technology-96.png" width="15" height="15"/>
 							</c:if> 
-							<img style="margin:0 0 3px 0" src="<%=request.getContextPath()%>/resources/img/rstr/icons8-mother-room-96.png" width="15" height="15"/>
+							<c:if test="${!empty item.dipersExchgPosi}">
+								<img style="margin:0 0 3px 0" src="<%=request.getContextPath()%>/resources/img/rstr/icons8-mother-room-96.png" width="15" height="15"/>
+			    			</c:if>
 			    		</div>
 			    	</a>
 				   <div class="desc">

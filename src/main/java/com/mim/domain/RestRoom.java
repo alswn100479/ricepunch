@@ -37,6 +37,7 @@ public class RestRoom
 	Date instDate;
 	int insttCode;
 	String insttName;
+	int isvisb;
 
 	public int getId()
 	{
@@ -366,5 +367,15 @@ public class RestRoom
 	public void setApiDate(Date apiDate)
 	{
 		this.apiDate = apiDate;
+	}
+
+	public int getIsvisb()
+	{
+		return isvisb;
+	}
+
+	public void setIsvisb(int isvisb)
+	{
+		this.isvisb = isvisb;
 	}
 }

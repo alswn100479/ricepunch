@@ -32,7 +32,8 @@
 	          * cos( radians( #{longitude} ) - radians(LONGITUDE) )
 	          + sin( radians(LATITUDE) ) * sin( radians( #{latitude} ) ) ) ) AS distance
 		  FROM public_toilet pt 
-		  WHERE NAME like '%${search}%'
+		  WHERE ISVISB = 1
+		  AND NAME like '%${search}%'
 		  HAVING distance < 5
 		  ORDER BY distance
 		  LIMIT 0 , 10;
@@ -42,11 +43,11 @@
 	<!-- NAVER 위,경도 업데이트 -->
 	<select id="listToGeoUpdate" resultType="com.mim.domain.RestRoom">
 		SELECT ID, RDNM_ADR as rdnmAdr, LNM_ADR as lnmAdr FROM PUBLIC_TOILET 
-		where LATITUDE IS
-		NULL OR LONGITUDE IS NULL
+		WHERE LATITUDE IS NULL OR LONGITUDE IS NULL
+		AND ISVISB = 1
 	</select>
 	
-	<update id="mergeGeo" parameterType="java.util.List">
+	<!-- <update id="mergeGeo" parameterType="java.util.List">
 		insert into public_toilet
 		(ID, LATITUDE, LONGITUDE, ISUPDT)
 		values
@@ -54,9 +55,17 @@
 			( #{element.id}, #{element.latitude}, #{element.longitude}, 1)
 		</foreach>
 		on duplicate key update
-		    latitude = values(latitude)
-		    ,longitude = values(longitude)
+		    id = values(id)
+	</update> -->
+	
+	<update id="mergeGeo" parameterType="java.util.List">
+		<foreach collection="list" item="element" separator=",">
+		UPDAET PUBLIC_TOILET
+		SET LATITUDE = #{element.latitude}, LONGITUDE = #{element.longitude}, ISVISB = 1
+		WHERE ID = #{element.id}
+		</foreach>
 	</update>
+	
 	<insert id="insert" parameterType="java.util.List" useGeneratedKeys="true">
 		insert into PUBLIC_TOILET
 		(
@@ -89,6 +98,7 @@
 		, INSTT_CODE
 		, INSTT_NAME
 		, API_DATE
+		, ISVISB
 		)
 		values
 		<foreach collection="list" item="item" separator=",">
@@ -122,6 +132,7 @@
 			, #{item.insttCode}
 			, #{item.insttName}
 			, #{item.apiDate}
+			, #{item.isvisb}
 		)
 		</foreach>
 	</insert>
