@@ -24,15 +24,16 @@ public class RestRoom
 	String institutionName;
 	String phonNum;
 	String openTime;
-	int installationYear;
+	String installationYear;
 	String latitude;
 	String longitude;
 	String cstmLatitude;
 	String cstmLongitude;
-	String possType;
-	String posiType;
+	String possType;//화장실소유구분
+	String posiType; //설치장소유형
 	String dipersExchgPosi;
-	int modYear;
+	String modYear;
+	Date apiDate;
 	Date instDate;
 	int insttCode;
 	String insttName;
@@ -237,12 +238,12 @@ public class RestRoom
 		this.openTime = openTime;
 	}
 
-	public int getInstallationYear()
+	public String getInstallationYear()
 	{
 		return installationYear;
 	}
 
-	public void setInstallationYear(int installationYear)
+	public void setInstallationYear(String installationYear)
 	{
 		this.installationYear = installationYear;
 	}
@@ -317,12 +318,12 @@ public class RestRoom
 		this.dipersExchgPosi = dipersExchgPosi;
 	}
 
-	public int getModYear()
+	public String getModYear()
 	{
 		return modYear;
 	}
 
-	public void setModYear(int modYear)
+	public void setModYear(String modYear)
 	{
 		this.modYear = modYear;
 	}
@@ -355,5 +356,15 @@ public class RestRoom
 	public void setInsttName(String insttName)
 	{
 		this.insttName = insttName;
+	}
+
+	public Date getApiDate()
+	{
+		return apiDate;
+	}
+
+	public void setApiDate(Date apiDate)
+	{
+		this.apiDate = apiDate;
 	}
 }

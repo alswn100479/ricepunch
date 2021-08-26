@@ -41,38 +41,22 @@
 	
 	<!-- NAVER 위,경도 업데이트 -->
 	<select id="listToGeoUpdate" resultType="com.mim.domain.RestRoom">
-		SELECT ID, RDNM_ADR as rdnmAdr, LNM_ADR as lnmAdr FROM PUBLIC_TOILET where NAVER_LATITUDE IS
-		NULL OR NAVER_LONGITUDE IS NULL
+		SELECT ID, RDNM_ADR as rdnmAdr, LNM_ADR as lnmAdr FROM PUBLIC_TOILET 
+		where LATITUDE IS
+		NULL OR LONGITUDE IS NULL
 	</select>
 	
 	<update id="mergeGeo" parameterType="java.util.List">
 		insert into public_toilet
-		(ID, NAVER_LATITUDE, NAVER_LONGITUDE)
+		(ID, LATITUDE, LONGITUDE)
 		values
 		<foreach collection="list" item="element" separator=",">
-			( #{element.id}, #{element.cstmLatitude}, #{element.cstmLongitude})
+			( #{element.id}, #{element.latitude}, #{element.longitude})
 		</foreach>
 		on duplicate key update
-		    NAVER_LATITUDE = values(NAVER_LATITUDE)
-		    ,NAVER_LONGITUDE = values(NAVER_LONGITUDE)
+		    latitude = values(latitude)
+		    ,longitude = values(longitude)
 	</update>
-	<!-- GOOGLE 위,경도 업데이트 -->
-	<select id="listToGoogleGeoUpdate" resultType="com.mim.domain.RestRoom">
-		SELECT ID, RDNM_ADR as rdnmAdr, LNM_ADR as lnmAdr FROM PUBLIC_TOILET where GOOGLE_LATITUDE IS
-		NULL OR GOOGLE_LONGITUDE IS NULL
-	</select>
-	<update id="mergeGoogleGeo" parameterType="java.util.List">
-		insert into public_toilet
-		(ID, GOOGLE_LATITUDE, GOOGLE_LONGITUDE)
-		values
-		<foreach collection="list" item="element" separator=",">
-			( #{element.id}, #{element.cstmLatitude}, #{element.cstmLongitude})
-		</foreach>
-		on duplicate key update
-		    GOOGLE_LATITUDE = values(GOOGLE_LATITUDE)
-		    ,GOOGLE_LONGITUDE = values(GOOGLE_LONGITUDE)
-	</update>
-	
 	<insert id="insert" parameterType="java.util.List" useGeneratedKeys="true">
 		insert into PUBLIC_TOILET
 		(
@@ -96,17 +80,15 @@
 		, INSTALLATION_YEAR
 		, LATITUDE
 		, LONGITUDE
-		, NAVER_LATITUDE
-		, NAVER_LONGITUDE
 		, POSS_TYPE
 		, POSI_TYPE
 		, EMG_BELL_YN
 		, CCTV_YN
 		, DIPERS_EXCHG_POSI
 		, MOD_YEAR
-		, REFERENCE_DATE
 		, INSTT_CODE
 		, INSTT_NAME
+		, API_DATE
 		)
 		values
 		<foreach collection="list" item="item" separator=",">
@@ -131,17 +113,15 @@
 			, #{item.installationYear}
 			, #{item.latitude}
 			, #{item.longitude}
-			, #{item.cstmLatitude}
-			, #{item.cstmLongitude}
 			, #{item.possType}
 			, #{item.posiType}
 			, #{item.emgBellYn}
 			, #{item.cctvYn}
 			, #{item.dipersExchgPosi}
 			, #{item.modYear}
-			, #{item.instDate}
 			, #{item.insttCode}
 			, #{item.insttName}
+			, #{item.apiDate}
 		)
 		</foreach>
 	</insert>
