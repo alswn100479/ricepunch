@@ -221,10 +221,15 @@ public class RestRoomScheduleController
 		{
 			RestRoom rstr = list.get(i);
 			String name = StringUtils.isNotBlank(rstr.getRdnmAdr()) ? rstr.getRdnmAdr() : rstr.getLnmAdr();
-			String[] naver = geocoder.geocoding(name);
-			rstr.setCstmLongitude(naver[0]);
-			rstr.setCstmLatitude(naver[1]);
-			nList.add(rstr);
+
+			if (StringUtils.isNotBlank(name))
+			{
+				String[] naver = geocoder.geocoding(name);
+				rstr.setLongitude(naver[0]);
+				rstr.setLatitude(naver[1]);
+				nList.add(rstr);
+			}
+
 			if ((i + 1) % 1000 == 0)
 			{
 				service.mergeGeo(nList);

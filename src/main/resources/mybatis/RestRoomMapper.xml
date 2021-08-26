@@ -48,10 +48,10 @@
 	
 	<update id="mergeGeo" parameterType="java.util.List">
 		insert into public_toilet
-		(ID, LATITUDE, LONGITUDE)
+		(ID, LATITUDE, LONGITUDE, ISUPDT)
 		values
 		<foreach collection="list" item="element" separator=",">
-			( #{element.id}, #{element.latitude}, #{element.longitude})
+			( #{element.id}, #{element.latitude}, #{element.longitude}, 1)
 		</foreach>
 		on duplicate key update
 		    latitude = values(latitude)
