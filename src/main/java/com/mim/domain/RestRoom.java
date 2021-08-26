@@ -10,7 +10,7 @@ public class RestRoom
 	String rdnmAdr;
 	String lnmAdr;
 	int unisexYn;
-	int emgBellYn;
+	String emgBell;
 	int cctvYn;
 	int ladiesBowlNum;
 	int ladiesHandicapBowlNum;
@@ -99,14 +99,14 @@ public class RestRoom
 		this.unisexYn = unisexYn;
 	}
 
-	public int getEmgBellYn()
+	public String getEmgBell()
 	{
-		return emgBellYn;
+		return emgBell;
 	}
 
-	public void setEmgBellYn(int emgBellYn)
+	public void setEmgBell(String emgBell)
 	{
-		this.emgBellYn = emgBellYn;
+		this.emgBell = emgBell;
 	}
 
 	public int getCctvYn()

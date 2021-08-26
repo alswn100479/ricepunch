@@ -187,8 +187,7 @@ public class RestRoomScheduleController
 
 				//오물처리 방식 23
 
-				String emgBell = getRstrCellValue(row.getCell(24));
-				rstr.setEmgBellYn(StringUtils.equalsIgnoreCase(emgBell, "Y") ? 1 : 0); //비상벨설치유무
+				rstr.setEmgBell(getRstrCellValue(row.getCell(24))); //비상벨설치유무
 
 				String cctv = getRstrCellValue(row.getCell(25));
 				rstr.setCctvYn(StringUtils.equalsIgnoreCase(cctv, "Y") ? 1 : 0);

@@ -141,7 +141,7 @@ $(function() {
 			    	<a class="head" aria-selected="false" id=${item.id}>
 			    		<div>
 			    			${item.name}
-			    			<c:if test="${item.emgBellYn eq '1'}">
+			    			<c:if test="${!empty item.emgBell}">
 			    				<img style="margin:0 3px 3px 3px;" src="<%=request.getContextPath()%>/resources/img/rstr/icons8-siren-96.png" width="13" height="13"/>
 							</c:if>
 							<c:if test="${item.ladiesHandicapBowlNum > 0 || item.menHandicapBowlNum > 0 || menHandicapUrinalNum > 0}">

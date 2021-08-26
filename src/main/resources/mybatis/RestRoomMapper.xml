@@ -25,7 +25,7 @@
 			, INSTALLATION_YEAR installationYear
 			, LATITUDE
 			, LONGITUDE
-			, EMG_BELL_YN emgBellYn
+			, EMG_BELL emgbell
 			, CCTV_YN cctvYn
 			, DIPERS_EXCHG_POSI dipersExchgPosi
 			, ( 6371 * acos( cos( radians(LATITUDE) ) * cos( radians( #{latitude} ) )
@@ -34,9 +34,9 @@
 		  FROM public_toilet pt 
 		  WHERE ISVISB = 1
 		  AND NAME like '%${search}%'
-		  HAVING distance < 5
+		  HAVING distance < 10
 		  ORDER BY distance
-		  LIMIT 0 , 10;
+		  LIMIT 0 , 100;
 		]]>
 	</select>
 	
@@ -91,7 +91,7 @@
 		, LONGITUDE
 		, POSS_TYPE
 		, POSI_TYPE
-		, EMG_BELL_YN
+		, EMG_BELL
 		, CCTV_YN
 		, DIPERS_EXCHG_POSI
 		, MOD_YEAR
@@ -125,7 +125,7 @@
 			, #{item.longitude}
 			, #{item.possType}
 			, #{item.posiType}
-			, #{item.emgBellYn}
+			, #{item.emgBell}
 			, #{item.cctvYn}
 			, #{item.dipersExchgPosi}
 			, #{item.modYear}
