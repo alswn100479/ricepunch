@@ -249,14 +249,15 @@ public class RestRoomScheduleController
 				String[] naver = geocoder.geocoding(name);
 				rstr.setLongitude(naver[0]);
 				rstr.setLatitude(naver[1]);
+				System.out.println(rstr.getId());
 				nList.add(rstr);
 			}
 
-			if ((i + 1) % 1000 == 0)
+			if ((i + 1) % 100 == 0)
 			{
 				service.mergeGeo(nList);
 				nList = new ArrayList<RestRoom>();
-				System.out.println("---- " + i);
+				System.out.println("---- " + i+1);
 			}
 		}
 		service.mergeGeo(nList);

@@ -1,12 +1,28 @@
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"  pageEncoding="UTF-8"%>
+<%@ include file="/WEB-INF/views/include/taglib.jsp" %>
+<%
+	System.out.println("url = " + request.getParameter("url"));
+%>
+<script>
+$('#showHideBtn').click(function(e) {
+	if($("#mycard-collapse").hasClass("hide") === true) {
+		$('#mycard-collapse').removeClass('hide').addClass('show');
+		$(this).find('.fas').removeClass('fa-plus').addClass('fa-minus');
+	} else if($("#mycard-collapse").hasClass("show") === true) {
+		$('#mycard-collapse').removeClass('show').addClass('hide');
+		$(this).find('.fas').removeClass('fa-minus').addClass('fa-plus');
+	}
+});
+
+function connectTest() {
+	console.log($('#url').val());
+	console.log($('#name').val());
+	console.log($('#passwd').val());
+}
+</script>
 	<section class="section">
 		<div class="section-header">
 			<h1><spring:message code="util.001"/></h1>
-            <div class="section-header-breadcrumb">
-				<div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
-				<div class="breadcrumb-item"><a href="#">Modules</a></div>
-				<div class="breadcrumb-item">DataTables</div>
-            </div>
 		</div>
 		<div class="section-body">
 			<h2 class="section-title">Info</h2>
@@ -15,34 +31,36 @@
             </p>
             
             <%-- DB Info --%>
+            <form>
             <div class="card">
 				<div class="card-header">
 					<h4>DB Info</h4>
                     <div class="card-header-action">
-                      <a data-collapse="#mycard-collapse" class="btn btn-icon btn-info" href="#"><i class="fas fa-plus"></i></a>
+                      <a id="showHideBtn" data-collapse="#mycard-collapse" class="btn btn-icon btn-info" href="javascript:void(0);"><i class="fas fa-plus"></i></a>
                     </div>
 				</div>
-				<div class="collapse hide" id="mycard-collapse" style="">
+				<div class="collapse hide" id="mycard-collapse" style="" >
 					 <div class="card-body">
 						<div class="section-title mt-0"><spring:message code="util.002"/></div>
 						<div class="form-group">
 							<label>URL</label>
-								<input type="text" class="form-control form-control-sm">
+								<input id="url" name="url" type="text" class="form-control form-control-sm" placeholder="jdbc:mariadb://ip:port/scheme">
 						</div>
 						<div class="form-group">
 							<label>NAME</label>
-							<input type="text" class="form-control form-control-sm">
+							<input id="name" type="text" class="form-control form-control-sm" placeholder="ricepunch">
 						</div>
 						<div class="form-group">
 							<label>PASSWD</label>
-							<input type="text" class="form-control form-control-sm">
+							<input id="passwd" type="text" class="form-control form-control-sm" placeholder="ricepunch123">
 						</div>
-						<div class="card-footer text-right">
-							<button class="btn btn-primary mr-1" type="submit">Connect</button>
+						<div class="card-footer text-right"><!-- onclick="connectTest();"  -->
+							<button class="btn btn-primary mr-1">Test</button>
 						</div>
 					</div>
 				</div>
 			</div>
+			</form>
 			
             <%-- Query Box --%>
 			<div class="form-group">

@@ -49,6 +49,8 @@ public class RestRoomController
 		{
 			latitude = StringUtils.isBlank(latitude) ? "37.579887" : latitude;
 			longitude = StringUtils.isBlank(longitude) ? "126.976870" : longitude;
+			
+			System.out.println("search = " + search);
 
 			List<RestRoom> list = service.list(latitude, longitude, search);
 			mav.addObject("list", list);

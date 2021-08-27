@@ -6,7 +6,9 @@ import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
 import org.json.simple.JSONObject;
@@ -17,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.mim.user.User;
-import com.mim.user.UserSession;
 import com.mim.util.HttpUrlConnectionUtil;
 import com.mim.util.ObjectUtil;
 
@@ -32,6 +33,8 @@ public class LoginController
 	public final static String REST_API_KEY = "7b71f5d4a64438b4fb2ce2f31a0a9be8";
 	public final static String REDIRECT_URI = "https://localhost:8443/login/kakao.do";
 
+	public final static String KAKAO_TOKEN_NAME = "kakao_token";
+
 	public final static int LOGIN_STATUS = 1000;
 	public final static int LOGOUT_STATUS = 9000;
 
@@ -39,21 +42,23 @@ public class LoginController
 	private LoginService loginService;
 
 	@RequestMapping("kakao.do")
-	public ModelAndView kakaoLogin(@RequestParam("code") String code, HttpSession session) throws IOException
+	public ModelAndView kakaoLogin(
+		@RequestParam("code") String code,
+		HttpServletRequest request,
+		HttpServletResponse response)
+		throws IOException
 	{
 		ModelAndView mv = new ModelAndView("index.tiles");
 
 		// access token 발급
 		String accessToken = getAccessToken(code);
-		session.setAttribute("accessToken", accessToken);
-
+		Cookie tokenCookie = new Cookie(KAKAO_TOKEN_NAME, accessToken);
+		response.addCookie(tokenCookie);
+		
 		// 로그인 사용자 저장
 		User user = getUserInfo(accessToken);
 		loginService.insertUser(user);
 		loginService.insertLoginLog(user, LOGIN_STATUS);
-		
-		UserSession us = new UserSession();
-		session.setAttribute("userSession", us);
 
 		return mv;
 	}

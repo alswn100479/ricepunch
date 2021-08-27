@@ -44,18 +44,6 @@ public class HomeController
 	{
 		ModelAndView mv = new ModelAndView("index.tiles");
 
-		// 젒근이력 남기기
-		if (request.getRemoteAddr() != request.getLocalAddr())
-		{
-			UserAgent agent = UserAgent.parseUserAgentString((String) request.getAttribute("User-Agent"));
-			Map<String, String> map = new HashMap<String, String>();
-			map.put("userid", null);
-			map.put("ip", request.getRemoteAddr());
-			map.put("browser", agent.getBrowser().getName());
-			map.put("operatingSystem", agent.getOperatingSystem().getName());
-			loginService.access(map);
-		}
-
 		String val = LoginController.KAKAO_HOST
 			+ "/oauth/authorize?client_id="
 			+ LoginController.REST_API_KEY
@@ -63,6 +51,28 @@ public class HomeController
 			+ LoginController.REDIRECT_URI
 			+ "&response_type=code";
 		mv.addObject("kakao_url", val);
+
+		// 젒근이력 남기기
+		if (request.getRemoteAddr() != request.getLocalAddr())
+		{
+			UserAgent agent = UserAgent.parseUserAgentString((String) request.getHeader("User-Agent"));
+			Map<String, String> map = new HashMap<String, String>();
+			map.put("userid", null);
+			map.put("ip", request.getRemoteAddr());
+			map.put("browser", agent.getBrowser().getName());
+			map.put("operatingSystem", agent.getOperatingSystem().getName());
+			loginService.access(map);
+		}
+		
+		String cookie = request.getHeader("Cookie");
+		if (cookie!= null) {
+			Cookie[] cookies = request.getCookies();
+			for (int i = 0; i < cookies.length; i++) {
+				System.out.println(cookies[i].getName() + " = " + cookies[i].getValue());
+			}
+		} else {
+			System.out.println("n");
+		}
 
 		return mv;
 	}

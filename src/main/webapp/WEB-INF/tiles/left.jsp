@@ -1,6 +1,3 @@
-<style>
- .developer {position:fixed; bottom:0;}
-</style>
 <div class="main-sidebar">
 	<aside id="sidebar-wrapper">
 		<div class="sidebar-brand">
@@ -17,7 +14,7 @@
 				<a href="#" class="nav-link has-dropdown"><i class="fas fa-th-large"></i> <span>Jsp Util</span></a>
 				<ul class="dropdown-menu">
 					<li><a class="nav-link" href="javascript:moveContentPage('/pub/querySelect.jsp')">Query Select</a></li>
-					<li><a class="nav-link" href="javascript:moveContentPage('/pub/tableSpcfc.jsp')">Table Specification</a></li>
+					<!-- <li><a class="nav-link" href="javascript:moveContentPage('/pub/tableSpcfc.jsp')">Table Specification</a></li> -->
 				</ul>
 			</li>
 			<div class="developer">
