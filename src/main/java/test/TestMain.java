@@ -1,18 +1,27 @@
 package test;
 
-import java.io.IOException;
-import java.text.ParseException;
-
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
-
-import com.mim.controller.job.RestRoomScheduleController;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 public class TestMain
 {
 
-	public static void main(String[] args) throws InvalidFormatException, IOException, ParseException
+	public static void main(String[] args)
 	{
-		RestRoomScheduleController c = new RestRoomScheduleController();
-		c.excel();
+		try
+		{
+			String url = "";
+			String id = "";
+			String name = "";
+			Connection conn = DriverManager.getConnection(url, id, name);
+			PreparedStatement pstmt = conn.prepareStatement("");
+			pstmt.executeQuery();
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+		}
 	}
 }
