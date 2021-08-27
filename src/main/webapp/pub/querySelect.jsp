@@ -32,9 +32,9 @@
 %>
 <script>
 $(document).ready(function(){
-	if (${result}) {
+	<c:if test="${result}">
 		$('#showHideBtn').click();
-	}
+	</c:if>
 });
 $('#showHideBtn').click(function(e) {
 	if($("#mycard-collapse").hasClass("hide") === true) {
