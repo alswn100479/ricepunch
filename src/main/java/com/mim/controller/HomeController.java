@@ -1,7 +1,6 @@
 package com.mim.controller;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -70,8 +69,8 @@ public class HomeController
 		}
 
 		// 브라우저 통계
-		List<Map<String, Object>> browser = statService.browser();
-		mv.addObject("browser", browser.get(0));
+		mv.addObject("browser", statService.browser().get(0));
+		mv.addObject("accessCnt", statService.accessCnt().get(0));
 
 		/*Cookie[] cookies = request.getCookies();
 		for (int i = 0; i < cookies.length; i++) {

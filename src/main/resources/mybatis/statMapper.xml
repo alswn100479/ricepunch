@@ -24,23 +24,13 @@
 				) A
 		]]>
 	</select>
-	<select id="browser1" resultType="string">
+	<select id="accessCnt" resultType="hashmap">
 		<![CDATA[
-			SELECT 
-				ROUND((Chrome/ALL_CNT) * 100, 0) AS Chrome
-				,ROUND((IE/ALL_CNT) * 100, 0) AS IE
-				,ROUND((Safari/ALL_CNT) * 100, 0) AS Safari
-				,ROUND((FireFox/ALL_CNT) * 100, 0) AS FireFox
-				FROM (
-					SELECT 
-						COUNT(CASE WHEN BROWSER LIKE '%Chrome%' THEN 1 END) Chrome
-						, COUNT(CASE WHEN BROWSER LIKE '%Internet Explorer%' THEN 1 END) IE
-						, COUNT(CASE WHEN BROWSER LIKE '%Safari%' THEN 1 END) Safari
-						, COUNT(CASE WHEN BROWSER LIKE '%Mozilla%' THEN 1 END) FireFox
-						, COUNT(*) ALL_CNT
-						FROM ACCESS_HISTORY
-						WHERE BROWSER <> 'Unknown'  
-				) A
+			SELECT COUNT(CASE WHEN ACCESS_DATE = CURDATE() THEN 1 END) today
+			, COUNT(CASE WHEN ACCESS_DATE = CURDATE()-1 THEN 1 END) yesterday
+			, COUNT(CASE WHEN ACCESS_DATE BETWEEN DATE_ADD(NOW(),INTERVAL -1 WEEK ) AND NOW() THEN 1 END) week
+			, COUNT(CASE WHEN ACCESS_DATE BETWEEN DATE_ADD(NOW(),INTERVAL -1 YEAR ) AND NOW() THEN 1 END) year
+			FROM ACCESS_HISTORY
 		]]>
 	</select>
 </mapper>

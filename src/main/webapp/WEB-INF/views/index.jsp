@@ -11,38 +11,19 @@ System.out.println("================");
             <div class="col-lg-4 col-md-4 col-sm-12">
               <div class="card card-statistic-2">
                 <div class="card-stats">
-                  <div class="card-stats-title"><spring:message code="test.common.msg"/>
-                    <div class="dropdown d-inline">
-                      <a class="font-weight-600 dropdown-toggle" data-toggle="dropdown" href="#" id="orders-month">August</a>
-                      <ul class="dropdown-menu dropdown-menu-sm">
-                        <li class="dropdown-title">Select Month</li>
-                        <li><a href="#" class="dropdown-item">January</a></li>
-                        <li><a href="#" class="dropdown-item">February</a></li>
-                        <li><a href="#" class="dropdown-item">March</a></li>
-                        <li><a href="#" class="dropdown-item">April</a></li>
-                        <li><a href="#" class="dropdown-item">May</a></li>
-                        <li><a href="#" class="dropdown-item">June</a></li>
-                        <li><a href="#" class="dropdown-item">July</a></li>
-                        <li><a href="#" class="dropdown-item active">August</a></li>
-                        <li><a href="#" class="dropdown-item">September</a></li>
-                        <li><a href="#" class="dropdown-item">October</a></li>
-                        <li><a href="#" class="dropdown-item">November</a></li>
-                        <li><a href="#" class="dropdown-item">December</a></li>
-                      </ul>
-                    </div>
-                  </div>
+                  <div class="card-stats-title"><spring:message code="site.008"/></div>
                   <div class="card-stats-items">
                     <div class="card-stats-item">
-                      <div class="card-stats-item-count">24</div>
-                      <div class="card-stats-item-label">Pending</div>
+                      <div class="card-stats-item-count">${accessCnt.yesterday}</div>
+                      <div class="card-stats-item-label">yesterday</div>
                     </div>
                     <div class="card-stats-item">
-                      <div class="card-stats-item-count">12</div>
-                      <div class="card-stats-item-label">Shipping</div>
+                      <div class="card-stats-item-count">${accessCnt.week}</div>
+                      <div class="card-stats-item-label">week</div>
                     </div>
                     <div class="card-stats-item">
-                      <div class="card-stats-item-count">23</div>
-                      <div class="card-stats-item-label">Completed</div>
+                      <div class="card-stats-item-count">${accessCnt.year}</div>
+                      <div class="card-stats-item-label">year</div>
                     </div>
                   </div>
                 </div>
@@ -51,10 +32,10 @@ System.out.println("================");
                 </div>
                 <div class="card-wrap">
                   <div class="card-header">
-                    <h4>Total Orders</h4>
+                    <h4>Today</h4>
                   </div>
                   <div class="card-body">
-                    59
+                    ${accessCnt.today}
                   </div>
                 </div>
               </div>
@@ -99,7 +80,7 @@ System.out.println("================");
           <div class="row">
           	<div class="card mt-4">
                   <div class="card-header">
-                    <h4>Browser</h4>
+                    <h4><spring:message code="site.009"/></h4>
                   </div>
                   <div class="card-body">
                     <div class="row">
@@ -124,7 +105,7 @@ System.out.println("================");
                         <div class="text-small text-muted">${browser.Edge}%</div>
                       </div>
                       <div class="col mb-4 mb-lg-0 text-center">
-                        <div><img width="70" src="<%=request.getContextPath()%>/resources/common/icons8-internet-explorer-96.png" alt="product"></div>
+                        <div><img width="70" src="<%=request.getContextPath()%>/resources/common/internet-explorer.png" style="padding:5px;" alt="product"></div>
                         <div class="mt-2 font-weight-bold">IE</div>
                         <div class="text-small text-muted"><span class="text-primary"></span> ${browser.IE}%</div>
                       </div>
