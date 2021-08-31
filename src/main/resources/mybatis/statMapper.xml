@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="statMapper">
+	<select id="browser" resultType="hashmap">
+		<![CDATA[
+			SELECT 
+				ROUND((Chrome/ALL_CNT) * 100, 0) AS Chrome
+				,ROUND((IE/ALL_CNT) * 100, 0) AS IE
+				,ROUND((Safari/ALL_CNT) * 100, 0) AS Safari
+				,ROUND((Firefox/ALL_CNT) * 100, 0) AS Firefox
+				,ROUND((Edge/ALL_CNT) * 100, 0) AS Edge
+				FROM (
+					SELECT 
+						COUNT(CASE WHEN BROWSER LIKE '%Chrome%' THEN 1 END) Chrome
+						, COUNT(CASE WHEN BROWSER LIKE '%Internet Explorer%' THEN 1 END) IE
+						, COUNT(CASE WHEN BROWSER LIKE '%Safari%' THEN 1 END) Safari
+						, COUNT(CASE WHEN BROWSER LIKE '%Mozilla%' THEN 1 END) Firefox
+						, COUNT(CASE WHEN BROWSER LIKE '%Edge%' THEN 1 END) Edge
+						, COUNT(*) ALL_CNT
+						FROM ACCESS_HISTORY
+						WHERE BROWSER <> 'Unknown'  
+				) A
+		]]>
+	</select>
+	<select id="browser1" resultType="string">
+		<![CDATA[
+			SELECT 
+				ROUND((Chrome/ALL_CNT) * 100, 0) AS Chrome
+				,ROUND((IE/ALL_CNT) * 100, 0) AS IE
+				,ROUND((Safari/ALL_CNT) * 100, 0) AS Safari
+				,ROUND((FireFox/ALL_CNT) * 100, 0) AS FireFox
+				FROM (
+					SELECT 
+						COUNT(CASE WHEN BROWSER LIKE '%Chrome%' THEN 1 END) Chrome
+						, COUNT(CASE WHEN BROWSER LIKE '%Internet Explorer%' THEN 1 END) IE
+						, COUNT(CASE WHEN BROWSER LIKE '%Safari%' THEN 1 END) Safari
+						, COUNT(CASE WHEN BROWSER LIKE '%Mozilla%' THEN 1 END) FireFox
+						, COUNT(*) ALL_CNT
+						FROM ACCESS_HISTORY
+						WHERE BROWSER <> 'Unknown'  
+				) A
+		]]>
+	</select>
+</mapper>

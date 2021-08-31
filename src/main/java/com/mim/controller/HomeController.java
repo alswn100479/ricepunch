@@ -1,6 +1,7 @@
 package com.mim.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -19,6 +20,7 @@ import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
 import com.mim.login.LoginController;
 import com.mim.login.LoginService;
+import com.mim.service.StatService;
 
 import eu.bitwalker.useragentutils.UserAgent;
 
@@ -32,15 +34,18 @@ public class HomeController
 	MessageSource messageSource;
 	@Autowired
 	LoginService loginService;
+	@Autowired
+	StatService statService;
 
 	/**
 	 * 메인화면 진입
 	 * @param locale
 	 * @param request
 	 * @return
+	 * @throws Exception
 	 */
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public ModelAndView home(Locale locale, HttpServletRequest request)
+	public ModelAndView home(Locale locale, HttpServletRequest request) throws Exception
 	{
 		ModelAndView mv = new ModelAndView("index.tiles");
 
@@ -63,16 +68,16 @@ public class HomeController
 			map.put("operatingSystem", agent.getOperatingSystem().getName());
 			loginService.access(map);
 		}
-		
-		String cookie = request.getHeader("Cookie");
-		if (cookie!= null) {
-			Cookie[] cookies = request.getCookies();
-			for (int i = 0; i < cookies.length; i++) {
-				System.out.println(cookies[i].getName() + " = " + cookies[i].getValue());
-			}
-		} else {
-			System.out.println("n");
+
+		// 브라우저 통계
+		List<Map<String, Object>> browser = statService.browser();
+		mv.addObject("browser", browser.get(0));
+
+		/*Cookie[] cookies = request.getCookies();
+		for (int i = 0; i < cookies.length; i++) {
+			System.out.println("java = "+cookies[i].getName() + " " + cookies[i].getValue());
 		}
+		System.out.println("================");*/
 
 		return mv;
 	}
