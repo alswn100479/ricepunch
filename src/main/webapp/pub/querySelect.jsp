@@ -11,63 +11,66 @@
 	ArrayList<String> columnNames = new ArrayList<String>();
 	
 	java.sql.ResultSet rs = null;
-	boolean isSuccess = true;
-	java.sql.Connection conn = null;
-	java.sql.PreparedStatement pstmt = null;
-	try
+	if (null!= url && null != id && passwd != null && null != query) 
 	{
-		conn = java.sql.DriverManager.getConnection(url, id, passwd);
-		pstmt = conn.prepareStatement(query);
-		pstmt.setQueryTimeout(10);
-		rs = pstmt.executeQuery();
-		java.sql.ResultSetMetaData rsmd = rs.getMetaData();
-		
-		while (rs.next())
+		boolean isSuccess = true;
+		java.sql.Connection conn = null;
+		java.sql.PreparedStatement pstmt = null;
+		try
 		{
-			if (rs.isFirst())
+			conn = java.sql.DriverManager.getConnection(url, id, passwd);
+			pstmt = conn.prepareStatement(query);
+			pstmt.setQueryTimeout(10);
+			rs = pstmt.executeQuery();
+			java.sql.ResultSetMetaData rsmd = rs.getMetaData();
+			
+			while (rs.next())
 			{
+				if (rs.isFirst())
+				{
+					for (int i = 0; i < rsmd.getColumnCount(); i++)
+					{
+						columnNames.add(rsmd.getColumnName(i+1));
+					}
+				}
+
+				ArrayList<String> rowData = new ArrayList<String>();
 				for (int i = 0; i < rsmd.getColumnCount(); i++)
 				{
-					columnNames.add(rsmd.getColumnName(i+1));
+					rowData.add(rs.getString(i+1));
 				}
+				data.add(rowData);
 			}
-
-			ArrayList<String> rowData = new ArrayList<String>();
-			for (int i = 0; i < rsmd.getColumnCount(); i++)
-			{
-				rowData.add(rs.getString(i+1));
+		}
+		catch (java.sql.SQLException e)
+		{
+			isSuccess = false;
+			e.printStackTrace();
+			request.setAttribute("errorMsg", e.getMessage().toString());
+			if (conn != null) {
+				conn.close();
 			}
-			data.add(rowData);
+			if (pstmt != null) {
+				pstmt.close();
+			}
 		}
+		finally{
+			if (conn != null) {
+				conn.close();
+			}
+			if (pstmt != null) {
+				pstmt.close();
+			}
+		}
+		
+		request.setAttribute("isSuccess", isSuccess);
+		request.setAttribute("result", data);
+		request.setAttribute("columnNames", columnNames);
+		request.setAttribute("url", url);
+		request.setAttribute("id", id);
+		request.setAttribute("passwd", passwd);
+		request.setAttribute("query", query);
 	}
-	catch (java.sql.SQLException e)
-	{
-		isSuccess = false;
-		e.printStackTrace();
-		request.setAttribute("errorMsg", e.getMessage().toString());
-		if (conn != null) {
-			conn.close();
-		}
-		if (pstmt != null) {
-			pstmt.close();
-		}
-	}
-	finally{
-		if (conn != null) {
-			conn.close();
-		}
-		if (pstmt != null) {
-			pstmt.close();
-		}
-	}
-	
-	request.setAttribute("isSuccess", isSuccess);
-	request.setAttribute("result", data);
-	request.setAttribute("columnNames", columnNames);
-	request.setAttribute("url", url);
-	request.setAttribute("id", id);
-	request.setAttribute("passwd", passwd);
-	request.setAttribute("query", query);
 %>
 <script>
 $(document).ready(function(){
@@ -100,7 +103,6 @@ function connect() {
 					</div>
 					<div class="collapse show">
 						<div class="card-body">
-							<div class="section-title mt-0"><spring:message code="util.002"/></div>
 							<div class="form-group">
 								<label>URL</label>
 									<input id="url" name="url" value="${url}" type="text" class="form-control form-control-sm" >
