@@ -74,6 +74,21 @@
 %>
 <script>
 $(document).ready(function(){
+	<c:if test="${isSuccess}">
+	setCookie('querySelector_url', '${url}');
+	setCookie('querySelector_id', '${id}');
+	setCookie('querySelector_passwd', '${passwd}');
+	</c:if>
+	
+	if (!$('#url').val()) {
+		$('#url').val(getCookie('querySelector_url'));
+	}
+	if (!$('#id').val()) {
+		$('#id').val(getCookie('querySelector_id'));
+	}
+	if (!$('#passwd').val()) {
+		$('#passwd').val(getCookie('querySelector_passwd'));
+	}
 });
 function connect() {
 	var queryString = $("form[name=dbForm]").serialize() ;
@@ -131,7 +146,7 @@ function connect() {
             <%-- Result --%>        
 			<div class="row">
 				<div class="col-12">
-                <div class="card">
+                <div class="card" style="font-size:13px">
 					<div class="card-header">
 						<h4><c:choose><c:when test="${errorMsg != null}">Error</c:when><c:otherwise>Result</c:otherwise></c:choose></h4>
 					</div>
