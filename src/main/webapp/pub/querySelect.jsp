@@ -6,74 +6,68 @@
 	String id = request.getParameter("id");
 	String passwd = request.getParameter("passwd");
 	String query = request.getParameter("query");
-	if (query == null) {
-		query = "SELECT 1 FROM DUAL";
-	}
 	
 	ArrayList<ArrayList<String>> data = new ArrayList<ArrayList<String>>();
 	ArrayList<String> columnNames = new ArrayList<String>();
 	
 	java.sql.ResultSet rs = null;
-	if (null!= url && null != id && passwd != null && null != query) 
+	boolean isSuccess = true;
+	java.sql.Connection conn = null;
+	java.sql.PreparedStatement pstmt = null;
+	try
 	{
-		boolean isSuccess = true;
-		java.sql.Connection conn = null;
-		java.sql.PreparedStatement pstmt = null;
-		try
+		conn = java.sql.DriverManager.getConnection(url, id, passwd);
+		pstmt = conn.prepareStatement(query);
+		pstmt.setQueryTimeout(10);
+		rs = pstmt.executeQuery();
+		java.sql.ResultSetMetaData rsmd = rs.getMetaData();
+		
+		while (rs.next())
 		{
-			conn = java.sql.DriverManager.getConnection(url, id, passwd);
-			pstmt = conn.prepareStatement(query);
-			pstmt.setQueryTimeout(10);
-			rs = pstmt.executeQuery();
-			java.sql.ResultSetMetaData rsmd = rs.getMetaData();
-			
-			while (rs.next())
+			if (rs.isFirst())
 			{
-				if (rs.isFirst())
-				{
-					for (int i = 0; i < rsmd.getColumnCount(); i++)
-					{
-						columnNames.add(rsmd.getColumnName(i+1));
-					}
-				}
-
-				ArrayList<String> rowData = new ArrayList<String>();
 				for (int i = 0; i < rsmd.getColumnCount(); i++)
 				{
-					rowData.add(rs.getString(i+1));
+					columnNames.add(rsmd.getColumnName(i+1));
 				}
-				data.add(rowData);
 			}
+
+			ArrayList<String> rowData = new ArrayList<String>();
+			for (int i = 0; i < rsmd.getColumnCount(); i++)
+			{
+				rowData.add(rs.getString(i+1));
+			}
+			data.add(rowData);
 		}
-		catch (java.sql.SQLException e)
-		{
-			isSuccess = false;
-			e.printStackTrace();
-			request.setAttribute("errorMsg", e.getMessage().toString());
-			if (conn != null) {
-				conn.close();
-			}
-			if (pstmt != null) {
-				pstmt.close();
-			}
-		}
-		finally{
-			if (conn != null) {
-				conn.close();
-			}
-			if (pstmt != null) {
-				pstmt.close();
-			}
-		}
-		
-		request.setAttribute("isSuccess", isSuccess);
-		request.setAttribute("result", data);
-		request.setAttribute("columnNames", columnNames);
-		request.setAttribute("url", url);
-		request.setAttribute("id", id);
-		request.setAttribute("passwd", passwd);
-		request.setAttribute("query", query);
 	}
+	catch (java.sql.SQLException e)
+	{
+		isSuccess = false;
+		e.printStackTrace();
+		request.setAttribute("errorMsg", e.getMessage().toString());
+		if (conn != null) {
+			conn.close();
+		}
+		if (pstmt != null) {
+			pstmt.close();
+		}
+	}
+	finally{
+		if (conn != null) {
+			conn.close();
+		}
+		if (pstmt != null) {
+			pstmt.close();
+		}
+	}
+	
+	request.setAttribute("isSuccess", isSuccess);
+	request.setAttribute("result", data);
+	request.setAttribute("columnNames", columnNames);
+	request.setAttribute("url", url);
+	request.setAttribute("id", id);
+	request.setAttribute("passwd", passwd);
+	request.setAttribute("query", query);
 %>
 <script>
 $(document).ready(function(){
