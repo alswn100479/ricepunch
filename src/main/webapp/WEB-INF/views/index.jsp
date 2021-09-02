@@ -1,11 +1,10 @@
 <%@ include file="/WEB-INF/views/include/taglib.jsp" %>
-<%
-Cookie[] cookies = request.getCookies();
-for (Cookie cookie : cookies) {
-	System.out.println("index jsp = " + cookie.getName() + " " + cookie.getValue());
-}
-System.out.println("================");
-%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"  pageEncoding="UTF-8"%>
+<script>
+$(document).ready(function(){
+	//alert(getCookie('kakao_accessToken'));
+});
+</script>
 <section class="section">
 	<div class="row">
 		<div class="col-lg-4 col-md-4 col-sm-12">
@@ -107,7 +106,7 @@ System.out.println("================");
 		<div class="col-12 col-sm-12 col-lg-6">
 			<div class="card">
 				<div class="card-header">
-					<h4><spring:message code="site.009"/></h4>
+					<h4><spring:message code="site.010"/></h4>
 				</div>
 				<div class="card-body">
 					<div class="row">

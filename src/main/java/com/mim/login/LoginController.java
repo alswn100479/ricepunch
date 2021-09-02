@@ -33,7 +33,7 @@ public class LoginController
 	public final static String REST_API_KEY = "7b71f5d4a64438b4fb2ce2f31a0a9be8";
 	public final static String REDIRECT_URI = "https://localhost:8443/login/kakao.do";
 
-	public final static String KAKAO_TOKEN_NAME = "kakao_token";
+	public final static String KAKAO_TOKEN_NAME = "kakao_accessToken";
 
 	public final static int LOGIN_STATUS = 1000;
 	public final static int LOGOUT_STATUS = 9000;
@@ -53,8 +53,9 @@ public class LoginController
 		// access token 발급
 		String accessToken = getAccessToken(code);
 		Cookie tokenCookie = new Cookie(KAKAO_TOKEN_NAME, accessToken);
+		tokenCookie.setPath("/");
 		response.addCookie(tokenCookie);
-		
+
 		// 로그인 사용자 저장
 		User user = getUserInfo(accessToken);
 		loginService.insertUser(user);

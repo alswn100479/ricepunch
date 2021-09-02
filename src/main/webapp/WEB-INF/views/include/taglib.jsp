@@ -5,3 +5,9 @@
 		request.setAttribute("language", "ko");
 	}
 %>
+
+<script>
+$('.section-header').css('cursor', 'pointer').click(function() {
+//	location.reload();
+});
+</script>

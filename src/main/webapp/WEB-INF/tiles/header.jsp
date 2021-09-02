@@ -1,5 +1,13 @@
 <%@ include file="/WEB-INF/views/include/taglib.jsp" %>
 <%@page import="com.mim.login.LoginController"%>
+<%
+Cookie[] cookies = request.getCookies();
+for (Cookie cookie : cookies) {
+	if (LoginController.KAKAO_TOKEN_NAME.equals(cookie.getName())) {
+		request.setAttribute("isLogined", true);
+	}
+}
+%>
 <style>
 .dropdown-menu .dropdown-title {text-transform:none;}
 </style>
@@ -93,14 +101,14 @@ function changeLanguage(value) {
 			<div class="dropdown-menu dropdown-menu-right">
 				<div class="dropdown-title">Login Plzzz..</div>
 				<div class="dropdown-divider"></div>
-				<c:if test="${empty sessionScope.accessToken}">
+				<c:if test="${!isLogined}">
 				<a href="${kakao_url}" class="dropdown-item has-icon">
 					<img src="<%=request.getContextPath()%>/resources/common/kakao_login.png" width="20px" height="20px" style="margin-right:5px;"/>
 					<spring:message code="login.001"/>
 				</a>
 				</c:if>
 				<!-- <div class="dropdown-divider"></div> -->
-				<c:if test="${!empty sessionScope.accessToken}">
+				<c:if test="${isLogined}">
 					<a href="<%=request.getContextPath()%>/logout/kakao.do" class="dropdown-item has-icon text-danger" onclick="kakaoLogout()">
 						<i class="fas fa-sign-out-alt"></i> Logout
 					</a>

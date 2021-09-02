@@ -44,7 +44,7 @@ public class HomeController
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public ModelAndView home(Locale locale, HttpServletRequest request) throws Exception
+	public ModelAndView home(Locale locale, HttpServletRequest request, HttpServletResponse response) throws Exception
 	{
 		ModelAndView mv = new ModelAndView("index.tiles");
 
@@ -57,7 +57,7 @@ public class HomeController
 		mv.addObject("kakao_url", val);
 
 		// 젒근이력 남기기
-		if (request.getRemoteAddr() != request.getLocalAddr())
+		if ((request.getRemoteAddr() != request.getLocalAddr()))
 		{
 			UserAgent agent = UserAgent.parseUserAgentString((String) request.getHeader("User-Agent"));
 			Map<String, String> map = new HashMap<String, String>();
@@ -67,16 +67,10 @@ public class HomeController
 			map.put("operatingSystem", agent.getOperatingSystem().getName());
 			loginService.access(map);
 		}
-
+		
 		// 브라우저 통계
 		mv.addObject("browser", statService.browser().get(0));
 		mv.addObject("accessCnt", statService.accessCnt().get(0));
-
-		/*Cookie[] cookies = request.getCookies();
-		for (int i = 0; i < cookies.length; i++) {
-			System.out.println("java = "+cookies[i].getName() + " " + cookies[i].getValue());
-		}
-		System.out.println("================");*/
 
 		return mv;
 	}

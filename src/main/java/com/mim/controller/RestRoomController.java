@@ -3,6 +3,8 @@ package com.mim.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -28,7 +30,7 @@ public class RestRoomController
 	 * @return
 	 */
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public ModelAndView index()
+	public ModelAndView index(HttpServletResponse response)
 	{
 		ModelAndView mav = new ModelAndView("rstr/index.tiles");
 		return mav;
@@ -42,15 +44,13 @@ public class RestRoomController
 	 * @return
 	 */
 	@RequestMapping(value = "/list.do", method = RequestMethod.GET)
-	public ModelAndView table(String latitude, String longitude, String search)
+	public ModelAndView table(String latitude, String longitude, String search, HttpServletResponse response)
 	{
 		ModelAndView mav = new ModelAndView("rstr/list.table");
 		try
 		{
 			latitude = StringUtils.isBlank(latitude) ? "37.579887" : latitude;
 			longitude = StringUtils.isBlank(longitude) ? "126.976870" : longitude;
-			
-			System.out.println("search = " + search);
 
 			List<RestRoom> list = service.list(latitude, longitude, search);
 			mav.addObject("list", list);

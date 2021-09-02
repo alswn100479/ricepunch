@@ -73,4 +73,7 @@
 		</user-data-constraint>
 </security-constraint>
 
+	<session-config>
+		<cookie-config></cookie-config>
+	</session-config>
 </web-app>

@@ -23,19 +23,20 @@
 			pstmt.setQueryTimeout(10);
 			rs = pstmt.executeQuery();
 			java.sql.ResultSetMetaData rsmd = rs.getMetaData();
+			int totalCount = rsmd.getColumnCount() > 100 ? 100 : rsmd.getColumnCount();
 			
 			while (rs.next())
 			{
 				if (rs.isFirst())
 				{
-					for (int i = 0; i < rsmd.getColumnCount(); i++)
+					for (int i = 0; i < totalCount; i++)
 					{
 						columnNames.add(rsmd.getColumnName(i+1));
 					}
 				}
 
 				ArrayList<String> rowData = new ArrayList<String>();
-				for (int i = 0; i < rsmd.getColumnCount(); i++)
+				for (int i = 0; i < totalCount; i++)
 				{
 					rowData.add(rs.getString(i+1));
 				}
@@ -100,7 +101,7 @@ function connect() {
 		<h1><spring:message code="util.001"/></h1>
 	</div>
 	<div class="section-body">
-		<h2 class="section-title">info..</h2>
+		<h2 class="section-title">Info</h2>
 			<p class="section-lead">
 				<spring:message code="util.003"/></a>
 			</p>
@@ -132,8 +133,7 @@ function connect() {
 							</div>
 							<div class="form-group">
 								<label>QUERY</label>
-								<input id="query" name="query" type="text" class="form-control form-control-sm" 
-									value="<c:choose><c:when test="${query != null}">${query}</c:when><c:otherwise>Select 1 From Dual</c:otherwise></c:choose>">
+								<input id="query" name="query" type="text" class="form-control form-control-sm">
 							</div>
 						</div>
 						<div class="card-footer text-right">
@@ -161,12 +161,12 @@ function connect() {
 						<c:otherwise>
 							<div class="card-body">
 								<div class="table-responsive">
-									<table class="table table-striped" id="table-1">
+									<table class="table table-striped" id="table-1" style="height:400px; display:block;">
 										<thead>
 											<tr>
-												<th class="text-center">#</th>
+												<th class="text-center" style="position:sticky; top:0;">#</th>
 												<c:forEach var="columnName" items="${columnNames}">
-													<th class="text-center">${columnName}</th>
+													<th class="text-center" style="position:sticky; top:0;">${columnName}</th>
 												</c:forEach>
 											</tr>
 										</thead>
