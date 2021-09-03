@@ -1,27 +1,30 @@
 <%@ include file="/WEB-INF/views/include/taglib.jsp" %>
 <%@page import="com.mim.login.LoginController"%>
 <%
-Cookie[] cookies = request.getCookies();
-for (Cookie cookie : cookies) {
-	if (LoginController.KAKAO_TOKEN_NAME.equals(cookie.getName())) {
-		request.setAttribute("isLogined", true);
-	}
+String val = LoginController.KAKAO_HOST
++ "/oauth/authorize?client_id="
++ LoginController.REST_API_KEY
++ "&redirect_uri="
++ LoginController.REDIRECT_URI
++ "&response_type=code";
+if (request.getAttribute("kakao_url") == null) {
+	request.setAttribute("kakao_url", val);
 }
 %>
 <style>
 .dropdown-menu .dropdown-title {text-transform:none;}
 </style>
 <script>
-<%-- 언어를 변경한다. --%>
-function changeLanguage(value) {
-	$.ajax({
-        url : '<%=request.getContextPath()%>/changeLanguage.do?language='+value,
-        type : 'get',
-        success : function(data){
-           location.reload();
-        }
-    })
-}
+$(document).ready(function(){
+	var kakaoToken = getCookie('kakao_accessToken');
+	if (kakaoToken) {
+		$('#loginDiv').hide();
+		$('#logoutDiv').show();
+	}else {
+		$('#loginDiv').show();
+		$('#logoutDiv').hide();
+	}
+});
 </script>
 <div class="navbar-bg"></div>
 <nav class="navbar navbar-expand-lg main-navbar">
@@ -101,18 +104,18 @@ function changeLanguage(value) {
 			<div class="dropdown-menu dropdown-menu-right">
 				<div class="dropdown-title">Login Plzzz..</div>
 				<div class="dropdown-divider"></div>
-				<c:if test="${!isLogined}">
-				<a href="${kakao_url}" class="dropdown-item has-icon">
-					<img src="<%=request.getContextPath()%>/resources/common/kakao_login.png" width="20px" height="20px" style="margin-right:5px;"/>
-					<spring:message code="login.001"/>
-				</a>
-				</c:if>
-				<!-- <div class="dropdown-divider"></div> -->
-				<c:if test="${isLogined}">
+				<div id="loginDiv">
+					<a href="${kakao_url}" class="dropdown-item has-icon">
+						<img src="<%=request.getContextPath()%>/resources/common/kakao_login.png" width="20px" height="20px" style="margin-right:5px;"/>
+						<spring:message code="login.001"/>
+					</a>
+				</div>
+				<div id="logoutDiv">
 					<a href="<%=request.getContextPath()%>/logout/kakao.do" class="dropdown-item has-icon text-danger" onclick="kakaoLogout()">
 						<i class="fas fa-sign-out-alt"></i> Logout
 					</a>
-				</c:if>
+				</div>
+				
 			</div>
 		</li>
 	</ul>
