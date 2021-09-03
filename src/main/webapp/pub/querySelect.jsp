@@ -97,6 +97,11 @@ $(document).ready(function(){
 	});
 });
 function connect() {
+	var nQuery = ['INSERT', 'UPDATE', 'DELETE', 'ALERT', 'CREATE', 'DROP', 'TRUNCATE'];
+	if (nQuery.indexOf($('#query').val().toUpperCase()) > -1) {
+		alert('<spring:message code="util.006"/>');
+		return false;
+	}
 	var queryString = $("form[name=dbForm]").serialize() ;
 	moveContentPage('/pub/querySelect.jsp?' + queryString);
 }
