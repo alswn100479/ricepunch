@@ -7,6 +7,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
 <script src="<%=request.getContextPath()%>/resources/js/jquery.nicescroll.min.js"></script>
 
+<!-- DataTable -->
+<script src="<%=request.getContextPath()%>/resources/js/jquery.dataTables.min.js"></script>
+
 <!-- Template JS File -->
 <script src="<%=request.getContextPath()%>/resources/stisla/assets/js/scripts.js"></script>
 <script src="<%=request.getContextPath()%>/resources/stisla/assets/js/custom.js"></script>

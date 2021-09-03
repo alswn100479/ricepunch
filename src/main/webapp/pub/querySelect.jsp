@@ -7,6 +7,12 @@
 	String passwd = request.getParameter("passwd");
 	String query = request.getParameter("query");
 	
+	url = "jdbc:mariadb://140.238.2.103:3306/minju_db";
+	id ="minju";
+	passwd = "minju!456";
+	query= "select * from access_history limit 0,10";
+	
+	
 	ArrayList<ArrayList<String>> data = new ArrayList<ArrayList<String>>();
 	ArrayList<String> columnNames = new ArrayList<String>();
 	
@@ -90,6 +96,18 @@ $(document).ready(function(){
 	if (!$('#passwd').val()) {
 		$('#passwd').val(getCookie('querySelector_passwd'));
 	}
+	
+	$("#resultTable").dataTable({
+		pageLength: 5,
+	    bPaginate: true,
+	    bLengthChange: true,
+	    lengthMenu : [[ 5, 10, 20, 30, -1 ], [ 5, 10, 20, 30, "전체" ]],
+	    bAutoWidth: true,
+	    processing: true,
+	    ordering: true,
+	    serverSide: false,
+	    searching: true
+	});
 });
 function connect() {
 	var queryString = $("form[name=dbForm]").serialize() ;
@@ -161,21 +179,21 @@ function connect() {
 						<c:otherwise>
 							<div class="card-body">
 								<div class="table-responsive">
-									<table class="table table-striped" id="table-1" style="height:400px; display:block;">
+									<table class="table table-striped dataTable no-footer" id="resultTable" style="display:block;">
 										<thead>
 											<tr>
-												<th class="text-center" style="position:sticky; top:0;">#</th>
+												<th>#</th>
 												<c:forEach var="columnName" items="${columnNames}">
-													<th class="text-center" style="position:sticky; top:0;">${columnName}</th>
+													<th>${columnName}</th>
 												</c:forEach>
 											</tr>
 										</thead>
 										<tbody>
 											<c:forEach var="resultRow" items="${result}" varStatus="status">
 												<tr>
-													<td class="text-center">${status.count}</td>
+													<td>${status.count}</td>
 													<c:forEach var="resultColumn" items="${resultRow}">
-														<td class="text-center">${resultColumn}</td>
+														<td>${resultColumn}</td>
 													</c:forEach>
 												</tr>
 											</c:forEach>
