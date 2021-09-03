@@ -7,12 +7,6 @@
 	String passwd = request.getParameter("passwd");
 	String query = request.getParameter("query");
 	
-	url = "jdbc:mariadb://140.238.2.103:3306/minju_db";
-	id ="minju";
-	passwd = "minju!456";
-	query= "select * from access_history limit 0,10";
-	
-	
 	ArrayList<ArrayList<String>> data = new ArrayList<ArrayList<String>>();
 	ArrayList<String> columnNames = new ArrayList<String>();
 	
@@ -83,18 +77,10 @@
 $(document).ready(function(){
 	<c:if test="${isSuccess}">
 	setCookie('querySelector_url', '${url}');
-	setCookie('querySelector_id', '${id}');
-	setCookie('querySelector_passwd', '${passwd}');
 	</c:if>
 	
 	if (!$('#url').val()) {
 		$('#url').val(getCookie('querySelector_url'));
-	}
-	if (!$('#id').val()) {
-		$('#id').val(getCookie('querySelector_id'));
-	}
-	if (!$('#passwd').val()) {
-		$('#passwd').val(getCookie('querySelector_passwd'));
 	}
 	
 	$("#resultTable").dataTable({
@@ -105,6 +91,7 @@ $(document).ready(function(){
 	    bAutoWidth: true,
 	    processing: true,
 	    ordering: true,
+	    scrollX: true,
 	    serverSide: false,
 	    searching: true
 	});
