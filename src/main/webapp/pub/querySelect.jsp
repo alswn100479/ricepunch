@@ -88,7 +88,7 @@ $(document).ready(function(){
 	    bPaginate: true,
 	    bLengthChange: true,
 	    lengthMenu : [[ 5, 10, 20, 30, -1 ], [ 5, 10, 20, 30, "전체" ]],
-	    bAutoWidth: true,
+	    bAutoWidth: false,
 	    processing: true,
 	    ordering: true,
 	    scrollX: true,
