@@ -5,9 +5,9 @@
 <mapper namespace="LoginMapper">
 	<insert id="access" parameterType="map">
 		insert into access_history
-		(USERID, IP, BROWSER, OPERATING_SYSTEM)
+		(USERID, IP, BROWSER, OPERATING_SYSTEM, DEVICE)
 		values
-		(#{userid}, #{ip}, #{browser}, #{operatingSystem})
+		(#{userid}, #{ip}, #{browser}, #{operatingSystem}, #{device})
 	</insert>
 	
 	<insert id="loginOutHistory" parameterType="map">

@@ -36,6 +36,11 @@ public class HomeController
 	@Autowired
 	StatService statService;
 
+	public static final String IS_MOBILE = "MOBILE";
+	private static final String IS_PHONE = "PHONE";
+	public static final String IS_TABLET = "TABLET";
+	public static final String IS_PC = "PC";
+
 	/**
 	 * 메인화면 진입
 	 * @param locale
@@ -59,15 +64,34 @@ public class HomeController
 		// 젒근이력 남기기
 		if ((request.getRemoteAddr() != request.getLocalAddr()))
 		{
-			UserAgent agent = UserAgent.parseUserAgentString((String) request.getHeader("User-Agent"));
+			String agentStr = request.getHeader("User-Agent");
+			UserAgent agent = UserAgent.parseUserAgentString(agentStr);
 			Map<String, String> map = new HashMap<String, String>();
 			map.put("userid", null);
 			map.put("ip", request.getRemoteAddr());
 			map.put("browser", agent.getBrowser().getName());
 			map.put("operatingSystem", agent.getOperatingSystem().getName());
+
+			// 기기구분
+			if (agentStr.indexOf(IS_MOBILE) > -1)
+			{
+				if (agentStr.indexOf(IS_PHONE) == -1)
+				{
+					map.put("device", IS_MOBILE);
+				}
+				else
+				{
+					map.put("device", IS_TABLET);
+				}
+			}
+			else
+			{
+				map.put("device", IS_PC);
+			}
+
 			loginService.access(map);
 		}
-		
+
 		// 브라우저 통계
 		mv.addObject("browser", statService.browser().get(0));
 		mv.addObject("accessCnt", statService.accessCnt().get(0));
