@@ -97,11 +97,21 @@ $(document).ready(function(){
 	});
 });
 function connect() {
+	if (!(isNotUndefined($('#url').val()) && isNotUndefined($('#id').val()) && isNotUndefined($('#passwd').val()))) {
+		alert('<spring:message code="util.007"/>');
+		return false;
+	}
+	
+	if (!isNotUndefined($('#query').val())) {
+		alert('<spring:message code="util.008"/>');
+	}
+	
 	var nQuery = ['INSERT', 'UPDATE', 'DELETE', 'ALERT', 'CREATE', 'DROP', 'TRUNCATE'];
 	if (nQuery.indexOf($('#query').val().toUpperCase()) > -1) {
 		alert('<spring:message code="util.006"/>');
 		return false;
 	}
+	
 	var queryString = $("form[name=dbForm]").serialize() ;
 	moveContentPage('/pub/querySelect.jsp?' + queryString);
 }
@@ -158,10 +168,15 @@ function connect() {
 				<div class="col-12">
                 <div class="card" style="font-size:13px">
 					<div class="card-header">
-						<h4><c:choose><c:when test="${errorMsg != null}">Error</c:when><c:otherwise>Result</c:otherwise></c:choose></h4>
+						<h4>
+							<c:choose>
+								<c:when test="${errorMsg != null}">Error<img style="margin:0 3px 3px 3px;" src="<%=request.getContextPath()%>/resources/common/icons8-error-24.png" width="20" height="20"/></c:when>
+								<c:otherwise>Result</c:otherwise>
+							</c:choose>
+						</h4>
 					</div>
 					<c:choose>
-						<%-- error --%>
+						<%-- error --%> 
 						<c:when test="${errorMsg != null}">
 							<div class="card-body">
 								<div class="table-responsive">${errorMsg}</div>

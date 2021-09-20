@@ -30,4 +30,16 @@ getCookie = function(name) {
 		}
 	}
 }
+isNotUndefined = function(value) {
+	 if(typeof value == "undefined" || value == null) {
+		 return false;
+	 } else {
+		 value = value.replace(' ', '');
+		 if (value == '') {
+			 return false;
+		 }
+	 }
+
+	return true;
+}
 </script>
