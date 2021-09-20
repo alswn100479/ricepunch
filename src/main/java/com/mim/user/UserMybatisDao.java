@@ -13,8 +13,8 @@ public class UserMybatisDao
 	private SqlSessionFactory session;
 
 	/**
-	 * api 데이터를 등록한다.
-	 * @return 
+	 * 사용자정보를 업데이트한다.
+	 * @return
 	 */
 	public User updateUserInfo(User user)
 	{
@@ -22,5 +22,17 @@ public class UserMybatisDao
 		sqlSession.update("UserMapper.updateUserInfo", user);
 		User userServer = sqlSession.selectOne("UserMapper.selectUser", user.getId());
 		return userServer;
+	}
+
+	/**
+	 * 사용자 정보를 조회한다.
+	 * @param id
+	 * @return
+	 */
+	public User selectUser(Long id)
+	{
+		SqlSession sqlSession = session.openSession();
+		User user = sqlSession.selectOne("UserMapper.selectUser", id);
+		return user;
 	}
 }

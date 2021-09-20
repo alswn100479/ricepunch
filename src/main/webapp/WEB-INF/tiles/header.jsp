@@ -111,9 +111,10 @@ $(document).ready(function(){
 					</a>
 				</div>
 				<div id="userDiv">
-					<a href="<%=request.getContextPath()%>/user/profile.do" class="dropdown-item has-icon text-danger" onclick="kakaoLogout()">
-						<i class="fas fa-sign-out-alt"></i> Profile
-					</a>
+					<a href="<%=request.getContextPath()%>/user/profile.do" class="dropdown-item has-icon">
+	                	<i class="fas fa-cog"></i> Settings
+	            	</a>
+	              	<div class="dropdown-divider"></div>
 					<a href="<%=request.getContextPath()%>/logout/kakao.do" class="dropdown-item has-icon text-danger" onclick="kakaoLogout()">
 						<i class="fas fa-sign-out-alt"></i> Logout
 					</a>

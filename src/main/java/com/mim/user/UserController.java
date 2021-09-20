@@ -35,6 +35,7 @@ public class UserController
 				try
 				{
 					User user = LoginController.getUserInfo(token);
+					user = userService.selectUser(user.getId());
 					mv.addObject("user", user);
 				}
 				catch (IOException e)
