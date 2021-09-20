@@ -18,8 +18,8 @@
 	</insert>
 	
 	<insert id="insertUser" parameterType="com.mim.user.User">
-        insert into LOGIN(id, AGE_RANGE)
-        values (#{id}, #{ageRange})
+        insert into USER(id, AGE_RANGE, FIRST_LOGIN_DATE)
+        values (#{id}, #{ageRange}, now())
         on duplicate key update
 		    AGE_RANGE = values(AGE_RANGE)
     </insert>

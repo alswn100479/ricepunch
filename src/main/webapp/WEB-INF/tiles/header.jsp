@@ -1,13 +1,13 @@
 <%@ include file="/WEB-INF/views/include/taglib.jsp" %>
-<%@page import="com.mim.login.LoginController"%>
+<%@page import="com.mim.user.login.LoginController"%>
 <%
-String val = LoginController.KAKAO_HOST
-+ "/oauth/authorize?client_id="
-+ LoginController.REST_API_KEY
-+ "&redirect_uri="
-+ LoginController.REDIRECT_URI
-+ "&response_type=code";
 if (request.getAttribute("kakao_url") == null) {
+	String val = LoginController.KAKAO_HOST
+		+ "/oauth/authorize?client_id="
+		+ LoginController.REST_API_KEY
+		+ "&redirect_uri="
+		+ request.getScheme() + "://" + request.getServerName() + ":"+request.getServerPort() + LoginController.REDIRECT_URI
+		+ "&response_type=code";
 	request.setAttribute("kakao_url", val);
 }
 %>
@@ -18,11 +18,11 @@ if (request.getAttribute("kakao_url") == null) {
 $(document).ready(function(){
 	var kakaoToken = getCookie('kakao_accessToken');
 	if (kakaoToken) {
-		$('#loginDiv').hide();
-		$('#logoutDiv').show();
+		$('#guestDiv').hide();
+		$('#userDiv').show();
 	}else {
-		$('#loginDiv').show();
-		$('#logoutDiv').hide();
+		$('#guestDiv').show();
+		$('#userDiv').hide();
 	}
 });
 </script>
@@ -104,13 +104,16 @@ $(document).ready(function(){
 			<div class="dropdown-menu dropdown-menu-right">
 				<div class="dropdown-title">Login Plzzz..</div>
 				<div class="dropdown-divider"></div>
-				<div id="loginDiv">
+				<div id="guestDiv">
 					<a href="${kakao_url}" class="dropdown-item has-icon">
 						<img src="<%=request.getContextPath()%>/resources/common/kakao_login.png" width="20px" height="20px" style="margin-right:5px;"/>
 						<spring:message code="login.001"/>
 					</a>
 				</div>
-				<div id="logoutDiv">
+				<div id="userDiv">
+					<a href="<%=request.getContextPath()%>/user/profile.do" class="dropdown-item has-icon text-danger" onclick="kakaoLogout()">
+						<i class="fas fa-sign-out-alt"></i> Profile
+					</a>
 					<a href="<%=request.getContextPath()%>/logout/kakao.do" class="dropdown-item has-icon text-danger" onclick="kakaoLogout()">
 						<i class="fas fa-sign-out-alt"></i> Logout
 					</a>

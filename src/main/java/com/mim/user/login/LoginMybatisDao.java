@@ -1,4 +1,4 @@
-package com.mim.login;
+package com.mim.user.login;
 
 import java.util.HashMap;
 import java.util.Map;

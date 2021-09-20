@@ -6,6 +6,7 @@ public class User
 	private String accessToken;
 	private int ageRange;
 	private String name;
+	private String userDesc;
 
 	public Long getId()
 	{
@@ -45,5 +46,21 @@ public class User
 	public void setName(String name)
 	{
 		this.name = name;
+	}
+
+	/**
+	 * @return the userDesc
+	 */
+	public String getUserDesc()
+	{
+		return userDesc;
+	}
+
+	/**
+	 * @param userDesc the userDesc to set
+	 */
+	public void setUserDesc(String userDesc)
+	{
+		this.userDesc = userDesc;
 	}
 }

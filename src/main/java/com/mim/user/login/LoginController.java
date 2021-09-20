@@ -1,4 +1,4 @@
-package com.mim.login;
+package com.mim.user.login;
 
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -31,7 +31,7 @@ public class LoginController
 {
 	public final static String KAKAO_HOST = "https://kauth.kakao.com";
 	public final static String REST_API_KEY = "7b71f5d4a64438b4fb2ce2f31a0a9be8";
-	public final static String REDIRECT_URI = "https://localhost:8443/login/kakao.do";
+	public final static String REDIRECT_URI = "/login/kakao.do";
 
 	public final static String KAKAO_TOKEN_NAME = "kakao_accessToken";
 
@@ -40,7 +40,7 @@ public class LoginController
 
 	@Autowired
 	private LoginService loginService;
-
+	
 	@RequestMapping("kakao.do")
 	public ModelAndView kakaoLogin(
 		@RequestParam("code") String code,
@@ -49,9 +49,11 @@ public class LoginController
 		throws IOException
 	{
 		ModelAndView mv = new ModelAndView("index.tiles");
+		
+		String redirectUrl = request.getScheme() + "://" + request.getServerName() + ":"+request.getServerPort() + REDIRECT_URI;
 
 		// access token ¹ß±Þ
-		String accessToken = getAccessToken(code);
+		String accessToken = getAccessToken(code, redirectUrl);
 		Cookie tokenCookie = new Cookie(KAKAO_TOKEN_NAME, accessToken);
 		tokenCookie.setPath("/");
 		response.addCookie(tokenCookie);
@@ -70,17 +72,17 @@ public class LoginController
 	 * @return
 	 * @throws IOException
 	 */
-	public String getAccessToken(String code) throws IOException
+	public String getAccessToken(String code, String redirectUrl) throws IOException
 	{
 		URL url = new URL("https://kauth.kakao.com/oauth/token");
 		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 		conn.setRequestMethod("POST");
 		conn.setDoOutput(true);
-
+		
 		StringBuffer sb = new StringBuffer();
 		sb.append("grant_type=authorization_code");
 		sb.append("&client_id=" + REST_API_KEY);
-		sb.append("&redirect_uri=" + REDIRECT_URI);
+		sb.append("&redirect_uri=" + redirectUrl);
 		sb.append("&code=" + code);
 
 		OutputStreamWriter outStream = new OutputStreamWriter(conn.getOutputStream(), "UTF-8");
@@ -121,7 +123,7 @@ public class LoginController
 	 * @return
 	 * @throws IOException
 	 */
-	public User getUserInfo(String accessToken) throws IOException
+	public static User getUserInfo(String accessToken) throws IOException
 	{
 		URL url = new URL("https://kapi.kakao.com/v2/user/me");
 		HttpURLConnection conn = (HttpURLConnection) url.openConnection();

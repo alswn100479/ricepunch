@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
-import com.mim.login.LoginController;
-import com.mim.login.LoginService;
 import com.mim.service.StatService;
+import com.mim.user.login.LoginController;
+import com.mim.user.login.LoginService;
 
 import eu.bitwalker.useragentutils.UserAgent;
 
@@ -51,13 +51,16 @@ public class HomeController
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public ModelAndView home(Locale locale, HttpServletRequest request, HttpServletResponse response) throws Exception
 	{
+		request.getRequestURI();
 		ModelAndView mv = new ModelAndView("index.tiles");
-
+		
+		String redirectUrl = request.getScheme() + "://" + request.getServerName() + ":"+request.getServerPort() + LoginController.REDIRECT_URI;
+		
 		String val = LoginController.KAKAO_HOST
 			+ "/oauth/authorize?client_id="
 			+ LoginController.REST_API_KEY
 			+ "&redirect_uri="
-			+ LoginController.REDIRECT_URI
+			+ redirectUrl
 			+ "&response_type=code";
 		mv.addObject("kakao_url", val);
 
