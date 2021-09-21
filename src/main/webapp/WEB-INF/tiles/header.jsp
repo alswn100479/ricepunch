@@ -20,11 +20,23 @@ $(document).ready(function(){
 	if (kakaoToken) {
 		$('#guestDiv').hide();
 		$('#userDiv').show();
+		$('#hiTitle').text('Hi, User');
 	}else {
 		$('#guestDiv').show();
 		$('#userDiv').hide();
+		$('#hiTitle').text('Hi, Guest');
 	}
 });
+var kakaoToken;
+function doLogout() {
+	var kakaoToken = getCookie('kakao_accessToken');
+	if (kakaoToken) {
+		location.href = "<%=request.getContextPath()%>/logout/kakao.do";
+	} else {
+		$('#guestDiv').show();
+		$('#userDiv').hide();
+	}
+}
 </script>
 <div class="navbar-bg"></div>
 <nav class="navbar navbar-expand-lg main-navbar">
@@ -100,7 +112,7 @@ $(document).ready(function(){
 		<%-- profile --%>
 		<li class="dropdown"><a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg nav-link-user">
 			<img alt="image" src="<%=request.getContextPath()%>/resources/stisla/assets/img/avatar/avatar-1.png" class="rounded-circle mr-1">
-			<div class="d-sm-none d-lg-inline-block">Hi, Guest</div></a>
+			<div id="hiTitle" class="d-sm-none d-lg-inline-block" >Hi, Guest</div></a>
 			<div class="dropdown-menu dropdown-menu-right">
 				<div class="dropdown-title">Login Plzzz..</div>
 				<div class="dropdown-divider"></div>
@@ -115,7 +127,7 @@ $(document).ready(function(){
 	                	<i class="fas fa-cog"></i> Settings
 	            	</a>
 	              	<div class="dropdown-divider"></div>
-					<a href="<%=request.getContextPath()%>/logout/kakao.do" class="dropdown-item has-icon text-danger" onclick="kakaoLogout()">
+					<a href="javascript:doLogout();" class="dropdown-item has-icon text-danger" onclick="">
 						<i class="fas fa-sign-out-alt"></i> Logout
 					</a>
 				</div>

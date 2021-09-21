@@ -6,6 +6,7 @@ public class User
 	private String accessToken;
 	private int ageRange;
 	private String name;
+	private String alias;
 	private String userDesc;
 
 	public Long getId()
@@ -46,6 +47,22 @@ public class User
 	public void setName(String name)
 	{
 		this.name = name;
+	}
+
+	/**
+	 * @return the alias
+	 */
+	public String getAlias()
+	{
+		return alias;
+	}
+
+	/**
+	 * @param alias the alias to set
+	 */
+	public void setAlias(String alias)
+	{
+		this.alias = alias;
 	}
 
 	/**

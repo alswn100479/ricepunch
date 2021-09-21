@@ -23,6 +23,11 @@ public class UserController
 	@Autowired
 	UserService userService;
 
+	/**
+	 * 사용자 정보 화면을 돌려주는 Controller
+	 * @param request
+	 * @return
+	 */
 	@RequestMapping(value = "/profile.do", method = RequestMethod.GET)
 	public ModelAndView adminIndex(HttpServletRequest request)
 	{
@@ -32,20 +37,47 @@ public class UserController
 			if (cookie.getName().equals(LoginController.KAKAO_TOKEN_NAME))
 			{
 				String token = cookie.getValue();
-				try
-				{
-					User user = LoginController.getUserInfo(token);
-					user = userService.selectUser(user.getId());
-					mv.addObject("user", user);
-				}
-				catch (IOException e)
-				{
-					e.printStackTrace();
-				}
+				User user = getUserByKaKaoToken(token);
+				mv.addObject("user", user);
 			}
 		}
 
 		return mv;
+	}
+
+	/**
+	 * 카카오 토큰으로 사용자 정보를 돌려주는 Controller
+	 * @param kakaoToken
+	 * @return
+	 */
+	@RequestMapping(value = "/userInfo.do", method = RequestMethod.GET)
+	public ModelAndView getUserInfo(String kakaoToken)
+	{
+		ModelAndView mv = new ModelAndView();
+		User user = getUserByKaKaoToken(kakaoToken);
+		mv.addObject("user", user);
+
+		return mv;
+	}
+
+	/**
+	 * 카카오토큰으로 사용자 정보를 돌려준다.
+	 * @param token
+	 * @return
+	 */
+	public User getUserByKaKaoToken(String token)
+	{
+		User user = null;
+		try
+		{
+			user = LoginController.getUserInfo(token);
+			user = userService.selectUser(user.getId());
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+		return user;
 	}
 
 	/**

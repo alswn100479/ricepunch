@@ -13,9 +13,9 @@
             	<!-- info -->
             </p>
 
-            <div class="row">
+            <div class="row mt-sm-4">
             <!-- 사용자 정보 -->
-              <div class="col">
+              <div class="col-12 col-md-12 col-lg-5">
                 <div class="card profile-widget">
                   <div class="profile-widget-header">
                     <img alt="image" src="<%=request.getContextPath()%>/resources/stisla/assets/img/avatar/avatar-1.png" class="rounded-circle profile-widget-picture">
@@ -37,18 +37,16 @@
                      -->
                   </div>
                   <div class="profile-widget-description">
-                    <div class="profile-widget-name">${user.name}</div>
+                    <div class="profile-widget-name">${user.name} <div class="text-muted d-inline font-weight-normal"><div class="slash"></div> ${user.alias}</div></div>
                     ${user.userDesc}
                   </div>
                 </div>
               </div>
-              </div>
               <!-- 사용자 정보 수정 -->
-              <div class="row">
-              <div class="col">
+              <div class="col-12 col-md-12 col-lg-7">
                 <div class="card">
                   <div class="card-header">
-                    <h4>Update User Info</h4>
+                    <h4>Edit User Info</h4>
                   </div>
                   <div class="card-body">
                     <ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -64,17 +62,21 @@
 	                  	<form action="modifyUserInfo.do" method="post">
 		                  <div class="profile-widget-description">
 		                    <div class="profile-widget-name">
-		                    	<div class="form-group row">
-									<label class="col-sm-2 col-form-label"><spring:message code="user.002" /></label>
-									<div class="col">
-										<input name="name" value="${user.name}" type="text" class="form-control" >
-									</div>
-								</div>
-								<div class="form-group row">
-									<label class="col-sm-2 col-form-label"><spring:message code="user.003" /></label>
-									<div class="col">
+		                    	<div class="row">                               
+		                          <div class="form-group col-md-6 col-12">
+		                            <label>Name</label>
+		                            <input name="name" type="text" class="form-control" value="${user.name}" required="">
+		                          </div>
+		                          <div class="form-group col-md-6 col-12">
+		                            <label>Title</label>
+		                            <input name="alias" type="text" class="form-control" value="${user.alias}" required="">
+		                          </div>
+		                        </div>
+								<div class="row">
+									<div class="form-group col-12">
+			                            <label><spring:message code="user.003" /></label>
 										<textarea name="userDesc" class="form-control" rows="3">${user.userDesc}</textarea>
-									</div>
+		                          	</div>
 								</div>
 								<div class="form-group row" style="float:right">
 			                    	<div class="col">
