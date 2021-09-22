@@ -62,6 +62,7 @@
 	                  	<form action="modifyUserInfo.do" method="post">
 		                  <div class="profile-widget-description">
 		                    <div class="profile-widget-name">
+		                    	<div class="section-title mt-0">Default</div>
 		                    	<div class="row">                               
 		                          <div class="form-group col-md-6 col-12">
 		                            <label>Name</label>
@@ -76,6 +77,22 @@
 									<div class="form-group col-12">
 			                            <label><spring:message code="user.003" /></label>
 										<textarea name="userDesc" class="form-control" rows="3">${user.userDesc}</textarea>
+		                          	</div>
+								</div>
+								<div class="section-title mt-0">Language</div>
+			                    <div class="row">
+									<div class="form-group col-12">
+			                            <label>Language</label>
+			                            <div class="selectgroup w-100">
+					                        <label class="selectgroup-item">
+					                          <input type="radio" name="language" value="1000" class="selectgroup-input" <c:if test="${user.language==1000}">checked="true"</c:if> >
+					                          <span class="selectgroup-button selectgroup-button-icon">Korean</span>
+					                        </label>
+					                        <label class="selectgroup-item">
+					                          <input type="radio" name="language" value="2000" class="selectgroup-input" <c:if test="${user.language==2000}">checked="true"</c:if>>
+					                          <span class="selectgroup-button selectgroup-button-icon">English</span>
+					                        </label>
+					                      </div>
 		                          	</div>
 								</div>
 								<div class="form-group row" style="float:right">

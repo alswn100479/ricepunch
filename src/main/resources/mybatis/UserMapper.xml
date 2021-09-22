@@ -5,11 +5,11 @@
 <mapper namespace="UserMapper">
 	<update id="updateUserInfo" parameterType="com.mim.user.User">
 		UPDATE USER
-		SET name = #{name}, user_desc = #{userDesc}, alias = #{alias}
+		SET name = #{name}, user_desc = #{userDesc}, alias = #{alias}, language = #{language}
 		WHERE id = #{id}
 	</update>
 	<select id="selectUser" parameterType="Long" resultType="com.mim.user.User">
-		SELECT id, name, user_desc userDesc, alias
+		SELECT id, name, user_desc userDesc, alias, language
 		FROM USER
 		WHERE id = #{id}
 	</select>
