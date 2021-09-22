@@ -8,31 +8,36 @@ System.out.println(request.getAttribute("locale"));
 	
 	setInterval(function(){
 		var now = new Date();
-		var interval = now - firstDate;
+		now.setMonth(now.getMonth() + 1);
 		
-		var second = 1000;                  //1초 후
-		var minute = 1000 * 60;             //1분 후
-		var hour = 1000 * 60 * 60;        //1시간 후
-		var day = 1000*60*60*24; 
-		var month = day*30; 
-		var year = month*12; 
+		var yearVal = now.getFullYear() - firstDate.getFullYear();
 		
-		var yearVal = parseInt(interval/year);
-		var minus = parseInt(interval % year);
+		var monthVal = 0;  
+		if (firstDate.getMonth() > now.getMonth()) {
+			yearVal--;
+			monthVal = (12 - firstDate.getMonth()) + now.getMonth();
+		} else {
+			monthVal = now.getMonth() - firstDate.getMonth();
+		}
 		
-		var monthVal = parseInt(minus/month);
-		minus = parseInt(minus % month)
+		var dayVal = 0;
+		if (firstDate.getDay() > now.getDay()) {
+			monthVal--;
+			dayVal = (firstDate.getDate() - firstDate.getDay()) + now.getDay(); 
+		} else {
+			dayVal = now.getDay() - firstDate.getDay();
+		}
 		
-		var dayVal = parseInt(minus/day);
-		minus = parseInt(minus % day);
+		var hourVal = 0;
+		if (firstDate.getHours() > now.getHours()) {
+			dayVal--;
+			hourVal = (24 - firstDate.getHours()) + now.getHours();
+		} else {
+			hourVal = now.getHours() - firstDate.getHours();
+		}
 		
-		var hourVal = parseInt(minus / hour);
-		minus = parseInt(minus % hour);
-		
-		var minuteVal = parseInt(minus / minute);
-		minus = parseInt(minus % minute);
-		
-		var secondVal = parseInt(minus / second);
+		var minutVal = now.getMinutes() - firstDate.getMinutes();
+		var secondVal = now.getSeconds() - firstDate.getSeconds();
 		
 		$('#yearVal').text(yearVal);
 		$('#monthVal').text(monthVal);
@@ -40,7 +45,6 @@ System.out.println(request.getAttribute("locale"));
 		$('#hourVal').text(hourVal);
 		$('#minuteVal').text(minuteVal);
 		$('#secondVal').text(secondVal);
-		
 	},1000);
 
 </script>
