@@ -16,7 +16,6 @@ function careerCalculateur(firstDate) {
 	var now = new Date();
 	now.setMonth(now.getMonth() + 1);
 	
-	console.log(now);
 	var yearVal = now.getFullYear() - firstDate.getFullYear();
 	
 	var monthVal = 0;  
