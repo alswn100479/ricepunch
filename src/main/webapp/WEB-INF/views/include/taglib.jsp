@@ -2,7 +2,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%
 	if(request.getAttribute("language") == null) {
-		request.setAttribute("language", "ko");
+	//	request.setAttribute("language", "ko");
 	}
 %>
 

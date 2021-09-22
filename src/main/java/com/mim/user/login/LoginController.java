@@ -5,6 +5,7 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Locale;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -16,9 +17,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.mim.user.User;
+import com.mim.user.UserService;
 import com.mim.util.HttpUrlConnectionUtil;
 import com.mim.util.ObjectUtil;
 
@@ -40,7 +43,11 @@ public class LoginController
 
 	@Autowired
 	private LoginService loginService;
-	
+	@Autowired
+	private LocaleResolver localeResolver;
+	@Autowired
+	UserService userService;
+
 	@RequestMapping("kakao.do")
 	public ModelAndView kakaoLogin(
 		@RequestParam("code") String code,
@@ -49,8 +56,13 @@ public class LoginController
 		throws IOException
 	{
 		ModelAndView mv = new ModelAndView("index.tiles");
-		
-		String redirectUrl = request.getScheme() + "://" + request.getServerName() + ":"+request.getServerPort() + REDIRECT_URI;
+
+		String redirectUrl = request.getScheme()
+			+ "://"
+			+ request.getServerName()
+			+ ":"
+			+ request.getServerPort()
+			+ REDIRECT_URI;
 
 		// access token ¹ß±Þ
 		String accessToken = getAccessToken(code, redirectUrl);
@@ -62,6 +74,11 @@ public class LoginController
 		User user = getUserInfo(accessToken);
 		loginService.insertUser(user);
 		loginService.insertLoginLog(user, LOGIN_STATUS);
+
+		User dbUser = userService.selectUser(user.getId());
+
+		Locale locale = new Locale(dbUser.getLanguage());
+		localeResolver.setLocale(request, response, locale);
 
 		return mv;
 	}
@@ -78,7 +95,7 @@ public class LoginController
 		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 		conn.setRequestMethod("POST");
 		conn.setDoOutput(true);
-		
+
 		StringBuffer sb = new StringBuffer();
 		sb.append("grant_type=authorization_code");
 		sb.append("&client_id=" + REST_API_KEY);

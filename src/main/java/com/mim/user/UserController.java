@@ -1,14 +1,17 @@
 package com.mim.user;
 
 import java.io.IOException;
+import java.util.Locale;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.mim.user.login.LoginController;
@@ -22,6 +25,8 @@ public class UserController
 {
 	@Autowired
 	UserService userService;
+	@Autowired
+	private LocaleResolver localeResolver;
 
 	/**
 	 * 사용자 정보 화면을 돌려주는 Controller
@@ -86,11 +91,14 @@ public class UserController
 	 * @return
 	 */
 	@RequestMapping(value = "/modifyUserInfo.do", method = RequestMethod.POST)
-	public ModelAndView modifyUserInfo(User user)
+	public ModelAndView modifyUserInfo(User user, HttpServletRequest request, HttpServletResponse response)
 	{
 		ModelAndView mv = new ModelAndView("user/profile.tiles");
 		User userServer = userService.updateUserInfo(user);
 		mv.addObject("user", userServer);
+
+		Locale locale = new Locale(user.getLanguage());
+		localeResolver.setLocale(request, response, locale);
 
 		return mv;
 	}

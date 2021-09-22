@@ -8,7 +8,7 @@ public class User
 	private String name;
 	private String alias;
 	private String userDesc;
-	private int language;
+	private String language;
 
 	public Long getId()
 	{
@@ -85,7 +85,7 @@ public class User
 	/**
 	 * @return the language
 	 */
-	public int getLanguage()
+	public String getLanguage()
 	{
 		return language;
 	}
@@ -93,7 +93,7 @@ public class User
 	/**
 	 * @param language the language to set
 	 */
-	public void setLanguage(int language)
+	public void setLanguage(String language)
 	{
 		this.language = language;
 	}

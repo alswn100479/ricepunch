@@ -85,11 +85,11 @@
 			                            <label>Language</label>
 			                            <div class="selectgroup w-100">
 					                        <label class="selectgroup-item">
-					                          <input type="radio" name="language" value="1000" class="selectgroup-input" <c:if test="${user.language==1000}">checked="true"</c:if> >
+					                          <input type="radio" name="language" value="ko" class="selectgroup-input" <c:if test="${user.language eq 'ko'}">checked="true"</c:if> >
 					                          <span class="selectgroup-button selectgroup-button-icon">Korean</span>
 					                        </label>
 					                        <label class="selectgroup-item">
-					                          <input type="radio" name="language" value="2000" class="selectgroup-input" <c:if test="${user.language==2000}">checked="true"</c:if>>
+					                          <input type="radio" name="language" value="en" class="selectgroup-input" <c:if test="${user.language=='en'}">checked="true"</c:if>>
 					                          <span class="selectgroup-button selectgroup-button-icon">English</span>
 					                        </label>
 					                      </div>
