@@ -1,49 +1,58 @@
 <%@ include file="/WEB-INF/views/include/taglib.jsp" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <script type="text/javascript">
+$(document).ready(function(){
 	var firstDate = new Date(2017, 11, 20, 9, 0);
+	careerCalculateur(firstDate);
 	
 	setInterval(function(){
-		var now = new Date();
-		now.setMonth(now.getMonth() + 1);
-		
-		var yearVal = now.getFullYear() - firstDate.getFullYear();
-		
-		var monthVal = 0;  
-		if (firstDate.getMonth() > now.getMonth()) {
-			yearVal--;
-			monthVal = (12 - firstDate.getMonth()) + now.getMonth();
-		} else {
-			monthVal = now.getMonth() - firstDate.getMonth();
-		}
-		
-		var dayVal = 0;
-		if (firstDate.getDay() > now.getDay()) {
-			monthVal--;
-			dayVal = (firstDate.getDate() - firstDate.getDay()) + now.getDay(); 
-		} else {
-			dayVal = now.getDay() - firstDate.getDay();
-		}
-		
-		var hourVal = 0;
-		if (firstDate.getHours() > now.getHours()) {
-			dayVal--;
-			hourVal = (24 - firstDate.getHours()) + now.getHours();
-		} else {
-			hourVal = now.getHours() - firstDate.getHours();
-		}
-		
-		var minutVal = now.getMinutes() - firstDate.getMinutes();
-		var secondVal = now.getSeconds() - firstDate.getSeconds();
-		
-		$('#yearVal').text(yearVal);
-		$('#monthVal').text(monthVal);
-		$('#dayVal').text(dayVal);
-		$('#hourVal').text(hourVal);
-		$('#minuteVal').text(minuteVal);
-		$('#secondVal').text(secondVal);
+		careerCalculateur(firstDate);
 	},1000);
-
+});
+/**
+ * 현재시간까지의 경력을 계산한다.
+ */
+function careerCalculateur(firstDate) {
+	var now = new Date();
+	now.setMonth(now.getMonth() + 1);
+	
+	console.log(now);
+	var yearVal = now.getFullYear() - firstDate.getFullYear();
+	
+	var monthVal = 0;  
+	if (firstDate.getMonth() > now.getMonth()) {
+		yearVal--;
+		monthVal = (12 - firstDate.getMonth()) + now.getMonth();
+	} else {
+		monthVal = now.getMonth() - firstDate.getMonth();
+	}
+	
+	var dayVal = 0;
+	if (firstDate.getDay() > now.getDay()) {
+		monthVal--;
+		dayVal = (firstDate.getDate() - firstDate.getDay()) + now.getDay(); 
+	} else {
+		dayVal = now.getDay() - firstDate.getDay();
+	}
+	
+	var hourVal = 0;
+	if (firstDate.getHours() > now.getHours()) {
+		dayVal--;
+		hourVal = (24 - firstDate.getHours()) + now.getHours();
+	} else {
+		hourVal = now.getHours() - firstDate.getHours();
+	}
+	
+	var minuteVal = now.getMinutes() - firstDate.getMinutes();
+	var secondVal = now.getSeconds() - firstDate.getSeconds();
+	
+	$('#yearVal').text(yearVal);
+	$('#monthVal').text(monthVal);
+	$('#dayVal').text(dayVal);
+	$('#hourVal').text(hourVal);
+	$('#minuteVal').text(minuteVal);
+	$('#secondVal').text(secondVal);
+}
 </script>
 <section class="section">
           <div class="section-header">
