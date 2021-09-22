@@ -1,8 +1,5 @@
 <%@ include file="/WEB-INF/views/include/taglib.jsp" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%
-System.out.println(request.getAttribute("locale"));
-%>
 <script type="text/javascript">
 	var firstDate = new Date(2017, 11, 20, 9, 0);
 	
