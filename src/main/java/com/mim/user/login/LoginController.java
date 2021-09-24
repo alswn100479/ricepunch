@@ -5,11 +5,13 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.Locale;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
 import org.json.simple.JSONObject;
@@ -33,6 +35,10 @@ import com.mim.util.ObjectUtil;
 public class LoginController
 {
 	public final static String KAKAO_HOST = "https://kauth.kakao.com";
+	public final static String KAKAO_GET_TOKEN_URL = "https://kauth.kakao.com/oauth/token"; //1차 토큰얻기, 토큰갱신
+	public final static String KAKAO_GET_TOKENINFO_URL = "https://kapi.kakao.com/v1/user/access_token_info"; //토큰정보 요청
+	public final static String KAKAO_GET_USERINFO_URL = "https://kapi.kakao.com/v2/user/me"; // 토큰으로 kakao사용자정보 요청
+
 	public final static String REST_API_KEY = "7b71f5d4a64438b4fb2ce2f31a0a9be8";
 	public final static String REDIRECT_URI = "/login/kakao.do";
 
@@ -65,33 +71,41 @@ public class LoginController
 			+ REDIRECT_URI;
 
 		// access token 발급
-		String accessToken = getAccessToken(code, redirectUrl);
+		KaKaoToken kt = getToken(code, redirectUrl);
+		String accessToken = kt.getAccessToken();
+
+		// 카카오api로 로그인 사용자 db에 저장 (최초 한번)
+		User kakaoUser = getUserInfo(accessToken);
+		loginService.insertUser(kakaoUser);
+		loginService.insertLoginLog(kakaoUser, LOGIN_STATUS);
+
+		// 사용자정보와 kakaoToken을 session에 저장
+		User user = userService.selectUser(kakaoUser.getId());
+		user.setKakaoToken(kt);
+		HttpSession session = request.getSession();
+		session.setAttribute("user", user);
+
+		// accessToken을 cookie에 저장
 		Cookie tokenCookie = new Cookie(KAKAO_TOKEN_NAME, accessToken);
 		tokenCookie.setPath("/");
 		response.addCookie(tokenCookie);
 
-		// 로그인 사용자 저장
-		User user = getUserInfo(accessToken);
-		loginService.insertUser(user);
-		loginService.insertLoginLog(user, LOGIN_STATUS);
-
-		User dbUser = userService.selectUser(user.getId());
-
-		Locale locale = new Locale(dbUser.getLanguage());
+		// 언어 설정
+		Locale locale = new Locale(user.getLanguage());
 		localeResolver.setLocale(request, response, locale);
 
 		return mv;
 	}
 
 	/**
-	 * access token을 받는다.
+	 * 1차 요청시 발급받은 code로 토큰을 받는다.
 	 * @param code
 	 * @return
 	 * @throws IOException
 	 */
-	public String getAccessToken(String code, String redirectUrl) throws IOException
+	public static KaKaoToken getToken(String code, String redirectUrl) throws IOException
 	{
-		URL url = new URL("https://kauth.kakao.com/oauth/token");
+		URL url = new URL(KAKAO_GET_TOKEN_URL);
 		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 		conn.setRequestMethod("POST");
 		conn.setDoOutput(true);
@@ -108,13 +122,51 @@ public class LoginController
 		writer.flush();
 
 		JSONObject result = HttpUrlConnectionUtil.getResult(conn);
-		String accessToken = (String) result.get("access_token");
-		/*String refreshTokenExpireIn = (String) result.get("refresh_token_expires_in");
-		String refreshToken = (String) result.get("refresh_token");
-		String tokenType = (String) result.get("token_type");
-		String expireIn = (String) result.get("expires_in");*/
 
-		return accessToken;
+		KaKaoToken kt = new KaKaoToken();
+		kt.setAccessToken((String) result.get("access_token"));
+		kt.setRefreshTokenExpireIn((Long) result.get("refresh_token_expires_in"));
+		kt.setRefreshToken((String) result.get("refresh_token"));
+		kt.setExpireIn((Long) result.get("expires_in"));
+		kt.setTokenType((String) result.get("token_type"));
+
+		return kt;
+	}
+
+	/**
+	 * accessToken을 갱신하고, 토큰 정보를 돌려준다.
+	 * @param code
+	 * @param redirectUrl
+	 * @return
+	 * @throws IOException
+	 */
+	public static KaKaoToken tokenRefresh(String refreshToken) throws IOException
+	{
+		URL url = new URL(KAKAO_GET_TOKEN_URL);
+		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+		conn.setRequestMethod("POST");
+		conn.setDoOutput(true);
+
+		StringBuffer sb = new StringBuffer();
+		sb.append("grant_type=refresh_token");
+		sb.append("&client_id=" + REST_API_KEY);
+		sb.append("&refresh_token=" + refreshToken);
+
+		OutputStreamWriter outStream = new OutputStreamWriter(conn.getOutputStream(), "UTF-8");
+		PrintWriter writer = new PrintWriter(outStream);
+		writer.write(sb.toString());
+		writer.flush();
+
+		JSONObject result = HttpUrlConnectionUtil.getResult(conn);
+
+		KaKaoToken kt = new KaKaoToken();
+		kt.setAccessToken((String) result.get("access_token"));
+		kt.setRefreshToken((String) result.get("refresh_token"));
+		kt.setExpireIn((Long) result.get("expires_in"));
+		kt.setRefreshTokenExpireIn((Long) result.get("refresh_token_expires_in"));
+		kt.setTokenType((String) result.get("token_type"));
+
+		return kt;
 	}
 
 	/**
@@ -123,39 +175,41 @@ public class LoginController
 	 * @return
 	 * @throws IOException
 	 */
-	public String getTokenInfo(String accessToken) throws IOException
+	public HashMap<String, String> getTokenInfo(String accessToken) throws IOException
 	{
-		URL url = new URL("https://kapi.kakao.com/v1/user/access_token_info");
+		URL url = new URL(KAKAO_GET_TOKENINFO_URL);
 		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 		conn.setRequestMethod("POST");
 		conn.setRequestProperty("Authorization", "Bearer " + accessToken);
 
-		//JSONObject result = HttpUrlConnectionUtil.getResult(conn);
-		return null;
+		JSONObject result = HttpUrlConnectionUtil.getResult(conn);
+		HashMap<String, String> map = new HashMap<String, String>();
+		map.put("id", (String) result.get("id"));
+		map.put("expiresIn", (String) result.get("expires_in"));
+		map.put("appId", (String) result.get("app_id"));
+
+		return map;
 	}
 
 	/**
 	 * 토큰으로 사용자의 정보를 받는다.
+	 * <p>
+	 * login accessToken = qXkj-R0EJXQpIaAa59RX9VDKe4GekXctCtM64Ao9dGgAAAF7fXtSvg {"id":1865365598,"connected_at":"2021-08-25T12:14:08Z","kakao_account":{"age_range":"20~29","age_range_needs_agreement":false,"has_age_range":true}} logout
+	 * {"id":1865365598,"connected_at":"2021-08-25T12:14:08Z","kakao_account":{"age_range":"20~29","age_range_needs_agreement":false,"has_age_range":true}}
 	 * @param accessToken
 	 * @return
 	 * @throws IOException
 	 */
 	public static User getUserInfo(String accessToken) throws IOException
 	{
-		URL url = new URL("https://kapi.kakao.com/v2/user/me");
+		URL url = new URL(KAKAO_GET_USERINFO_URL);
 		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 		conn.setRequestMethod("POST");
 		conn.setRequestProperty("Authorization", "Bearer " + accessToken);
 
 		JSONObject result = HttpUrlConnectionUtil.getResult(conn);
 
-		/*		login accessToken = qXkj-R0EJXQpIaAa59RX9VDKe4GekXctCtM64Ao9dGgAAAF7fXtSvg
-		{"id":1865365598,"connected_at":"2021-08-25T12:14:08Z","kakao_account":{"age_range":"20~29","age_range_needs_agreement":false,"has_age_range":true}}
-		logout
-		{"id":1865365598,"connected_at":"2021-08-25T12:14:08Z","kakao_account":{"age_range":"20~29","age_range_needs_agreement":false,"has_age_range":true}}
-		*/
 		User user = new User();
-		user.setAccessToken(ObjectUtil.getString(result.get("accessToken")));
 		user.setId(ObjectUtil.getLong(result.get("id")));
 
 		JSONObject kakaoAccount = (JSONObject) result.get("kakao_account");

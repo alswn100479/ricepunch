@@ -1,14 +1,17 @@
 package com.mim.user;
 
+import com.mim.user.login.KaKaoToken;
+
 public class User
 {
 	private Long id;
-	private String accessToken;
+
 	private int ageRange;
 	private String name;
 	private String alias;
 	private String userDesc;
 	private String language;
+	private KaKaoToken kakaoToken;
 
 	public Long getId()
 	{
@@ -18,16 +21,6 @@ public class User
 	public void setId(Long id)
 	{
 		this.id = id;
-	}
-
-	public String getAccessToken()
-	{
-		return accessToken;
-	}
-
-	public void setAccessToken(String accessToken)
-	{
-		this.accessToken = accessToken;
 	}
 
 	public int getAgeRange()
@@ -96,5 +89,21 @@ public class User
 	public void setLanguage(String language)
 	{
 		this.language = language;
+	}
+
+	/**
+	 * @return the kakaoToken
+	 */
+	public KaKaoToken getKakaoToken()
+	{
+		return kakaoToken;
+	}
+
+	/**
+	 * @param kakaoToken the kakaoToken to set
+	 */
+	public void setKakaoToken(KaKaoToken kakaoToken)
+	{
+		this.kakaoToken = kakaoToken;
 	}
 }
