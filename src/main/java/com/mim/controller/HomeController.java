@@ -53,9 +53,14 @@ public class HomeController
 	{
 		request.getRequestURI();
 		ModelAndView mv = new ModelAndView("index.tiles");
-		
-		String redirectUrl = request.getScheme() + "://" + request.getServerName() + ":"+request.getServerPort() + LoginController.REDIRECT_URI;
-		
+
+		String redirectUrl = request.getScheme()
+			+ "://"
+			+ request.getServerName()
+			+ ":"
+			+ request.getServerPort()
+			+ LoginController.REDIRECT_URI;
+
 		String val = LoginController.KAKAO_HOST
 			+ "/oauth/authorize?client_id="
 			+ LoginController.REST_API_KEY
