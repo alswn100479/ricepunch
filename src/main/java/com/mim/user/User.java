@@ -2,6 +2,9 @@ package com.mim.user;
 
 import com.mim.user.login.KaKaoToken;
 
+/**
+ * »ç¿ëÀÚ Class
+ */
 public class User
 {
 	private Long id;

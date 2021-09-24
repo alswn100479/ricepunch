@@ -17,7 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.mim.user.login.LoginController;
 
 /**
- * Dictionary Controller
+ * »ç¿ëÀÚ Controller
  */
 @Controller
 @RequestMapping(value = "/user")

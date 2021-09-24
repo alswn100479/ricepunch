@@ -1,5 +1,8 @@
 package com.mim.user.login;
 
+/**
+ * 카카오로그인 토큰 정보 Class
+ */
 public class KaKaoToken
 {
 	private String accessToken;
