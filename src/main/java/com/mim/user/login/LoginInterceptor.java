@@ -2,49 +2,48 @@ package com.mim.user.login;
 
 import java.io.IOException;
 
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.servlet.HandlerInterceptor;
+import org.springframework.web.servlet.ModelAndView;
+
 import com.mim.user.User;
+import com.mim.user.UserService;
 
-public class LoginFilter implements Filter
+/**
+ * Login Interceptor
+ */
+public class LoginInterceptor implements HandlerInterceptor
 {
+	@Autowired
+	private UserService userService;
 
 	@Override
-	public void init(FilterConfig filterConfig) throws ServletException
+	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception
 	{
-	}
-
-	@Override
-	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-		throws IOException,
-			ServletException
-	{
-		HttpServletRequest req = (HttpServletRequest) request;
-		HttpServletResponse res = (HttpServletResponse) response;
-		HttpSession httpSession = req.getSession();
+		HttpSession httpSession = request.getSession();
 
 		boolean isLogout = false;
 		String accessToken = null;
 		String refreshToken = null;
-		for (Cookie cookie : req.getCookies())
+		if (null != request.getCookies())
 		{
-			if (cookie.getName().equals(LoginController.KAKAO_TOKEN_NAME))
+			for (Cookie cookie : request.getCookies())
 			{
-				accessToken = cookie.getValue();
+				if (cookie.getName().equals(LoginController.KAKAO_TOKEN_NAME))
+				{
+					accessToken = cookie.getValue();
+				}
+				if (cookie.getName().equals(LoginController.KAKAO_REFRESH_TOKEN_NAME))
+				{
+					refreshToken = cookie.getValue();
+				}
 			}
-			if (cookie.getName().equals(LoginController.KAKAO_REFRESH_TOKEN_NAME))
-			{
-				refreshToken = cookie.getValue();
-			}
+
 		}
 
 		// cookie에 토큰이 있을 때
@@ -53,7 +52,7 @@ public class LoginFilter implements Filter
 			boolean isExpire = checkTokenExpire(accessToken);
 			if (isExpire)
 			{
-				boolean isRefresh = refreshAccessToken(httpSession, res, accessToken, refreshToken);
+				boolean isRefresh = refreshAccessToken(httpSession, response, accessToken, refreshToken);
 				isLogout = isRefresh ? false : true;
 			}
 		}
@@ -66,10 +65,11 @@ public class LoginFilter implements Filter
 		if (null == httpSession.getAttribute("user") && !isLogout)
 		{
 			User user = LoginController.getUserInfo(accessToken);
+			user = userService.selectUser(user.getId());
 			httpSession.setAttribute("user", user);
 		}
 
-		chain.doFilter(request, response);
+		return HandlerInterceptor.super.preHandle(request, response, handler);
 	}
 
 	/**
@@ -125,7 +125,23 @@ public class LoginFilter implements Filter
 	}
 
 	@Override
-	public void destroy()
+	public void postHandle(
+		HttpServletRequest request,
+		HttpServletResponse response,
+		Object handler,
+		ModelAndView modelAndView)
+		throws Exception
 	{
+		// TODO Auto-generated method stub
+		HandlerInterceptor.super.postHandle(request, response, handler, modelAndView);
 	}
+
+	@Override
+	public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex)
+		throws Exception
+	{
+		// TODO Auto-generated method stub
+		HandlerInterceptor.super.afterCompletion(request, response, handler, ex);
+	}
+
 }
