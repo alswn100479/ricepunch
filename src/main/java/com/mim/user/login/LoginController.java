@@ -5,7 +5,6 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.HashMap;
 import java.util.Locale;
 
 import javax.servlet.http.Cookie;
@@ -71,7 +70,7 @@ public class LoginController
 			+ REDIRECT_URI;
 
 		// access token 발급
-		KaKaoToken kt = getToken(code, redirectUrl);
+		KaKaoToken kt = getTokenByCode(code, redirectUrl);
 		String accessToken = kt.getAccessToken();
 
 		// 카카오api로 로그인 사용자 db에 저장 (최초 한번)
@@ -88,6 +87,7 @@ public class LoginController
 		// accessToken을 cookie에 저장
 		Cookie tokenCookie = new Cookie(KAKAO_TOKEN_NAME, accessToken);
 		tokenCookie.setPath("/");
+		tokenCookie.setMaxAge(24*60*60*30); //30일
 		response.addCookie(tokenCookie);
 
 		// 언어 설정
@@ -103,7 +103,7 @@ public class LoginController
 	 * @return
 	 * @throws IOException
 	 */
-	public static KaKaoToken getToken(String code, String redirectUrl) throws IOException
+	public static KaKaoToken getTokenByCode(String code, String redirectUrl) throws IOException
 	{
 		URL url = new URL(KAKAO_GET_TOKEN_URL);
 		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -134,61 +134,36 @@ public class LoginController
 	}
 
 	/**
-	 * accessToken을 갱신하고, 토큰 정보를 돌려준다.
-	 * @param code
-	 * @param redirectUrl
-	 * @return
-	 * @throws IOException
-	 */
-	public static KaKaoToken tokenRefresh(String refreshToken) throws IOException
-	{
-		URL url = new URL(KAKAO_GET_TOKEN_URL);
-		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-		conn.setRequestMethod("POST");
-		conn.setDoOutput(true);
-
-		StringBuffer sb = new StringBuffer();
-		sb.append("grant_type=refresh_token");
-		sb.append("&client_id=" + REST_API_KEY);
-		sb.append("&refresh_token=" + refreshToken);
-
-		OutputStreamWriter outStream = new OutputStreamWriter(conn.getOutputStream(), "UTF-8");
-		PrintWriter writer = new PrintWriter(outStream);
-		writer.write(sb.toString());
-		writer.flush();
-
-		JSONObject result = HttpUrlConnectionUtil.getResult(conn);
-
-		KaKaoToken kt = new KaKaoToken();
-		kt.setAccessToken((String) result.get("access_token"));
-		kt.setRefreshToken((String) result.get("refresh_token"));
-		kt.setExpireIn((Long) result.get("expires_in"));
-		kt.setRefreshTokenExpireIn((Long) result.get("refresh_token_expires_in"));
-		kt.setTokenType((String) result.get("token_type"));
-
-		return kt;
-	}
-
-	/**
 	 * token의 정보를 받는다.
+	 * <p>
+	 * {"expiresInMillis":21599355,"appId":110640,"id":1865365598,"expires_in":21599,"app_id":110640}
 	 * @param accessToken
 	 * @return
 	 * @throws IOException
 	 */
-	public HashMap<String, String> getTokenInfo(String accessToken) throws IOException
+	public static KaKaoToken getTokenInfo(String accessToken) throws IOException
 	{
 		URL url = new URL(KAKAO_GET_TOKENINFO_URL);
 		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-		conn.setRequestMethod("POST");
+		conn.setRequestMethod("GET");
 		conn.setRequestProperty("Authorization", "Bearer " + accessToken);
 
 		JSONObject result = HttpUrlConnectionUtil.getResult(conn);
-		HashMap<String, String> map = new HashMap<String, String>();
-		map.put("id", (String) result.get("id"));
-		map.put("expiresIn", (String) result.get("expires_in"));
-		map.put("appId", (String) result.get("app_id"));
 
-		return map;
+		KaKaoToken kt = new KaKaoToken();
+
+		if (null != result.get("code")) //에러
+		{
+			kt.setErrCode((String) result.get("code"));
+		}
+		else
+		{
+			kt.setId((Long) result.get("id"));
+			kt.setExpireIn((Long) result.get("expires_in"));
+			kt.setAppId((Long) result.get("app_id"));
+		}
+
+		return kt;
 	}
 
 	/**
@@ -220,5 +195,49 @@ public class LoginController
 		}
 
 		return user;
+	}
+
+	/**
+	 * accessToken을 갱신하고, 토큰 정보를 돌려준다.
+	 * @param code
+	 * @param redirectUrl
+	 * @return
+	 * @throws IOException
+	 */
+	public static KaKaoToken tokenRefresh(String refreshToken) throws IOException
+	{
+		URL url = new URL(KAKAO_GET_TOKEN_URL);
+		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+		conn.setRequestMethod("POST");
+		conn.setDoOutput(true);
+
+		StringBuffer sb = new StringBuffer();
+		sb.append("grant_type=refresh_token");
+		sb.append("&client_id=" + REST_API_KEY);
+		sb.append("&refresh_token=" + refreshToken);
+
+		OutputStreamWriter outStream = new OutputStreamWriter(conn.getOutputStream(), "UTF-8");
+		PrintWriter writer = new PrintWriter(outStream);
+		writer.write(sb.toString());
+		writer.flush();
+
+		JSONObject result = HttpUrlConnectionUtil.getResult(conn);
+
+		KaKaoToken kt = new KaKaoToken();
+
+		if (null != result.get("error_code"))
+		{
+			kt.setErrCode((String) result.get("error_code"));
+		}
+		else
+		{
+			kt.setAccessToken((String) result.get("access_token"));
+			kt.setRefreshToken((String) result.get("refresh_token"));
+			kt.setExpireIn((Long) result.get("expires_in"));
+			kt.setRefreshTokenExpireIn((Long) result.get("refresh_token_expires_in"));
+			kt.setTokenType((String) result.get("token_type"));
+		}
+
+		return kt;
 	}
 }

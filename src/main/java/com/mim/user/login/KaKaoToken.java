@@ -5,11 +5,46 @@ package com.mim.user.login;
  */
 public class KaKaoToken
 {
+	private Long id;
+	private Long appId;
 	private String accessToken;
 	private String refreshToken;
 	private Long refreshTokenExpireIn;
 	private Long expireIn;
 	private String tokenType;
+	private String errCode;
+
+	/**
+	 * @return the id
+	 */
+	public Long getId()
+	{
+		return id;
+	}
+
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(Long id)
+	{
+		this.id = id;
+	}
+
+	/**
+	 * @return the appId
+	 */
+	public Long getAppId()
+	{
+		return appId;
+	}
+
+	/**
+	 * @param appId the appId to set
+	 */
+	public void setAppId(Long appId)
+	{
+		this.appId = appId;
+	}
 
 	public String getAccessToken()
 	{
@@ -83,5 +118,21 @@ public class KaKaoToken
 	public void setTokenType(String tokenType)
 	{
 		this.tokenType = tokenType;
+	}
+
+	/**
+	 * @return the errCode
+	 */
+	public String getErrCode()
+	{
+		return errCode;
+	}
+
+	/**
+	 * @param errCode the errCode to set
+	 */
+	public void setErrCode(String errCode)
+	{
+		this.errCode = errCode;
 	}
 }
