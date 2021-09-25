@@ -17,10 +17,23 @@ if (request.getAttribute("kakao_url") == null) {
 <script>
 $(document).ready(function(){
 	var kakaoToken = getCookie('kakao_accessToken');
+	
 	if (kakaoToken) {
 		$('#guestDiv').hide();
 		$('#userDiv').show();
-		$('#hiTitle').text('Hi, User');
+		var titleValue = 'User';
+		$.ajax({
+		    url: "/user/userInfoAjax.do",
+		    type: "GET",
+		    dataType: "json",
+		    success : function(value){
+		    	$('#hiTitle').text('Hi, ' + (null != value && value.name ? value.name : 'User'));
+	        },
+	        error : function(xhr, status, error){
+	        	$('#hiTitle').text('Hi, User');
+	        }
+		});
+		
 	}else {
 		$('#guestDiv').show();
 		$('#userDiv').hide();

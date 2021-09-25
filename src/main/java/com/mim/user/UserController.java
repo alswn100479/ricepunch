@@ -6,14 +6,17 @@ import java.util.Locale;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.google.gson.Gson;
 import com.mim.user.login.LoginController;
 
 /**
@@ -24,7 +27,7 @@ import com.mim.user.login.LoginController;
 public class UserController
 {
 	@Autowired
-	UserService userService;
+	private UserService userService;
 	@Autowired
 	private LocaleResolver localeResolver;
 
@@ -63,6 +66,21 @@ public class UserController
 		mv.addObject("user", user);
 
 		return mv;
+	}
+
+	@RequestMapping(value = "/userInfoAjax.do", method = RequestMethod.GET)
+	@ResponseBody
+	public String userInfoAjax(HttpServletRequest request)
+	{
+		HttpSession session = request.getSession();
+		String userStr = null;
+		if (null != session.getAttribute("user"))
+		{
+			User user = (User) session.getAttribute("user");
+			Gson gson = new Gson();
+			userStr = gson.toJson(user);
+		}
+		return userStr;
 	}
 
 	/**

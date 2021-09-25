@@ -81,7 +81,6 @@ public class LoginController
 
 		// 사용자정보와 kakaoToken을 session에 저장
 		User user = userService.selectUser(kakaoUser.getId());
-		user.setKakaoToken(kt);
 		HttpSession session = request.getSession();
 		session.setAttribute("user", user);
 

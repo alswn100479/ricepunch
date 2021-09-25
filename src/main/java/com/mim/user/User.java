@@ -1,7 +1,5 @@
 package com.mim.user;
 
-import com.mim.user.login.KaKaoToken;
-
 /**
  * »ç¿ëÀÚ Class
  */
@@ -14,7 +12,6 @@ public class User
 	private String alias;
 	private String userDesc;
 	private String language;
-	private KaKaoToken kakaoToken;
 
 	public Long getId()
 	{
@@ -92,21 +89,5 @@ public class User
 	public void setLanguage(String language)
 	{
 		this.language = language;
-	}
-
-	/**
-	 * @return the kakaoToken
-	 */
-	public KaKaoToken getKakaoToken()
-	{
-		return kakaoToken;
-	}
-
-	/**
-	 * @param kakaoToken the kakaoToken to set
-	 */
-	public void setKakaoToken(KaKaoToken kakaoToken)
-	{
-		this.kakaoToken = kakaoToken;
 	}
 }
