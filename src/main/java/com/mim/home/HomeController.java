@@ -1,4 +1,4 @@
-package com.mim.controller;
+package com.mim.home;
 
 import java.util.HashMap;
 import java.util.Locale;

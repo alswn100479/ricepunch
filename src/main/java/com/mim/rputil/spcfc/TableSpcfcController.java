@@ -1,4 +1,4 @@
-package com.mim.controller;
+package com.mim.rputil.spcfc;
 
 import java.io.File;
 import java.io.IOException;

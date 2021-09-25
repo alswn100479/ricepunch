@@ -1,4 +1,4 @@
-package com.mim.controller.job;
+package com.mim.emgbell;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -13,8 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.mim.domain.EmgBell;
-import com.mim.service.EmgBellService;
 import com.mim.util.ApiUtil;
 import com.mim.util.GeocoderUtil;
 import com.mim.util.ObjectUtil;

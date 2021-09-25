@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="EmgBellMapper">
-	<select id="listToGeoUpdate" resultType="com.mim.domain.EmgBell">
+	<select id="listToGeoUpdate" resultType="com.mim.emgbell.EmgBell">
 		SELECT ID, RDNM_ADR as rdnmadr, LNM_ADR as lnmadr FROM EMG_BELL where NAVER_LATITUDE IS
 		NULL OR NAVER_LONGITUDE IS NULL
 	</select>

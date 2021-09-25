@@ -1,12 +1,9 @@
-package com.mim.service;
+package com.mim.rstr;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.mim.rstr.RestRoom;
-import com.mim.rstr.RestRoomDao;
 
 @Service
 public class RestRoomService

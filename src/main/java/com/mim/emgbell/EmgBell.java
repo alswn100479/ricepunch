@@ -1,4 +1,4 @@
-package com.mim.domain;
+package com.mim.emgbell;
 
 import java.util.Date;
 

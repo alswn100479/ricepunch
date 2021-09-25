@@ -1,4 +1,4 @@
-package com.mim.dao;
+package com.mim.emgbell;
 
 import java.util.List;
 
@@ -7,8 +7,6 @@ import javax.inject.Inject;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.stereotype.Service;
-
-import com.mim.domain.EmgBell;
 
 @Service
 public class EmgBellMybatisDao
