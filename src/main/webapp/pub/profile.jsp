@@ -97,7 +97,7 @@ function careerCalculateur(firstDate) {
                     <span id="secondVal"></span><spring:message code="site.006"/>
                     <span id="milliSecondVal">
                     </div>
-                    	<!-- info -->
+                    	<a href="https://ricepunch-tech.tistory.com/" target="_blank">블로그</a>
                   </div>
                 </div>
               </div>
