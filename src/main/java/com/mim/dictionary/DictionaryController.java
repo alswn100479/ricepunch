@@ -1,13 +1,10 @@
-package com.mim.controller;
+package com.mim.dictionary;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
-
-import com.mim.domain.Dictionary;
-import com.mim.service.DictionaryService;
 
 /**
  * Dictionary Controller

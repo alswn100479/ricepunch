@@ -1,10 +1,7 @@
-package com.mim.service;
+package com.mim.dictionary;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.mim.dao.DictionaryMybatisDao;
-import com.mim.domain.Dictionary;
 
 @Service
 public class DictionaryService

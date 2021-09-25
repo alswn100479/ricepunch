@@ -1,12 +1,10 @@
-package com.mim.dao;
+package com.mim.dictionary;
 
 import javax.inject.Inject;
 
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.stereotype.Service;
-
-import com.mim.domain.Dictionary;
 
 @Service
 public class DictionaryMybatisDao
