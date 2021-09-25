@@ -20,6 +20,7 @@
 <script src="<%=request.getContextPath()%>/resources/stisla/assets/js/page/components-table.js"></script>
 
 <script>
+var comm = {};
 setCookie = function(name, value) {
 	document.cookie = name + '=' + value;
 }
@@ -42,5 +43,9 @@ isNotUndefined = function(value) {
 	 }
 
 	return true;
+}
+
+comm.toString = function(value) {
+	return JSON.stringify(value);
 }
 </script>
