@@ -34,4 +34,13 @@
 		<property name="suffix" value=".jsp" />
 		 <property name="order" value="2" />
 	</bean>
+	
+	<!-- Interceptor -->
+	<mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/"/>
+            <bean id="loginInterceptor"
+                  class="com.mim.user.login.LoginInterceptor"/>
+        </mvc:interceptor>
+	</mvc:interceptors>
 </beans>
