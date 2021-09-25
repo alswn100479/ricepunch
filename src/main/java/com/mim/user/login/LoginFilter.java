@@ -30,50 +30,98 @@ public class LoginFilter implements Filter
 	{
 		HttpServletRequest req = (HttpServletRequest) request;
 		HttpServletResponse res = (HttpServletResponse) response;
-		HttpSession session = req.getSession();
+		HttpSession httpSession = req.getSession();
 
-		// 로그인 세션이 남아있을 때
-		if (null != session.getAttribute("user"))
+		boolean isLogout = false;
+		String accessToken = null;
+		String refreshToken = null;
+		for (Cookie cookie : req.getCookies())
 		{
-			User user = (User) session.getAttribute("user");
-			KaKaoToken sessionKt = user.getKakaoToken();
-
-			// 토큰 유효성 체크
-			if (null != user && null != sessionKt)
+			if (cookie.getName().equals(LoginController.KAKAO_TOKEN_NAME))
 			{
-				KaKaoToken kt = LoginController.getTokenInfo(sessionKt.getAccessToken());
-
-				// 에러
-				if (null != kt.getErrCode())
-				{
-					// accessToken만료 -> 갱신 필요
-					if (kt.getErrCode().equals("-401"))
-					{
-						KaKaoToken refreshKt = LoginController.tokenRefresh(sessionKt.getRefreshToken());
-						// refreshToken도 만료
-						if (null != refreshKt.getErrCode())
-						{
-							session.invalidate();
-							new Cookie(LoginController.KAKAO_TOKEN_NAME, null);
-						}
-						// 갱신 성공
-						else
-						{
-							user.setKakaoToken(refreshKt);
-							session.setAttribute("user", user);
-
-							Cookie tokenCookie = new Cookie(
-								LoginController.KAKAO_TOKEN_NAME, refreshKt.getAccessToken());
-							tokenCookie.setMaxAge(24 * 60 * 60 * 30); //30일
-							tokenCookie.setPath("/");
-							res.addCookie(tokenCookie);
-						}
-					}
-				}
+				accessToken = cookie.getValue();
+			}
+			if (cookie.getName().equals(LoginController.KAKAO_REFRESH_TOKEN_NAME))
+			{
+				refreshToken = cookie.getValue();
 			}
 		}
 
+		// cookie에 토큰이 있을 때
+		if (null != accessToken)
+		{
+			boolean isExpire = checkTokenExpire(accessToken);
+			if (isExpire)
+			{
+				boolean isRefresh = refreshAccessToken(httpSession, res, accessToken, refreshToken);
+				isLogout = isRefresh ? false : true;
+			}
+		}
+		else
+		{
+			isLogout = true;
+		}
+
+		// session 다시 set
+		if (null == httpSession.getAttribute("user") && !isLogout)
+		{
+			User user = LoginController.getUserInfo(accessToken);
+			httpSession.setAttribute("user", user);
+		}
+
 		chain.doFilter(request, response);
+	}
+
+	/**
+	 * accessToken 유효성을 체크한다.
+	 * @param accessToken
+	 * @return
+	 * @throws IOException
+	 */
+	public boolean checkTokenExpire(String accessToken) throws IOException
+	{
+		KaKaoToken kt = LoginController.getTokenInfo(accessToken);
+		if (null != kt.getErrCode() && kt.getErrCode().equals("-401"))
+		{
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * accessToken이 유효한지 체크하고 만료되면 갱신한다.
+	 * @return
+	 * @throws IOException
+	 */
+	public boolean refreshAccessToken(
+		HttpSession httpSession,
+		HttpServletResponse response,
+		String accessToken,
+		String refreshToken)
+		throws IOException
+	{
+		KaKaoToken kt = LoginController.getTokenInfo(accessToken);
+		boolean isRefresh = false;
+
+		// accessToken 만료시
+		if (kt.getErrCode().equals("-401"))
+		{
+			kt = LoginController.tokenRefresh(refreshToken);
+			if (null != kt.getErrCode())
+			{
+				LogoutController.loginInfoExpire(httpSession, response);
+			}
+			else
+			{
+				Cookie tokenCookie = new Cookie(LoginController.KAKAO_TOKEN_NAME, accessToken);
+				tokenCookie.setMaxAge(24 * 60 * 60 * 30); //30일
+				tokenCookie.setPath("/");
+				response.addCookie(tokenCookie);
+
+				isRefresh = true;
+			}
+		}
+		return isRefresh;
 	}
 
 	@Override

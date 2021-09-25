@@ -42,6 +42,7 @@ public class LoginController
 	public final static String REDIRECT_URI = "/login/kakao.do";
 
 	public final static String KAKAO_TOKEN_NAME = "kakao_accessToken";
+	public final static String KAKAO_REFRESH_TOKEN_NAME = "kakao_refreshToken";
 
 	public final static int LOGIN_STATUS = 1000;
 	public final static int LOGOUT_STATUS = 9000;
@@ -87,8 +88,14 @@ public class LoginController
 		// accessToken을 cookie에 저장
 		Cookie tokenCookie = new Cookie(KAKAO_TOKEN_NAME, accessToken);
 		tokenCookie.setPath("/");
-		tokenCookie.setMaxAge(24*60*60*30); //30일
+		tokenCookie.setMaxAge(24 * 60 * 60 * 30); //30일
 		response.addCookie(tokenCookie);
+
+		// refreshToken을 cookie에 저장
+		Cookie refreshTokenCookie = new Cookie(KAKAO_REFRESH_TOKEN_NAME, kt.getRefreshToken());
+		refreshTokenCookie.setPath("/");
+		refreshTokenCookie.setMaxAge(24 * 60 * 60 * 30); //30일
+		response.addCookie(refreshTokenCookie);
 
 		// 언어 설정
 		Locale locale = new Locale(user.getLanguage());

@@ -41,16 +41,31 @@ public class LogoutController
 		conn.setRequestMethod("POST");
 		conn.setRequestProperty("Authorization", "Bearer " + accessToken);
 
+		JSONObject result = HttpUrlConnectionUtil.getResult(conn);
+		loginService.insertLogoutLog(ObjectUtil.getLong(result.get("id")), LoginController.LOGOUT_STATUS);
+
+		loginInfoExpire(session, response);
+
+		return mv;
+	}
+
+	/**
+	 * 로그인 정보 expire (쿠키,세션)
+	 * @param session
+	 * @param response
+	 */
+	public static void loginInfoExpire(HttpSession session, HttpServletResponse response)
+	{
 		Cookie cookie = new Cookie(LoginController.KAKAO_TOKEN_NAME, null);
 		cookie.setMaxAge(0);
 		cookie.setPath("/");
 		response.addCookie(cookie);
 
-		JSONObject result = HttpUrlConnectionUtil.getResult(conn);
-		loginService.insertLogoutLog(ObjectUtil.getLong(result.get("id")), LoginController.LOGOUT_STATUS);
-		
-		session.invalidate();
+		Cookie reCookie = new Cookie(LoginController.KAKAO_REFRESH_TOKEN_NAME, null);
+		reCookie.setMaxAge(0);
+		reCookie.setPath("/");
+		response.addCookie(reCookie);
 
-		return mv;
+		session.invalidate();
 	}
 }
