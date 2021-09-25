@@ -1,4 +1,4 @@
-package com.mim.controller.job;
+package com.mim.rstr;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.mim.domain.RestRoom;
 import com.mim.service.RestRoomService;
 import com.mim.util.GeocoderUtil;
 import com.mim.util.XlsxUtil;

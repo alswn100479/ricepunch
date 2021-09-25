@@ -1,4 +1,4 @@
-package com.mim.dao;
+package com.mim.rstr;
 
 import java.util.HashMap;
 import java.util.List;
@@ -9,8 +9,6 @@ import javax.inject.Inject;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.stereotype.Service;
-
-import com.mim.domain.RestRoom;
 
 @Service
 public class RestRoomMybatisDao implements RestRoomDao

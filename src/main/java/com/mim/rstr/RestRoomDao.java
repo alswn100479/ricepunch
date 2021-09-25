@@ -1,8 +1,6 @@
-package com.mim.dao;
+package com.mim.rstr;
 
 import java.util.List;
-
-import com.mim.domain.RestRoom;
 
 public interface RestRoomDao
 {

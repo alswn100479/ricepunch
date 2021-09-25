@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="RestRoomMapper">
-	<select id="list" parameterType="map" resultType="com.mim.domain.RestRoom">
+	<select id="list" parameterType="map" resultType="com.mim.rstr.RestRoom">
 		<![CDATA[
 			SELECT
 			ID
@@ -41,7 +41,7 @@
 	</select>
 	
 	<!-- NAVER 위,경도 업데이트 -->
-	<select id="listToGeoUpdate" resultType="com.mim.domain.RestRoom">
+	<select id="listToGeoUpdate" resultType="com.mim.rstr.RestRoom">
 		SELECT ID, RDNM_ADR as rdnmAdr, LNM_ADR as lnmAdr FROM PUBLIC_TOILET 
 		WHERE LATITUDE IS NULL OR LONGITUDE IS NULL
 		AND ISVISB = 1

@@ -1,4 +1,4 @@
-package com.mim.domain;
+package com.mim.rstr;
 
 import java.util.Date;
 
