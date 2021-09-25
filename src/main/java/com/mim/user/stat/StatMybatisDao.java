@@ -1,4 +1,4 @@
-package com.mim.dao;
+package com.mim.user.stat;
 
 import java.util.List;
 import java.util.Map;

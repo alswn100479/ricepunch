@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
-import com.mim.service.StatService;
 import com.mim.user.login.LoginController;
 import com.mim.user.login.LoginService;
+import com.mim.user.stat.StatService;
 
 import eu.bitwalker.useragentutils.UserAgent;
 
