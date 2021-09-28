@@ -19,7 +19,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.LocaleResolver;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.mim.user.User;
 import com.mim.user.UserService;
@@ -55,14 +54,12 @@ public class LoginController
 	UserService userService;
 
 	@RequestMapping("kakao.do")
-	public ModelAndView kakaoLogin(
+	public String kakaoLogin(
 		@RequestParam("code") String code,
 		HttpServletRequest request,
 		HttpServletResponse response)
 		throws IOException
 	{
-		ModelAndView mv = new ModelAndView("index.tiles");
-
 		String redirectUrl = request.getScheme()
 			+ "://"
 			+ request.getServerName()
@@ -100,7 +97,7 @@ public class LoginController
 		Locale locale = new Locale(user.getLanguage());
 		localeResolver.setLocale(request, response, locale);
 
-		return mv;
+		return "redirect:/";
 	}
 
 	/**
@@ -158,9 +155,9 @@ public class LoginController
 
 		KaKaoToken kt = new KaKaoToken();
 
-		if (null != result.get("code")) //에러
+		if (null != result.get("errorCode")) //에러
 		{
-			kt.setErrCode((String) result.get("code"));
+			kt.setErrCode(Integer.toString((int)result.get("errorCode")));
 		}
 		else
 		{

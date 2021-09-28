@@ -19,26 +19,42 @@ public class HttpUrlConnectionUtil
 	 * @throws IOException
 	 * @throws UnsupportedEncodingException
 	 */
-	public static JSONObject getResult(HttpURLConnection conn) throws IOException
+	@SuppressWarnings("unchecked")
+	public static JSONObject getResult(HttpURLConnection conn)
 	{
 		JSONObject response = null;
 		StringBuilder sb = new StringBuilder();
 		JSONParser parser = new JSONParser();
 
-		BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
-		String line;
-		while ((line = rd.readLine()) != null)
+		try
 		{
-			sb.append(line);
-		}
+			BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
+			String line;
+			while ((line = rd.readLine()) != null)
+			{
+				sb.append(line);
+			}
 
-		if (conn.getResponseCode() == 200)
+			if (conn.getResponseCode() == 200)
+			{
+				try
+				{
+					response = (JSONObject) parser.parse(sb.toString());
+				}
+				catch (ParseException e)
+				{
+					e.printStackTrace();
+				}
+			}
+		}
+		catch (IOException e1)
 		{
 			try
 			{
-				response = (JSONObject) parser.parse(sb.toString());
+				response = new JSONObject();
+				response.put("errorCode", conn.getResponseCode());
 			}
-			catch (ParseException e)
+			catch (IOException e)
 			{
 				e.printStackTrace();
 			}

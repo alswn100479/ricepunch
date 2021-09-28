@@ -52,8 +52,16 @@ public class LoginInterceptor implements HandlerInterceptor
 			boolean isExpire = checkTokenExpire(accessToken);
 			if (isExpire)
 			{
-				boolean isRefresh = refreshAccessToken(httpSession, response, accessToken, refreshToken);
-				isLogout = isRefresh ? false : true;
+				String newAccessToken = refreshAccessToken(httpSession, response, accessToken, refreshToken);
+				if (newAccessToken != null)
+				{
+					isLogout = false;
+					accessToken = newAccessToken;
+				}
+				else
+				{
+					isLogout = true;
+				}
 			}
 		}
 		else
@@ -81,7 +89,7 @@ public class LoginInterceptor implements HandlerInterceptor
 	public boolean checkTokenExpire(String accessToken) throws IOException
 	{
 		KaKaoToken kt = LoginController.getTokenInfo(accessToken);
-		if (null != kt.getErrCode() && kt.getErrCode().equals("-401"))
+		if (null != kt.getErrCode() && kt.getErrCode().equals("401"))
 		{
 			return true;
 		}
@@ -93,7 +101,7 @@ public class LoginInterceptor implements HandlerInterceptor
 	 * @return
 	 * @throws IOException
 	 */
-	public boolean refreshAccessToken(
+	public String refreshAccessToken(
 		HttpSession httpSession,
 		HttpServletResponse response,
 		String accessToken,
@@ -101,10 +109,10 @@ public class LoginInterceptor implements HandlerInterceptor
 		throws IOException
 	{
 		KaKaoToken kt = LoginController.getTokenInfo(accessToken);
-		boolean isRefresh = false;
+		String newAccessToken = null;
 
 		// accessToken 만료시
-		if (kt.getErrCode().equals("-401"))
+		if (kt.getErrCode().equals("401"))
 		{
 			kt = LoginController.tokenRefresh(refreshToken);
 			if (null != kt.getErrCode())
@@ -113,15 +121,15 @@ public class LoginInterceptor implements HandlerInterceptor
 			}
 			else
 			{
-				Cookie tokenCookie = new Cookie(LoginController.KAKAO_TOKEN_NAME, accessToken);
+				Cookie tokenCookie = new Cookie(LoginController.KAKAO_TOKEN_NAME, kt.getAccessToken());
 				tokenCookie.setMaxAge(24 * 60 * 60 * 30); //30일
 				tokenCookie.setPath("/");
 				response.addCookie(tokenCookie);
 
-				isRefresh = true;
+				newAccessToken = kt.getAccessToken();
 			}
 		}
-		return isRefresh;
+		return newAccessToken;
 	}
 
 	@Override

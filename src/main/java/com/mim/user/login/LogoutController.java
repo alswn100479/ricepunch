@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.mim.util.HttpUrlConnectionUtil;
 import com.mim.util.ObjectUtil;
@@ -29,13 +28,12 @@ public class LogoutController
 	private LoginService loginService;
 
 	@RequestMapping("kakao.do")
-	public ModelAndView kakaoLogout(
+	public String kakaoLogout(
 		@CookieValue(name = LoginController.KAKAO_TOKEN_NAME, required = false) String accessToken,
 		HttpServletResponse response,
 		HttpSession session)
 		throws IOException
 	{
-		ModelAndView mv = new ModelAndView("index.tiles");
 		URL url = new URL("https://kapi.kakao.com/v2/user/me");
 		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 		conn.setRequestMethod("POST");
@@ -46,7 +44,7 @@ public class LogoutController
 
 		loginInfoExpire(session, response);
 
-		return mv;
+		return "redirect:/";
 	}
 
 	/**
