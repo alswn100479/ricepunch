@@ -70,7 +70,7 @@ public class HomeController
 		mv.addObject("kakao_url", val);
 
 		// 젒근이력 남기기
-		if ((request.getRemoteAddr() != request.getLocalAddr()))
+		if ((!request.getRemoteAddr().equals(request.getLocalAddr())))
 		{
 			String agentStr = request.getHeader("User-Agent");
 			UserAgent agent = UserAgent.parseUserAgentString(agentStr);
